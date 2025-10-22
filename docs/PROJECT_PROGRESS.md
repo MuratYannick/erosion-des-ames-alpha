@@ -56,8 +56,8 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 ## Branches Principales
 
 ### main
-**Commits**: 1 (à venir)
-**Dernier commit**: Configuration initiale du projet
+**Commits**: 1
+**Dernier commit**: init: configuration initiale du projet avec frontend, backend et documentation (9edde90)
 **Description**: Branche de production stable
 
 ### Branches de fonctionnalités

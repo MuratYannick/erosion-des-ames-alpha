@@ -10,8 +10,7 @@ router.get('/health', (req, res) => {
   });
 });
 
-// Routes API (à ajouter)
-// router.use('/users', require('./users'));
-// router.use('/auth', require('./auth'));
+// Routes API
+router.use('/auth', require('./auth'));
 
 module.exports = router;
