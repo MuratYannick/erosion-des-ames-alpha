@@ -29,26 +29,40 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 - [x] Configuration de la base de données MySQL
 - [x] Premier commit sur la branche main
 
-### Phase 2: Architecture de Base
-**Statut**: À venir
-**Date début prévue**: -
+### Phase 2: Système d'Authentification
+**Statut**: Complété
+**Date début**: 2025-10-22
+**Date fin**: 2025-10-22
+
+#### Tâches
+- [x] Installation de bcrypt et jsonwebtoken
+- [x] Création des utilitaires de hashage et JWT
+- [x] Création du contrôleur d'authentification
+- [x] Création des routes d'authentification backend
+- [x] Création du middleware d'authentification
+- [x] Création des pages frontend (Login, Register)
+- [x] Création du service API frontend
+- [x] Protection des routes frontend
+
+### Phase 3: Configuration de la Base de Données
+**Statut**: En cours
+**Date début**: 2025-10-22
 **Date fin prévue**: -
 
 #### Tâches
-- [ ] Structure des dossiers frontend
-- [ ] Structure des dossiers backend
-- [ ] Configuration des modèles de base de données
-- [ ] Routes API de base
-- [ ] Composants React de base
-- [ ] Configuration de l'authentification
+- [ ] Installation de Sequelize CLI
+- [ ] Configuration des migrations
+- [ ] Création de la migration initiale pour la table users
+- [ ] Création des seeders de test
+- [ ] Test de connexion à la base de données
 
-### Phase 3: Fonctionnalités Core
+### Phase 4: Fonctionnalités Core
 **Statut**: À venir
 
-### Phase 4: Tests et Optimisation
+### Phase 5: Tests et Optimisation
 **Statut**: À venir
 
-### Phase 5: Déploiement Alpha
+### Phase 6: Déploiement Alpha
 **Statut**: À venir
 
 ---
@@ -56,12 +70,13 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 ## Branches Principales
 
 ### main
-**Commits**: 1
-**Dernier commit**: init: configuration initiale du projet avec frontend, backend et documentation (9edde90)
+**Commits**: 2 (à venir après merge)
+**Dernier commit**: feat(auth): système d'authentification complet avec JWT
 **Description**: Branche de production stable
 
 ### Branches de fonctionnalités
-Aucune pour le moment
+- **feature/auth-system**: Système d'authentification (mergé vers main)
+- **setup/database-config**: Configuration de la base de données (en cours)
 
 ---
 
@@ -80,6 +95,13 @@ Aucune pour le moment
 - DATABASE.md: Documentation de la base de données
 - PROJECT_PROGRESS.md: Avancement général
 - BRANCH_PROGRESS.md: Avancement de la branche courante
+
+### 2025-10-22: Système d'Authentification
+- Authentification JWT avec expiration de 24h
+- Hashage bcrypt des mots de passe (SALT_ROUNDS = 10)
+- Middleware de protection des routes
+- Pages frontend Login et Register
+- Gestion des sessions avec localStorage
 
 ---
 
@@ -104,11 +126,11 @@ Aucun pour le moment.
 
 ## Prochaines Étapes
 
-1. Finaliser la structure de documentation
-2. Configurer le frontend avec Vite et React
-3. Configurer le backend avec Express
-4. Mettre en place la connexion à la base de données
-5. Créer le premier commit sur main
+1. Configurer Sequelize CLI et les migrations
+2. Créer la migration pour la table users
+3. Créer les seeders de test
+4. Tester le système d'authentification complet
+5. Développer les fonctionnalités core du jeu
 
 ---
 
