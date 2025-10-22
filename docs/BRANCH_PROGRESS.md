@@ -2,44 +2,46 @@
 
 ## Informations de Branche
 
-**Branche actuelle**: feature/auth-system
+**Branche actuelle**: setup/database-config
 **Branche source**: main
 **Créée le**: 2025-10-22
-**Objectif**: Implémenter le système d'authentification complet (inscription, connexion, JWT)
+**Objectif**: Configurer la base de données avec migrations, seeders et tests de connexion
 
 ---
 
 ## Contexte
 
-Développement du système d'authentification pour permettre aux utilisateurs de :
-- S'inscrire avec un nom d'utilisateur, email et mot de passe
-- Se connecter avec email et mot de passe
-- Gérer leur session avec des tokens JWT
-- Accéder à des routes protégées
+Configuration complète de la base de données MySQL avec Sequelize :
+- Installation et configuration de Sequelize CLI
+- Création de la structure de migrations
+- Migration initiale pour la table users
+- Seeders de test pour le développement
+- Tests de connexion et validation
 
 ---
 
 ## Tâches de la Branche
 
-### Backend
-- [x] Installer bcrypt et jsonwebtoken
-- [x] Créer les utilitaires pour le hashage de mots de passe
-- [x] Créer les utilitaires pour la gestion des JWT
-- [x] Créer le contrôleur d'authentification (register, login, getMe)
-- [x] Créer les routes d'authentification
-- [x] Créer le middleware d'authentification
-- [x] Intégrer les routes auth dans le routeur principal
+### Configuration Sequelize
+- [x] Installer Sequelize CLI
+- [x] Créer le fichier de configuration .sequelizerc
+- [x] Créer le fichier config/config.js pour Sequelize CLI
+- [x] Initialiser la structure des migrations et seeders
 
-### Frontend
-- [x] Créer le service API pour l'authentification
-- [x] Créer les utilitaires pour le localStorage
-- [x] Créer la page de connexion (Login)
-- [x] Créer la page d'inscription (Register)
-- [x] Mettre à jour la page d'accueil avec protection et déconnexion
-- [x] Configurer les routes React Router
-- [x] Créer .env.example pour la configuration frontend
+### Migrations
+- [x] Créer la migration pour la table users
+- [x] Créer un script npm pour les migrations
+- [ ] Tester l'exécution de la migration (nécessite DB créée)
 
-### Documentation
+### Seeders
+- [x] Créer un seeder pour les utilisateurs de test
+- [x] Créer un script npm pour les seeders
+- [ ] Tester l'exécution des seeders (nécessite DB créée)
+
+### Tests et Documentation
+- [x] Créer un script de test de connexion à la base de données
+- [x] Mettre à jour DATABASE.md avec les instructions de configuration
+- [x] Créer README.md pour le backend
 - [x] Mettre à jour BRANCH_PROGRESS.md
 
 ---
@@ -47,92 +49,64 @@ Développement du système d'authentification pour permettre aux utilisateurs de
 ## Commits
 
 ### Commit 1 (à venir)
-**Message**: feat(auth): système d'authentification complet avec JWT
+**Message**: setup(db): configuration complète de la base de données avec migrations et seeders
 
-**Fichiers modifiés/ajoutés**:
+**Fichiers à créer/modifier**:
 
-**Backend**:
-- backend/package.json (ajout bcrypt, jsonwebtoken)
-- backend/src/utils/hashPassword.js
-- backend/src/utils/jwt.js
-- backend/src/controllers/authController.js
-- backend/src/routes/auth.js
-- backend/src/routes/index.js (intégration routes auth)
-- backend/src/middlewares/auth.js
+**Configuration**:
+- backend/.sequelizerc
+- backend/src/config/config.js
+- backend/package.json (ajout scripts et sequelize-cli)
 
-**Frontend**:
-- frontend/.env.example
-- frontend/src/services/api.js
-- frontend/src/utils/localStorage.js
-- frontend/src/pages/Login.jsx
-- frontend/src/pages/Register.jsx
-- frontend/src/pages/Home.jsx (mise à jour avec protection)
-- frontend/src/App.jsx (ajout routes login/register)
+**Migrations**:
+- backend/migrations/XXXXXX-create-users.js
+
+**Seeders**:
+- backend/seeders/XXXXXX-demo-users.js
+
+**Scripts**:
+- backend/src/scripts/testConnection.js
 
 **Documentation**:
+- docs/DATABASE.md (mise à jour instructions)
 - docs/BRANCH_PROGRESS.md
 
-**Description**: Implémentation complète du système d'authentification avec :
-- Backend : Routes d'inscription, connexion et récupération du profil avec JWT
-- Middleware d'authentification pour protéger les routes
-- Hashage sécurisé des mots de passe avec bcrypt
-- Gestion des tokens JWT avec expiration
-- Frontend : Pages de connexion et d'inscription avec validation
-- Service API pour communiquer avec le backend
-- Gestion du localStorage pour sauvegarder le token et les données utilisateur
-- Protection des routes et système de déconnexion
+**Description**: Configuration complète de la base de données avec :
+- Installation de Sequelize CLI
+- Structure de migrations et seeders
+- Migration pour la table users
+- Seeders de test pour le développement
+- Scripts de test de connexion
+- Documentation mise à jour
 
 ---
 
 ## Changements Techniques
 
-### Architecture Backend
-- Ajout de bcrypt pour le hashage sécurisé des mots de passe (SALT_ROUNDS = 10)
-- Implémentation de JWT pour la gestion des sessions (expiration configurable, par défaut 24h)
-- Middleware d'authentification vérifiant le format "Bearer TOKEN"
-- Validation des entrées utilisateur (email, longueur mot de passe, unicité)
-- Gestion des erreurs détaillée en développement
+### Configuration Sequelize CLI
+- Installation de sequelize-cli en dev dependency
+- Fichier .sequelizerc pour personnaliser les chemins
+- Configuration adaptée pour environnements développement/production
+- Support des variables d'environnement pour la connexion
 
-### Architecture Frontend
-- Service API centralisé avec gestion des erreurs
-- Utilitaires localStorage pour persister les données d'authentification
-- Protection automatique de la page d'accueil avec redirection
-- Interface utilisateur cohérente avec TailwindCSS (thème sombre)
-- Validation côté client (correspondance mots de passe, longueur minimale)
+### Structure des Migrations
+- Dossier backend/migrations/ pour toutes les migrations
+- Naming convention: timestamp-description.js
+- Migration users avec tous les champs nécessaires
+- Support des rollbacks avec méthode down()
 
-### Sécurité
-- Mots de passe hashés avec bcrypt (jamais stockés en clair)
-- Tokens JWT signés avec secret (configurable via .env)
-- Validation des entrées côté backend et frontend
-- Messages d'erreur génériques pour éviter la fuite d'informations
-- CORS configuré pour limiter l'accès
+### Seeders
+- Dossier backend/seeders/ pour les données de test
+- Seeder utilisateurs avec mots de passe hashés
+- Données de test pour faciliter le développement
+- Possibilité d'annuler les seeders
 
----
-
-## Endpoints API Créés
-
-### POST /api/auth/register
-Inscription d'un nouvel utilisateur
-- Body: { username, email, password }
-- Retourne: { message, user, token }
-
-### POST /api/auth/login
-Connexion d'un utilisateur existant
-- Body: { email, password }
-- Retourne: { message, user, token }
-
-### GET /api/auth/me
-Récupération du profil utilisateur (protégé)
-- Header: Authorization: Bearer TOKEN
-- Retourne: { user }
-
----
-
-## Routes Frontend Créées
-
-- `/login` - Page de connexion
-- `/register` - Page d'inscription
-- `/` - Page d'accueil (protégée, nécessite authentification)
+### Scripts NPM
+- `db:migrate` - Exécuter les migrations
+- `db:migrate:undo` - Annuler la dernière migration
+- `db:seed` - Exécuter les seeders
+- `db:seed:undo` - Annuler les seeders
+- `db:reset` - Reset complet de la base de données
 
 ---
 
@@ -144,41 +118,48 @@ Aucun pour le moment.
 
 ## Notes de Développement
 
-- Les tokens JWT sont configurés pour expirer après 24h par défaut
-- Le mot de passe doit contenir au moins 6 caractères
-- Les usernames et emails doivent être uniques
-- La base de données doit être créée et accessible pour que l'authentification fonctionne
-- Les variables d'environnement doivent être configurées (voir .env.example)
+- La base de données MySQL doit être créée manuellement avant d'exécuter les migrations
+- Les migrations créent automatiquement les tables avec la bonne structure
+- Les seeders utilisent bcrypt pour hasher les mots de passe de test
+- En production, ne pas exécuter les seeders (données de test uniquement)
+- Utiliser `db:reset` uniquement en développement (détruit toutes les données)
 
 ---
 
 ## Prochaines Actions
 
-1. Effectuer le commit sur la branche
-2. Tester le système d'authentification localement (nécessite base de données)
+1. Installer Sequelize CLI
+2. Configurer les chemins et la connexion
+3. Créer la migration pour users
+4. Créer les seeders de test
+5. Tester la connexion et les migrations
+6. Mettre à jour la documentation
+7. Commiter sur la branche
 
 ---
 
 ## Checklist avant Commit
 
-- [x] Tous les fichiers backend sont créés
-- [x] Tous les fichiers frontend sont créés
-- [x] La documentation est à jour
-- [x] Les .env.example sont créés
-- [x] Aucune erreur de syntaxe
+- [ ] Sequelize CLI installé
+- [ ] Fichiers de configuration créés
+- [ ] Migration users créée
+- [ ] Seeders créés
+- [ ] Scripts npm configurés
+- [ ] Documentation mise à jour
+- [ ] Tests de connexion effectués
 
 ---
 
 ## Checklist avant Merge vers Main
 
-- [ ] Le système d'authentification fonctionne complètement
-- [ ] Les tests d'inscription et connexion passent
-- [ ] La documentation technique est mise à jour
+- [ ] Les migrations s'exécutent sans erreur
+- [ ] Les seeders s'exécutent sans erreur
+- [ ] La connexion à la base de données fonctionne
+- [ ] La documentation est complète
 - [ ] PROJECT_PROGRESS.md est mis à jour
 - [ ] Aucun conflit avec main
-- [ ] Code reviewé
 
 ---
 
 **Dernière mise à jour**: 2025-10-22
-**Statut**: Prêt pour commit
+**Statut**: Prêt pour commit et test

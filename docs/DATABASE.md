@@ -92,39 +92,89 @@ CREATE TABLE users (
 
 ## Migrations
 
-### Gestion avec Sequelize CLI
+### Configuration Sequelize CLI
 
-#### Créer une migration
+Le projet utilise Sequelize CLI pour gérer les migrations. La configuration se trouve dans:
+- **`.sequelizerc`**: Configuration des chemins
+- **`src/config/config.js`**: Configuration de la connexion par environnement
+
+### Prérequis
+
+1. **Créer la base de données manuellement** (à faire une seule fois):
 ```bash
-npx sequelize-cli migration:generate --name nom-de-la-migration
+mysql -u root -p
+CREATE DATABASE erosion_des_ames;
+EXIT;
 ```
 
-#### Exécuter les migrations
+2. **Configurer les variables d'environnement** dans `.env`:
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=erosion_des_ames
+DB_USER=root
+DB_PASSWORD=votre_mot_de_passe
+```
+
+### Commandes de Migration
+
+#### Exécuter toutes les migrations
 ```bash
-npm run migrate
+cd backend
+npm run db:migrate
 ```
 
 #### Annuler la dernière migration
 ```bash
-npx sequelize-cli db:migrate:undo
+npm run db:migrate:undo
+```
+
+#### Annuler toutes les migrations
+```bash
+npm run db:migrate:undo:all
+```
+
+#### Créer une nouvelle migration
+```bash
+npx sequelize-cli migration:generate --name nom-de-la-migration
 ```
 
 ### Historique des Migrations
-- **Migration initiale**: Création des tables de base (à venir)
+- **20251022000000-create-users.js**: Création de la table users avec index
 
 ---
 
 ## Seeders (Données de Test)
 
-### Créer un seeder
+Les seeders permettent d'insérer des données de test dans la base de données.
+
+### Exécuter tous les seeders
+```bash
+cd backend
+npm run db:seed
+```
+
+### Annuler tous les seeders
+```bash
+npm run db:seed:undo
+```
+
+### Reset complet de la base de données
+**ATTENTION**: Cette commande supprime toutes les données et recrée les tables !
+```bash
+npm run db:reset
+```
+
+### Créer un nouveau seeder
 ```bash
 npx sequelize-cli seed:generate --name nom-du-seeder
 ```
 
-### Exécuter les seeders
-```bash
-npm run seed
-```
+### Seeders disponibles
+- **20251022000000-demo-users.js**: 3 utilisateurs de test
+  - admin / admin@erosion-des-ames.com / password123
+  - testuser / test@example.com / password456
+  - player1 / player1@example.com / password789
 
 ---
 
@@ -214,23 +264,64 @@ await user.update({ is_active: false });
 
 ## Scripts Utiles
 
-### Réinitialiser la base de données (ATTENTION: Perte de données)
+### Tester la connexion à la base de données
 ```bash
-npx sequelize-cli db:drop
-npx sequelize-cli db:create
-npx sequelize-cli db:migrate
-npx sequelize-cli db:seed:all
+cd backend
+npm run db:test
+```
+
+Ce script affiche:
+- Le statut de la connexion
+- La version de MySQL
+- La liste des tables
+- Le nombre d'utilisateurs (si la table existe)
+
+### Workflow complet pour initialiser la base de données
+
+1. **Créer la base de données** (MySQL):
+```bash
+mysql -u root -p
+CREATE DATABASE erosion_des_ames;
+EXIT;
+```
+
+2. **Configurer .env**:
+```bash
+cd backend
+cp .env.example .env
+# Éditer .env avec vos informations
+```
+
+3. **Exécuter les migrations**:
+```bash
+npm run db:migrate
+```
+
+4. **Insérer les données de test** (optionnel):
+```bash
+npm run db:seed
+```
+
+5. **Tester la connexion**:
+```bash
+npm run db:test
+```
+
+### Réinitialiser complètement (développement uniquement)
+```bash
+npm run db:reset
 ```
 
 ---
 
 ## TODO / Évolutions Futures
 
-- [ ] Définir le schéma complet selon les besoins du jeu
+- [x] Configurer Sequelize CLI
+- [x] Créer la migration pour la table users
+- [x] Créer les seeders pour les utilisateurs de test
+- [ ] Définir le schéma complet selon les besoins du jeu (personnages, items, etc.)
 - [ ] Implémenter les relations entre tables
-- [ ] Créer les migrations initiales
-- [ ] Créer les seeders pour les données de test
-- [ ] Optimiser les index selon les performances
+- [ ] Optimiser les index selon les performances en production
 - [ ] Mettre en place une stratégie de backup automatisée
 
 ---
