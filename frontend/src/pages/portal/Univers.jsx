@@ -48,14 +48,36 @@ const Univers = () => {
 
   return (
     <PortalLayout>
-      <section className="bg-gradient-to-b from-city-900 via-city-950 to-city-900 py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            {/* Titre */}
-            <h1 className="text-4xl md:text-6xl font-titre-Jeu text-ochre-500 text-center mb-8">
-              L'Univers
-            </h1>
+      <section className="bg-city-900">
+        {/* Bannière avec image de fond - Titre et Sous-titre */}
+        <div
+          className="relative bg-cover bg-center bg-no-repeat py-20 md:py-32"
+          style={{
+            backgroundImage: 'url(/portalIlustrations/banner.png)',
+          }}
+        >
+          {/* Overlay sombre pour améliorer la lisibilité */}
+          <div className="absolute inset-0 bg-black bg-opacity-60"></div>
 
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center max-w-4xl mx-auto">
+              {/* Titre */}
+              <h1 className="text-4xl md:text-6xl font-titre-Jeu text-ochre-500 mb-6 drop-shadow-[0_0_30px_rgba(249,115,22,0.8)]">
+                L'Univers
+              </h1>
+
+              {/* Sous-titre */}
+              <p className="text-xl md:text-2xl font-alternative-1 text-ochre-300 drop-shadow-[0_0_20px_rgba(0,0,0,0.8)]">
+                Le lore d'un monde post-apocalyptique
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Contenu sous la bannière */}
+        <div className="bg-gradient-to-b from-city-900 via-city-950 to-city-900 py-16 md:py-24">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
             {/* Introduction */}
             <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-8 mb-12 shadow-xl">
               <p className="font-texte-corps text-city-300 text-lg leading-relaxed text-center">
@@ -151,6 +173,7 @@ const Univers = () => {
               >
                 Règlement & CGU →
               </a>
+            </div>
             </div>
           </div>
         </div>
