@@ -149,6 +149,27 @@ Cette branche se concentre sur la mise en place de l'interface du portail avec l
 - Desktop: w-1/2 (au lieu de w-2/3)
 - Conservation des effets sepia avec transition
 
+### Commit 9
+**Message**: docs: mise à jour complète de la documentation du projet
+
+**Changements**:
+- BRANCH_PROGRESS.md: 8 commits documentés, état actuel, statistiques
+- PROJECT_PROGRESS.md: Version Alpha 0.2.0, Phase 4, métriques à jour
+
+### Commit 10
+**Message**: feat(frontend): ajout image campFire.png pour section Mise en situation
+
+**Changements**:
+- Ajout de l'image dans frontend/public/portalIlustrations/
+
+### Commit 11
+**Message**: feat(frontend): ajout section complète "Les factions et leurs clans"
+
+**Changements**:
+- Section complète avec les 2 factions principales (5 clans chacune)
+- 10 clans neutres avec descriptions résumées
+- Codes couleurs thématiques (nature, blue, neutral, blood)
+
 ---
 
 ## Changements Techniques Détaillés
@@ -267,22 +288,21 @@ PortalLayout
 - [x] Page Intro avec bannière
 - [x] Page Univers restructurée avec navigation par sections
 - [x] Section "Mise en situation" complète avec texte original et image interactive
-- [x] Page Règlement avec bannière
+- [x] Section "Les factions et leurs clans" complète avec 2 factions + 10 clans neutres
+- [x] Page Règlement avec bannière (contenu de base conservé)
 - [x] Footer mis à jour
 
-### 🔄 En cours / À compléter
-- [ ] Page Univers - Section "Les factions et ses clans" (placeholder)
-- [ ] Page Univers - Section "Survivre dans ce monde cruel" (placeholder)
-- [ ] Page Univers - Section "Le bestiaire" (placeholder)
-- [ ] Page Règlement - Contenu à définir
+### 🔄 Reporté à plus tard
+- [ ] Page Univers - Section "Survivre dans ce monde cruel" (en cours d'élaboration)
+- [ ] Page Univers - Section "Le bestiaire" (en cours d'élaboration)
+- [ ] Page Règlement - Contenu détaillé (sera sur le forum avec validation CGU)
 - [ ] Section Features de la page Portal (à revoir plus tard)
 
 ### 📋 Prochaines Actions
-1. ✅ Tous les commits effectués (8 commits au total)
-2. Compléter les sections manquantes de la page Univers
-3. Définir le contenu de la page Règlement
-4. Pousser vers GitHub
-5. Merger dans main après validation
+1. ✅ Tous les commits effectués (11 commits au total)
+2. ✅ Documentation mise à jour
+3. Merger dans main
+4. Push vers GitHub
 
 ---
 
@@ -309,13 +329,13 @@ PortalLayout
 
 ## Statistiques de la Branche
 
-**Total de commits**: 8
-**Fichiers créés**: 13
-**Fichiers modifiés**: 15+
-**Lignes de code ajoutées**: ~2000+
+**Total de commits**: 11
+**Fichiers créés**: 14 (composants, pages, images)
+**Fichiers modifiés**: 20+
+**Lignes de code ajoutées**: ~3000+ lignes frontend
 **Durée de développement**: Session continue
 
 ---
 
 **Dernière mise à jour**: 2025-10-23
-**Statut**: Interface portail complète - 8 commits effectués - Prêt pour push GitHub
+**Statut**: Interface portail complète - 11 commits effectués - Prêt pour merge vers main
