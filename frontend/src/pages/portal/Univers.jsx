@@ -114,7 +114,7 @@ const Univers = () => {
                     <img
                       src="/portalIlustrations/campFire.png"
                       alt="Feu de camp dans les ruines"
-                      className="w-3/4 md:w-2/3 rounded-lg shadow-2xl sepia-[65%] hover:sepia-0 transition-all duration-[2500ms]"
+                      className="w-2/3 md:w-1/2 rounded-lg shadow-2xl sepia-[65%] hover:sepia-0 transition-all duration-[2500ms]"
                     />
                   </div>
 
