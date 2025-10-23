@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const { hashPassword, comparePassword } = require('../utils/hashPassword');
 const { generateToken } = require('../utils/jwt');
+const { Op } = require('sequelize');
 
 /**
  * Inscription d'un nouvel utilisateur
@@ -26,7 +27,7 @@ const register = async (req, res) => {
     // Vérifier si l'utilisateur existe déjà
     const existingUser = await User.findOne({
       where: {
-        $or: [{ email }, { username }]
+        [Op.or]: [{ email }, { username }]
       }
     });
 
