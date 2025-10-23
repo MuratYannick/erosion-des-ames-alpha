@@ -2,46 +2,34 @@
 
 ## Informations de Branche
 
-**Branche actuelle**: setup/database-config
+**Branche actuelle**: fix/tailwindcss-v3
 **Branche source**: main
-**Créée le**: 2025-10-22
-**Objectif**: Configurer la base de données avec migrations, seeders et tests de connexion
+**Créée le**: 2025-10-23
+**Objectif**: Corriger l'incompatibilité TailwindCSS v4 avec React 18 en revenant à TailwindCSS v3
 
 ---
 
 ## Contexte
 
-Configuration complète de la base de données MySQL avec Sequelize :
-- Installation et configuration de Sequelize CLI
-- Création de la structure de migrations
-- Migration initiale pour la table users
-- Seeders de test pour le développement
-- Tests de connexion et validation
+Lors du démarrage du serveur frontend, une erreur PostCSS apparaissait avec TailwindCSS v4 :
+```
+[postcss] It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin.
+The PostCSS plugin has moved to a separate package...
+```
+
+TailwindCSS v4 a des problèmes de compatibilité avec React 18. La solution est de downgrader vers TailwindCSS v3.
 
 ---
 
 ## Tâches de la Branche
 
-### Configuration Sequelize
-- [x] Installer Sequelize CLI
-- [x] Créer le fichier de configuration .sequelizerc
-- [x] Créer le fichier config/config.js pour Sequelize CLI
-- [x] Initialiser la structure des migrations et seeders
+### Correction
+- [x] Désinstaller TailwindCSS v4 et @tailwindcss/postcss
+- [x] Installer TailwindCSS v3.x avec PostCSS et Autoprefixer
+- [x] Vérifier la configuration (postcss.config.js, tailwind.config.js, index.css)
+- [x] Tester le démarrage du frontend
 
-### Migrations
-- [x] Créer la migration pour la table users
-- [x] Créer un script npm pour les migrations
-- [ ] Tester l'exécution de la migration (nécessite DB créée)
-
-### Seeders
-- [x] Créer un seeder pour les utilisateurs de test
-- [x] Créer un script npm pour les seeders
-- [ ] Tester l'exécution des seeders (nécessite DB créée)
-
-### Tests et Documentation
-- [x] Créer un script de test de connexion à la base de données
-- [x] Mettre à jour DATABASE.md avec les instructions de configuration
-- [x] Créer README.md pour le backend
+### Documentation
 - [x] Mettre à jour BRANCH_PROGRESS.md
 
 ---
@@ -49,117 +37,74 @@ Configuration complète de la base de données MySQL avec Sequelize :
 ## Commits
 
 ### Commit 1 (à venir)
-**Message**: setup(db): configuration complète de la base de données avec migrations et seeders
+**Message**: fix(frontend): downgrade TailwindCSS v4 vers v3 pour compatibilité React 18
 
-**Fichiers à créer/modifier**:
-
-**Configuration**:
-- backend/.sequelizerc
-- backend/src/config/config.js
-- backend/package.json (ajout scripts et sequelize-cli)
-
-**Migrations**:
-- backend/migrations/XXXXXX-create-users.js
-
-**Seeders**:
-- backend/seeders/XXXXXX-demo-users.js
-
-**Scripts**:
-- backend/src/scripts/testConnection.js
-
-**Documentation**:
-- docs/DATABASE.md (mise à jour instructions)
+**Fichiers modifiés**:
+- frontend/package.json (downgrade tailwindcss vers v3.x)
 - docs/BRANCH_PROGRESS.md
 
-**Description**: Configuration complète de la base de données avec :
-- Installation de Sequelize CLI
-- Structure de migrations et seeders
-- Migration pour la table users
-- Seeders de test pour le développement
-- Scripts de test de connexion
-- Documentation mise à jour
+**Description**: Correction de l'erreur PostCSS au démarrage du frontend.
+- Désinstallation de TailwindCSS v4 et @tailwindcss/postcss
+- Installation de TailwindCSS v3.x compatible avec React 18
+- Les fichiers de configuration étaient déjà corrects
+- Frontend démarre maintenant sans erreur sur http://localhost:5173
 
 ---
 
 ## Changements Techniques
 
-### Configuration Sequelize CLI
-- Installation de sequelize-cli en dev dependency
-- Fichier .sequelizerc pour personnaliser les chemins
-- Configuration adaptée pour environnements développement/production
-- Support des variables d'environnement pour la connexion
+### Versions
+- **Avant** : tailwindcss v4.x (incompatible avec React 18)
+- **Après** : tailwindcss v3.x (compatible avec React 18)
 
-### Structure des Migrations
-- Dossier backend/migrations/ pour toutes les migrations
-- Naming convention: timestamp-description.js
-- Migration users avec tous les champs nécessaires
-- Support des rollbacks avec méthode down()
-
-### Seeders
-- Dossier backend/seeders/ pour les données de test
-- Seeder utilisateurs avec mots de passe hashés
-- Données de test pour faciliter le développement
-- Possibilité d'annuler les seeders
-
-### Scripts NPM
-- `db:migrate` - Exécuter les migrations
-- `db:migrate:undo` - Annuler la dernière migration
-- `db:seed` - Exécuter les seeders
-- `db:seed:undo` - Annuler les seeders
-- `db:reset` - Reset complet de la base de données
+### Configuration
+- postcss.config.js : Déjà correct (pas de changement nécessaire)
+- tailwind.config.js : Déjà correct (pas de changement nécessaire)
+- index.css : Déjà correct avec les directives @tailwind
 
 ---
 
 ## Problèmes Rencontrés
 
-Aucun pour le moment.
+**Problème** : TailwindCSS v4 installé par défaut lors de `npm create vite`
+**Solution** : Downgrade vers TailwindCSS v3
 
 ---
 
 ## Notes de Développement
 
-- La base de données MySQL doit être créée manuellement avant d'exécuter les migrations
-- Les migrations créent automatiquement les tables avec la bonne structure
-- Les seeders utilisent bcrypt pour hasher les mots de passe de test
-- En production, ne pas exécuter les seeders (données de test uniquement)
-- Utiliser `db:reset` uniquement en développement (détruit toutes les données)
+- TailwindCSS v4 est encore en développement et a des breaking changes
+- TailwindCSS v3 est stable et compatible avec React 18
+- Aucune modification de code nécessaire, seulement changement de version dans package.json
 
 ---
 
 ## Prochaines Actions
 
-1. Installer Sequelize CLI
-2. Configurer les chemins et la connexion
-3. Créer la migration pour users
-4. Créer les seeders de test
-5. Tester la connexion et les migrations
-6. Mettre à jour la documentation
-7. Commiter sur la branche
+1. Commiter la correction
+2. Pousser vers GitHub
+3. Merger vers main
+4. Tester l'application complète (frontend + backend)
 
 ---
 
 ## Checklist avant Commit
 
-- [ ] Sequelize CLI installé
-- [ ] Fichiers de configuration créés
-- [ ] Migration users créée
-- [ ] Seeders créés
-- [ ] Scripts npm configurés
-- [ ] Documentation mise à jour
-- [ ] Tests de connexion effectués
+- [x] TailwindCSS v3 installé
+- [x] Frontend démarre sans erreur
+- [x] Configuration vérifiée
+- [x] Documentation mise à jour
 
 ---
 
 ## Checklist avant Merge vers Main
 
-- [ ] Les migrations s'exécutent sans erreur
-- [ ] Les seeders s'exécutent sans erreur
-- [ ] La connexion à la base de données fonctionne
-- [ ] La documentation est complète
-- [ ] PROJECT_PROGRESS.md est mis à jour
+- [ ] Le frontend fonctionne correctement
 - [ ] Aucun conflit avec main
+- [ ] PROJECT_PROGRESS.md mis à jour
+- [ ] Code testé
 
 ---
 
-**Dernière mise à jour**: 2025-10-22
-**Statut**: Prêt pour commit et test
+**Dernière mise à jour**: 2025-10-23
+**Statut**: Prêt pour commit
