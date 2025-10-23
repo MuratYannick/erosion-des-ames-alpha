@@ -3,7 +3,7 @@
 ## Statut Global
 **Phase**: Initialisation
 **Version**: Alpha 0.1.0
-**Dernière mise à jour**: 2025-10-22
+**Dernière mise à jour**: 2025-10-23
 
 ---
 
@@ -47,7 +47,7 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 ### Phase 3: Configuration de la Base de Données
 **Statut**: Complété
 **Date début**: 2025-10-22
-**Date fin**: 2025-10-22
+**Date fin**: 2025-10-23
 
 #### Tâches
 - [x] Installation de Sequelize CLI
@@ -57,6 +57,7 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 - [x] Test de connexion à la base de données
 - [x] Scripts npm pour gérer les migrations et seeders
 - [x] Test complet du système d'authentification
+- [x] Correction syntaxe Sequelize v6 (Op.or) dans l'inscription
 
 ### Phase 4: Fonctionnalités Core
 **Statut**: À venir
@@ -72,13 +73,15 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 ## Branches Principales
 
 ### main
-**Commits**: 3
-**Dernier commit**: setup(db): configuration complète de la base de données avec migrations et seeders
+**Commits**: 7
+**Dernier commit**: Merge branch 'fix/sequelize-operator-syntax' into main
 **Description**: Branche de production stable
 
 ### Branches de fonctionnalités
 - **feature/auth-system**: Système d'authentification (✓ mergé vers main)
 - **setup/database-config**: Configuration de la base de données (✓ mergé vers main)
+- **fix/tailwindcss-v3**: Correction compatibilité TailwindCSS v3 avec React 18 (✓ mergé vers main)
+- **fix/sequelize-operator-syntax**: Correction syntaxe Sequelize v6 pour opérateur OR (✓ mergé vers main)
 
 ---
 
@@ -113,6 +116,12 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 - Script de test de connexion
 - Système d'authentification testé et fonctionnel
 
+### 2025-10-23: Corrections et Optimisations
+- Correction compatibilité TailwindCSS: downgrade de v4 vers v3 pour React 18
+- Correction syntaxe Sequelize v6: remplacement de $or par Op.or
+- Système d'inscription entièrement fonctionnel
+- Tests validés pour login et register
+
 ---
 
 ## Métriques du Projet
@@ -130,7 +139,9 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 
 ## Problèmes Connus
 
-Aucun pour le moment.
+Aucun pour le moment. Les problèmes suivants ont été résolus:
+- ✓ Erreur PostCSS avec TailwindCSS v4 (résolu avec downgrade vers v3)
+- ✓ Erreur 500 lors de l'inscription (résolu avec syntaxe Sequelize v6)
 
 ---
 
@@ -156,4 +167,4 @@ Ce document est mis à jour uniquement lors des merges vers la branche `main`. P
 
 ---
 
-**Dernière mise à jour**: 2025-10-22
+**Dernière mise à jour**: 2025-10-23
