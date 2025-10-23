@@ -2,32 +2,34 @@
 
 ## Informations de Branche
 
-**Branche actuelle**: fix/tailwindcss-v3
+**Branche actuelle**: fix/sequelize-operator-syntax
 **Branche source**: main
 **Créée le**: 2025-10-23
-**Objectif**: Corriger l'incompatibilité TailwindCSS v4 avec React 18 en revenant à TailwindCSS v3
+**Objectif**: Corriger l'erreur 500 lors de l'inscription (syntaxe Sequelize v6)
 
 ---
 
 ## Contexte
 
-Lors du démarrage du serveur frontend, une erreur PostCSS apparaissait avec TailwindCSS v4 :
+Lors de la validation du formulaire d'inscription sur le frontend, une erreur 500 Internal Server Error se produisait:
 ```
-[postcss] It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin.
-The PostCSS plugin has moved to a separate package...
+:3000/api/auth/register:1 Failed to load resource: the server responded with a status of 500 (Internal Server Error)
 ```
 
-TailwindCSS v4 a des problèmes de compatibilité avec React 18. La solution est de downgrader vers TailwindCSS v3.
+Le login avec les utilisateurs existants (admin, testuser, player1) fonctionnait correctement.
+
+**Cause**: Utilisation de la syntaxe obsolète `$or` de Sequelize v5 au lieu de `Op.or` pour Sequelize v6 dans le contrôleur d'authentification.
 
 ---
 
 ## Tâches de la Branche
 
 ### Correction
-- [x] Désinstaller TailwindCSS v4 et @tailwindcss/postcss
-- [x] Installer TailwindCSS v3.x avec PostCSS et Autoprefixer
-- [x] Vérifier la configuration (postcss.config.js, tailwind.config.js, index.css)
-- [x] Tester le démarrage du frontend
+- [x] Identifier la cause de l'erreur 500
+- [x] Ajouter l'import `const { Op } = require('sequelize')`
+- [x] Remplacer `$or` par `[Op.or]` dans la requête
+- [x] Redémarrer le backend
+- [x] Tester l'inscription avec succès
 
 ### Documentation
 - [x] Mettre à jour BRANCH_PROGRESS.md
@@ -37,45 +39,73 @@ TailwindCSS v4 a des problèmes de compatibilité avec React 18. La solution est
 ## Commits
 
 ### Commit 1 (à venir)
-**Message**: fix(frontend): downgrade TailwindCSS v4 vers v3 pour compatibilité React 18
+**Message**: fix(backend): correction syntaxe Sequelize v6 pour opérateur OR dans l'inscription
 
 **Fichiers modifiés**:
-- frontend/package.json (downgrade tailwindcss vers v3.x)
+- backend/src/controllers/authController.js
 - docs/BRANCH_PROGRESS.md
 
-**Description**: Correction de l'erreur PostCSS au démarrage du frontend.
-- Désinstallation de TailwindCSS v4 et @tailwindcss/postcss
-- Installation de TailwindCSS v3.x compatible avec React 18
-- Les fichiers de configuration étaient déjà corrects
-- Frontend démarre maintenant sans erreur sur http://localhost:5173
+**Description**: Correction de l'erreur 500 lors de l'inscription d'un nouvel utilisateur.
+- Ajout de l'import `const { Op } = require('sequelize')`
+- Changement de `where: { $or: [...] }` vers `where: { [Op.or]: [...] }`
+- L'inscription fonctionne maintenant correctement
+- Test réussi: création d'un utilisateur "newuser" avec succès
 
 ---
 
 ## Changements Techniques
 
-### Versions
-- **Avant** : tailwindcss v4.x (incompatible avec React 18)
-- **Après** : tailwindcss v3.x (compatible avec React 18)
+### Code modifié
+**Fichier**: backend/src/controllers/authController.js
 
-### Configuration
-- postcss.config.js : Déjà correct (pas de changement nécessaire)
-- tailwind.config.js : Déjà correct (pas de changement nécessaire)
-- index.css : Déjà correct avec les directives @tailwind
+**Ligne 4**: Ajout de l'import
+```javascript
+const { Op } = require('sequelize');
+```
+
+**Lignes 29-30**: Changement de syntaxe
+```javascript
+// Avant (Sequelize v5 - obsolète)
+where: { $or: [{ email }, { username }] }
+
+// Après (Sequelize v6 - correct)
+where: { [Op.or]: [{ email }, { username }] }
+```
 
 ---
 
 ## Problèmes Rencontrés
 
-**Problème** : TailwindCSS v4 installé par défaut lors de `npm create vite`
-**Solution** : Downgrade vers TailwindCSS v3
+**Problème**: Erreur 500 lors de l'inscription via l'endpoint POST /api/auth/register
+**Cause**: Syntaxe obsolète `$or` de Sequelize v5 utilisée avec Sequelize v6
+**Solution**: Utilisation de `Op.or` avec la syntaxe computed property `[Op.or]`
+
+---
+
+## Tests Effectués
+
+✓ Test d'inscription via curl:
+```bash
+curl -X POST http://localhost:3000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"newuser","email":"newuser@example.com","password":"password123"}'
+```
+
+**Résultat**: Succès
+- Utilisateur créé avec l'ID 4
+- Token JWT généré correctement
+- Aucune erreur 500
+
+✓ Login existants fonctionnent toujours (admin, testuser, player1)
 
 ---
 
 ## Notes de Développement
 
-- TailwindCSS v4 est encore en développement et a des breaking changes
-- TailwindCSS v3 est stable et compatible avec React 18
-- Aucune modification de code nécessaire, seulement changement de version dans package.json
+- Sequelize v6 a déprécié les opérateurs préfixés par `$` (comme `$or`, `$and`, etc.)
+- Il faut maintenant utiliser `Op.or`, `Op.and` depuis le module `sequelize`
+- La syntaxe `[Op.or]` est une computed property en JavaScript ES6
+- Cette correction n'affecte pas les fonctionnalités existantes (login, getMe)
 
 ---
 
@@ -84,25 +114,27 @@ TailwindCSS v4 a des problèmes de compatibilité avec React 18. La solution est
 1. Commiter la correction
 2. Pousser vers GitHub
 3. Merger vers main
-4. Tester l'application complète (frontend + backend)
+4. Mettre à jour PROJECT_PROGRESS.md
 
 ---
 
 ## Checklist avant Commit
 
-- [x] TailwindCSS v3 installé
-- [x] Frontend démarre sans erreur
-- [x] Configuration vérifiée
+- [x] Fix testé et validé
+- [x] Backend redémarré sans erreur
+- [x] Inscription fonctionne correctement
+- [x] Login existants toujours fonctionnels
 - [x] Documentation mise à jour
 
 ---
 
 ## Checklist avant Merge vers Main
 
-- [ ] Le frontend fonctionne correctement
+- [ ] Code commité sur la branche
+- [ ] Branche poussée vers GitHub
 - [ ] Aucun conflit avec main
-- [ ] PROJECT_PROGRESS.md mis à jour
-- [ ] Code testé
+- [ ] PROJECT_PROGRESS.md prêt pour mise à jour
+- [ ] Tests complets validés
 
 ---
 
