@@ -168,15 +168,252 @@ const Univers = () => {
                 </div>
               )}
 
-              {/* Section Factions et Clans - Placeholder */}
+              {/* Section Factions et Clans */}
               {activeSection === 'factions-clans' && (
                 <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-8 md:p-12 shadow-xl">
-                  <h2 className="text-3xl font-titre-Jeu text-ochre-500 mb-6 text-center">
-                    Les factions et ses clans
+                  <h2 className="text-3xl font-titre-Jeu text-ochre-500 mb-8 text-center">
+                    Les factions et leurs clans
                   </h2>
-                  <p className="font-texte-corps text-city-400 text-center text-lg">
-                    Section à compléter...
-                  </p>
+
+                  {/* Introduction */}
+                  <div className="mb-12 font-texte-corps text-city-300 text-lg leading-relaxed">
+                    <p className="mb-4">
+                      Deux grandes factions se disputent le contrôle des Terres Désolées, chacune organisée en clans
+                      spécialisés. Entre elles, quelques clans neutres tentent de survivre en marge du conflit.
+                    </p>
+                  </div>
+
+                  {/* Les Éclaireurs de l'Aube Nouvelle */}
+                  <div className="mb-12 bg-city-900 border-2 border-nature-800 rounded-lg p-8">
+                    <h3 className="text-2xl font-alternative-1 text-nature-600 mb-4 flex items-center gap-3">
+                      <span className="text-4xl">🌿</span>
+                      Les Éclaireurs de l'Aube Nouvelle
+                    </h3>
+                    <p className="font-texte-corps text-city-300 mb-4 italic">
+                      Avant-poste : L'Oasis des Transformés
+                    </p>
+                    <p className="font-texte-corps text-city-300 mb-6 leading-relaxed">
+                      Pour eux, ils n'ont pas muté, ils ont évolué. Le Grand Cataclysme a été lancé par leur dieu pour
+                      purifier la Terre de l'homme et de sa technologie, responsables de la destruction de la nature.
+                      Ils sont les élus, et tous les non-mutants doivent périr. Leur priorité absolue reste l'éradication
+                      des Veilleurs de l'Ancien Monde.
+                    </p>
+
+                    {/* Ordre Supérieur */}
+                    <div className="mb-6 bg-city-800 border-l-4 border-nature-600 p-6 rounded">
+                      <h4 className="text-xl font-alternative-1 text-nature-500 mb-3">
+                        👁️ Les Prophètes de l'Harmonie (Ordre Supérieur)
+                      </h4>
+                      <p className="font-texte-corps text-city-300 text-sm">
+                        Chef religieux et disciples fanatiques. Ils guident la faction dans sa compréhension de la mutation
+                        comme voie d'évolution, interprètent les signes du monde nouveau et maintiennent la cohésion spirituelle.
+                      </p>
+                    </div>
+
+                    {/* Clans secondaires */}
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="bg-city-800 border border-nature-900 p-4 rounded">
+                        <h5 className="font-alternative-1 text-nature-600 mb-2 text-sm font-bold">
+                          🌱 La Caste des Symbiotes
+                        </h5>
+                        <p className="font-texte-corps text-city-400 text-xs">
+                          <span className="text-nature-500 font-semibold">Rôle :</span> Ressources & Adaptation. Exploitent
+                          les ressources du monde muté, développent des techniques de culture et construisent les structures
+                          de l'avant-poste.
+                        </p>
+                      </div>
+
+                      <div className="bg-city-800 border border-nature-900 p-4 rounded">
+                        <h5 className="font-alternative-1 text-nature-600 mb-2 text-sm font-bold">
+                          👁️ La Caste des Sensitifs
+                        </h5>
+                        <p className="font-texte-corps text-city-400 text-xs">
+                          <span className="text-nature-500 font-semibold">Rôle :</span> Exploration & Perception. Sens aiguisés,
+                          ils servent d'éclaireurs et de guides infaillibles, détectent les ressources cachées et traquent
+                          proies et menaces.
+                        </p>
+                      </div>
+
+                      <div className="bg-city-800 border border-nature-900 p-4 rounded">
+                        <h5 className="font-alternative-1 text-nature-600 mb-2 text-sm font-bold">
+                          🧪 Les Forgerons de Chair
+                        </h5>
+                        <p className="font-texte-corps text-city-400 text-xs">
+                          <span className="text-nature-500 font-semibold">Rôle :</span> Guérison & Évolution. Médecins et
+                          biologistes utilisant les propriétés de la faune et flore mutées pour soigner, empoisonner ou nourrir.
+                        </p>
+                      </div>
+
+                      <div className="bg-city-800 border border-nature-900 p-4 rounded">
+                        <h5 className="font-alternative-1 text-nature-600 mb-2 text-sm font-bold">
+                          ⚔️ Les Sentinelles du Chaos
+                        </h5>
+                        <p className="font-texte-corps text-city-400 text-xs">
+                          <span className="text-nature-500 font-semibold">Rôle :</span> Défense & Confrontation. Capacités
+                          physiques exacerbées, ils assurent la défense de l'avant-poste et mènent les affrontements.
+                        </p>
+                      </div>
+
+                      <div className="bg-city-800 border border-nature-900 p-4 rounded md:col-span-2">
+                        <h5 className="font-alternative-1 text-nature-600 mb-2 text-sm font-bold">
+                          📜 Les Scrutateurs
+                        </h5>
+                        <p className="font-texte-corps text-city-400 text-xs">
+                          <span className="text-nature-500 font-semibold">Rôle :</span> Connaissance & Mystères du passé.
+                          Fouillent les ruines de l'ancien monde pour comprendre sa chute et empêcher que des technologies
+                          tombent aux mains ennemies.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Les Veilleurs de l'Ancien Monde */}
+                  <div className="mb-12 bg-city-900 border-2 border-blue-900 rounded-lg p-8">
+                    <h3 className="text-2xl font-alternative-1 text-blue-400 mb-4 flex items-center gap-3">
+                      <span className="text-4xl">🏛️</span>
+                      Les Veilleurs de l'Ancien Monde
+                    </h3>
+                    <p className="font-texte-corps text-city-300 mb-4 italic">
+                      Avant-poste : La Citadelle du Renouveau
+                    </p>
+                    <p className="font-texte-corps text-city-300 mb-6 leading-relaxed">
+                      Ils ne jurent que par les anciens savoirs oubliés : la technologie. C'est le seul moyen de reprendre
+                      le dessus sur cette nature dégénérée devenue hostile. Pour eux, les mutants font partie de cette
+                      dégénérescence et doivent tous être exterminés avant qu'ils ne contaminent les rares humains encore
+                      purs qu'ils sont.
+                    </p>
+
+                    {/* Clan Supérieur */}
+                    <div className="mb-6 bg-city-800 border-l-4 border-blue-500 p-6 rounded">
+                      <h4 className="text-xl font-alternative-1 text-blue-400 mb-3">
+                        👑 Les Élus d'Avant (Clan Supérieur)
+                      </h4>
+                      <p className="font-texte-corps text-city-300 text-sm">
+                        Chef de l'avant-poste et ses conseillers. Dépositaires de l'héritage de l'Ancien Monde, ils prennent
+                        les décisions stratégiques, définissent les lois et maintiennent la "pureté" idéologique et génétique.
+                      </p>
+                    </div>
+
+                    {/* Clans secondaires */}
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="bg-city-800 border border-blue-950 p-4 rounded">
+                        <h5 className="font-alternative-1 text-blue-400 mb-2 text-sm font-bold">
+                          🛡️ Le Clan des Sentinelles
+                        </h5>
+                        <p className="font-texte-corps text-city-400 text-xs">
+                          <span className="text-blue-300 font-semibold">Rôle :</span> Défense & Ordre. Bras armé de la faction,
+                          ils assurent la défense, patrouillent les alentours et maintiennent l'ordre interne.
+                        </p>
+                      </div>
+
+                      <div className="bg-city-800 border border-blue-950 p-4 rounded">
+                        <h5 className="font-alternative-1 text-blue-400 mb-2 text-sm font-bold">
+                          🔧 Le Clan des Pourvoyeurs
+                        </h5>
+                        <p className="font-texte-corps text-city-400 text-xs">
+                          <span className="text-blue-300 font-semibold">Rôle :</span> Ressources & Production. Garants de la
+                          survie matérielle, ils gèrent la collecte des ressources et l'entretien des infrastructures vitales.
+                        </p>
+                      </div>
+
+                      <div className="bg-city-800 border border-blue-950 p-4 rounded">
+                        <h5 className="font-alternative-1 text-blue-400 mb-2 text-sm font-bold">
+                          📚 Le Clan des Archivistes
+                        </h5>
+                        <p className="font-texte-corps text-city-400 text-xs">
+                          <span className="text-blue-300 font-semibold">Rôle :</span> Savoir & Tradition. Gardiens de l'héritage,
+                          ils préservent et étudient les reliques et transmettent les connaissances aux jeunes générations.
+                        </p>
+                      </div>
+
+                      <div className="bg-city-800 border border-blue-950 p-4 rounded">
+                        <h5 className="font-alternative-1 text-blue-400 mb-2 text-sm font-bold">
+                          🧬 Le Clan des Purificateurs
+                        </h5>
+                        <p className="font-texte-corps text-city-400 text-xs">
+                          <span className="text-blue-300 font-semibold">Rôle :</span> Santé & Hygiène. Veillent à la "pureté"
+                          biologique, fournissent les soins et surveillent tout signe de mutation ou contamination.
+                        </p>
+                      </div>
+
+                      <div className="bg-city-800 border border-blue-950 p-4 rounded md:col-span-2">
+                        <h5 className="font-alternative-1 text-blue-400 mb-2 text-sm font-bold">
+                          🗺️ Le Clan des Explorateurs
+                        </h5>
+                        <p className="font-texte-corps text-city-400 text-xs">
+                          <span className="text-blue-300 font-semibold">Rôle :</span> Reconnaissance & Découverte. Cartographes
+                          et éclaireurs, ils s'aventurent au-delà des murs pour trouver ressources et artefacts.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Clans Neutres */}
+                  <div className="bg-city-900 border-2 border-neutral rounded-lg p-8">
+                    <h3 className="text-2xl font-alternative-1 text-neutral mb-6 flex items-center gap-3">
+                      <span className="text-4xl">⚖️</span>
+                      Les Clans Neutres
+                    </h3>
+                    <p className="font-texte-corps text-city-300 mb-6 leading-relaxed">
+                      En marge du conflit, quelques clans indépendants refusent de prendre parti. Certains cherchent la paix,
+                      d'autres la survie par tous les moyens. Ils ne sont pas jouables durant l'Alpha mais peuvent être
+                      rencontrés au cours des aventures.
+                    </p>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                      <div className="bg-city-800 border border-neutral-dark p-3 rounded">
+                        <h5 className="font-alternative-1 text-neutral text-sm mb-1">📖 Les Veilleurs des Ruines</h5>
+                        <p className="font-texte-corps text-city-400 text-xs">Cartographient et préservent les connaissances de l'Ancien Monde.</p>
+                      </div>
+
+                      <div className="bg-city-800 border border-neutral-dark p-3 rounded">
+                        <h5 className="font-alternative-1 text-neutral text-sm mb-1">🌑 Le Peuple des Ombres</h5>
+                        <p className="font-texte-corps text-city-400 text-xs">Mutants furtifs, chasseurs et espions discrets.</p>
+                      </div>
+
+                      <div className="bg-city-800 border border-neutral-dark p-3 rounded">
+                        <h5 className="font-alternative-1 text-neutral text-sm mb-1">🌬️ Les Vagabonds du Vent</h5>
+                        <p className="font-texte-corps text-city-400 text-xs">Marchands ambulants et messagers nomades.</p>
+                      </div>
+
+                      <div className="bg-city-800 border border-neutral-dark p-3 rounded">
+                        <h5 className="font-alternative-1 text-neutral text-sm mb-1">🔨 Les Artisans du Réemploi</h5>
+                        <p className="font-texte-corps text-city-400 text-xs">Récupérateurs et réparateurs d'équipements.</p>
+                      </div>
+
+                      <div className="bg-city-800 border border-neutral-dark p-3 rounded">
+                        <h5 className="font-alternative-1 text-neutral text-sm mb-1">⚔️ Les Frères de la Terre Brûlée</h5>
+                        <p className="font-texte-corps text-city-400 text-xs">Mercenaires endurcis des zones dangereuses.</p>
+                      </div>
+
+                      <div className="bg-city-800 border border-neutral-dark p-3 rounded">
+                        <h5 className="font-alternative-1 text-neutral text-sm mb-1">🕊️ Le Sanctuaire du Silence</h5>
+                        <p className="font-texte-corps text-city-400 text-xs">Pacifistes vivant en autosuffisance et harmonie.</p>
+                      </div>
+
+                      <div className="bg-city-800 border border-neutral-dark p-3 rounded">
+                        <h5 className="font-alternative-1 text-neutral text-sm mb-1">👂 Les Collecteurs de Chuchotis</h5>
+                        <p className="font-texte-corps text-city-400 text-xs">Espions et marchands d'informations.</p>
+                      </div>
+
+                      <div className="bg-city-800 border border-neutral-dark p-3 rounded">
+                        <h5 className="font-alternative-1 text-neutral text-sm mb-1">🌾 Les Semeurs d'Espoir</h5>
+                        <p className="font-texte-corps text-city-400 text-xs">Idéalistes cherchant à reverdir le monde.</p>
+                      </div>
+
+                      <div className="bg-city-800 border border-blood p-3 rounded">
+                        <h5 className="font-alternative-1 text-blood text-sm mb-1">🐺 Les Loups Solitaires</h5>
+                        <p className="font-texte-corps text-city-400 text-xs">Pillards opportunistes vivant par la force.</p>
+                      </div>
+
+                      <div className="bg-city-800 border border-blood p-3 rounded md:col-span-2 lg:col-span-3">
+                        <h5 className="font-alternative-1 text-blood text-sm mb-1">💀 Les Dévoreurs d'Âmes</h5>
+                        <p className="font-texte-corps text-city-400 text-xs">
+                          Fanatiques mutants bannis, cannibales redoutés chassés par toutes les factions.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
 
