@@ -90,55 +90,79 @@ const Univers = () => {
               {activeSection === 'mise-en-situation' && (
                 <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-8 md:p-12 shadow-xl">
                   <h2 className="text-3xl font-titre-Jeu text-ochre-500 mb-8 text-center">
-                    Mise en situation
+                    Quelque part, au milieu d'un petit village en ruine...
                   </h2>
 
-                  {/* Image */}
-                  <div className="mb-8">
+                  {/* Partie 1 du texte */}
+                  <div className="space-y-6 font-texte-corps text-city-300 leading-relaxed mb-8">
+                    <p className="text-lg">
+                      Dans un petit campement caché dans les ruines de ce qui fut un ancien village paisible,
+                      quelques survivants d'un clan neutre se terrent autour d'un feu de camps. Tandis que les
+                      flammes dansaient au son des braises qui crépitaient, les anciens du clan se rassemblèrent,
+                      leurs visages burinés illuminés par la lumière vacillante. Leurs voix étaient douces et basses,
+                      mais leurs paroles portaient un air de sagesse ancestrale et un sentiment d'appréhension.
+                    </p>
+                    <p className="text-lg">
+                      « Le monde était autrefois un lieu de beauté et d'harmonie », commencèrent-ils. « Pourtant,
+                      à cette époque reculée, l'humanité elle-même a semé le chaos... » Les jeunes auditeurs se
+                      penchèrent en avant, intrigués par l'histoire, mais méfiants face à ses thèmes sombres.
+                    </p>
+                  </div>
+
+                  {/* Image avec filtre sepia */}
+                  <div className="mb-8 flex justify-center">
                     <img
                       src="/portalIlustrations/campFire.png"
                       alt="Feu de camp dans les ruines"
-                      className="w-full rounded-lg shadow-2xl"
+                      className="w-3/4 md:w-2/3 rounded-lg shadow-2xl sepia-[65%] hover:sepia-0 transition-all duration-[2500ms]"
                     />
                   </div>
 
-                  {/* Texte d'introduction */}
+                  {/* Partie 2 du texte */}
                   <div className="space-y-6 font-texte-corps text-city-300 leading-relaxed">
                     <p className="text-lg">
-                      L'année exacte a été oubliée. Les calendriers, comme tant d'autres vestiges
-                      de l'ancien monde, n'ont plus de sens. Ce que les survivants savent avec certitude,
-                      c'est que <span className="text-ochre-500 font-bold">le Grand Cataclysme</span> a tout détruit.
+                      Les anciens poursuivirent leur récit :
                     </p>
-
                     <p className="text-lg">
-                      Un jour, sans avertissement, la civilisation s'est effondrée. Les villes se sont vidées,
-                      les gouvernements ont disparu, et la nature a reconquis ce que l'humanité lui avait pris.
-                      Les technologies complexes de l'ancien monde sont tombées dans l'oubli. Les survivants,
-                      organisés en clans tribaux, ont régressé à un stade pré-technologique.
+                      « Les tensions montèrent alors que la planète luttait contre la surpopulation et le changement
+                      climatique. Pour tenter de contrôler cette crise naissante, les gouvernements du monde entier
+                      sombrèrent dans l'autoritarisme, promettant la sécurité en échange de l'abandon des libertés. »
+                      L'atmosphère devint tendue tandis que les anciens décrivaient la transformation de la société.
+                      « Les rivalités entre nations devinrent meurtrières à mesure que les ressources se raréfiaient.
+                      Désespérés, certains pays cherchèrent à maintenir leur pouvoir en réprimant la dissidence. »
                     </p>
-
                     <p className="text-lg">
-                      Mais le Cataclysme a laissé une autre marque : certains humains ont subi une légère
-                      mutation, leur peau prenant une teinte <span className="text-nature-600 font-bold">légèrement grisâtre</span>.
-                      Rien de plus. Pas de pouvoirs mystiques, pas de capacités surhumaines. Juste une différence
-                      physique mineure... qui a suffi à diviser à jamais l'humanité.
+                      Leurs voix prirent un ton solennel tandis qu'ils évoquaient la brutalité de l'homme contre
+                      l'homme. « Mais une nuit, une obscurité noire s'installa sur le pays. Un épais brouillard
+                      sembla s'infiltrer dans les âmes des hommes comme des femmes. La folie commença. Dans une
+                      soif de sang sans bornes, l'humanité se retourna contre elle-même. » En racontant cette
+                      guerre fratricide, leurs yeux transpercèrent le cœur de ceux qui les écoutaient, les emplissant
+                      d'un profond sentiment d'effroi.
                     </p>
-
-                    <div className="border-l-4 border-ochre-600 pl-6 my-8 bg-city-900 p-6 rounded">
-                      <p className="text-xl italic text-ochre-400">
-                        "Nous sommes tous des survivants du même cataclysme. Pourtant, nous nous entretuons
-                        pour une nuance de peau. La folie de l'ancien monde n'a pas disparu avec lui."
-                      </p>
-                      <p className="text-sm text-city-500 mt-4">
-                        - Carnet d'un voyageur neutre, Date inconnue
-                      </p>
-                    </div>
-
                     <p className="text-lg">
-                      Aujourd'hui, deux grandes factions s'affrontent dans un conflit sans merci, chacune
-                      organisée en clans internes unis par une vision radicale de l'avenir. Entre foi en la
-                      nature et culte de la technologie perdue, chaque survivant doit choisir son camp ou
-                      vivre en marge, condamné à errer dans un monde qui ne pardonne aucune faiblesse.
+                      « Après cela, il devint évident que le monde tel que nous le connaissions avait disparu.
+                      Mutations et difformités apparurent dans la nature, tout comme chez les humains, jetant le
+                      doute sur l'humanité de certains survivants. » Leurs voix s'alourdirent de tristesse tandis
+                      qu'ils évoquaient les fractures de la société humaine. « Deux factions renaquirent de leurs
+                      cendres : les mutants, nés du chaos, et les non-mutants, s'accrochant à leur prétendue pureté.
+                      Ils se retournèrent les uns contre les autres, chacun accusant l'autre d'être responsable de
+                      la fin du monde. »
+                    </p>
+                    <p className="text-lg">
+                      En racontant ces paroles amères, il était clair que les anciens n'éprouvaient d'affection ni
+                      pour l'un ni pour l'autre camp, ne voyant que la folie de l'humanité. « Le monde ne put jamais
+                      guérir », poursuivirent-ils, leurs voix prenant un ton plein de désespoir. « Les mutants et
+                      les non-mutants n'apprirent à coexister, qu'à de rares occasions. » Mais leur message n'était
+                      pas entièrement porteur d'espoir. Les anciens évoquèrent les cicatrices qui subsistaient :
+                      « Bien que nous, les clans neutres, ayons trouvé une paix fragile, nos blessures sont profondes.
+                      Et à chaque génération, elles semblent se creuser davantage. » Avec ces derniers mots solennels,
+                      le feu s'éteignit et les anciens se turent. Les jeunes auditeurs restèrent assis, méditant sur
+                      l'histoire racontée et ses implications pour leur propre avenir.
+                    </p>
+                    <p className="text-lg">
+                      À mesure que la nuit avançait, on pouvait les entendre chuchoter entre eux, discuter de la
+                      nature de leur monde et se demander s'il y aurait un jour une fin au cycle de destruction
+                      et de renouveau.
                     </p>
                   </div>
                 </div>
