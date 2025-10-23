@@ -25,29 +25,41 @@ const ErrorPage = ({
 
   const errorColor = getErrorColor();
 
-  // Icône en fonction du type d'erreur
-  const getErrorIcon = () => {
+  // Image de fond en fonction du type d'erreur
+  const getBackgroundImage = () => {
     switch (errorType) {
       case 'client':
-        return '🔒'; // Erreur client/accès
+        return '/errorIllustrations/error4xx.png';
       case 'server':
-        return '⚠️'; // Erreur serveur
+        return '/errorIllustrations/error5xx.png';
       case 'network':
-        return '📡'; // Erreur réseau
+        return '/errorIllustrations/errorNetwork.png';
       default:
-        return '❌';
+        return '/errorIllustrations/error4xx.png';
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-city-950 via-city-900 to-city-950 flex items-center justify-center px-4">
-      <div className="max-w-2xl w-full">
-        {/* Conteneur principal */}
-        <div className={`bg-city-800 border-2 border-${errorColor}-600 rounded-lg p-8 md:p-12 shadow-2xl`}>
+      <div className="max-w-4xl w-full">
+        {/* Conteneur principal avec image de fond */}
+        <div
+          className={`relative bg-city-800 border-2 border-${errorColor}-600 rounded-lg p-8 md:p-12 shadow-2xl overflow-hidden`}
+          style={{
+            backgroundImage: `url(${getBackgroundImage()})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        >
+          {/* Overlay semi-transparent pour garder la lisibilité */}
+          <div className="absolute inset-0 bg-city-900 bg-opacity-60 rounded-lg"></div>
 
-          {/* Icône et Code d'erreur */}
+          {/* Contenu par-dessus l'overlay */}
+          <div className="relative z-10">
+
+          {/* Code d'erreur */}
           <div className="text-center mb-8">
-            <div className="text-8xl mb-4">{getErrorIcon()}</div>
             {errorCode && (
               <h1 className={`text-6xl md:text-8xl font-titre-Jeu text-${errorColor}-500 mb-4 drop-shadow-[0_0_20px_rgba(249,115,22,0.6)]`}>
                 {errorCode}
@@ -93,6 +105,7 @@ const ErrorPage = ({
             <p className="font-texte-corps text-city-500 text-sm text-center italic">
               "Dans les Terres Désolées, même les chemins numériques peuvent mener nulle part..."
             </p>
+          </div>
           </div>
         </div>
       </div>

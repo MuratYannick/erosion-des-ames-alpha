@@ -47,7 +47,7 @@ const Reglement = () => {
         <div
           className="relative bg-cover bg-center bg-no-repeat py-20 md:py-32"
           style={{
-            backgroundImage: 'url(/portalIlustrations/banner.png)',
+            backgroundImage: 'url(/portalIllustrations/banner.png)',
           }}
         >
           {/* Overlay sombre pour améliorer la lisibilité */}

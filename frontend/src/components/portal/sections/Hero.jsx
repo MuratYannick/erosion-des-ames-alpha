@@ -10,7 +10,7 @@ const Hero = () => {
       <div
         className="relative bg-cover bg-center bg-no-repeat py-32 md:py-48"
         style={{
-          backgroundImage: 'url(/portalIlustrations/banner.png)',
+          backgroundImage: 'url(/portalIllustrations/banner.png)',
         }}
       >
         {/* Overlay sombre pour améliorer la lisibilité */}
