@@ -2,8 +2,8 @@
 
 ## Statut Global
 **Phase**: Développement Interface Portail
-**Version**: Alpha 0.2.0
-**Dernière mise à jour**: 2025-10-23
+**Version**: Alpha 0.2.1
+**Dernière mise à jour**: 2025-10-24
 
 ---
 
@@ -85,13 +85,36 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 - Règlement détaillé sera sur le forum avec validation CGU
 - Section Features à revoir ultérieurement
 
-### Phase 5: Fonctionnalités Core du Jeu
+### Phase 5: Pages d'Erreurs Personnalisées
+**Statut**: Complété
+**Date début**: 2025-10-24
+**Date fin**: 2025-10-24
+**Branche**: feature/error-pages (✓ mergé vers main)
+
+#### Tâches
+- [x] Création du composant ErrorPage générique réutilisable
+- [x] Intégration des images de fond (error4xx.png, error5xx.png, errorNetwork.png)
+- [x] Création des 6 pages d'erreur (401, 403, 404, 500, 503, Network)
+- [x] Configuration des routes d'erreur dans App.jsx
+- [x] Création du gestionnaire d'erreurs global (errorHandler.js)
+- [x] Intégration de la gestion d'erreurs dans api.js
+- [x] Ajout de try/catch dans Login.jsx et Register.jsx
+- [x] Correction orthographe: portalIlustrations → portalIllustrations
+- [x] Mise à jour de tous les chemins d'images
+
+#### Notes
+- Codes couleurs thématiques: ochre (4xx), blood (5xx), neutral (network)
+- Messages contextualisés style "Terres Désolées"
+- Séparation des erreurs majeures (5xx, network) et erreurs de validation (4xx)
+- Route catch-all (*) pour rediriger vers 404
+
+### Phase 6: Fonctionnalités Core du Jeu
 **Statut**: À venir
 
-### Phase 6: Tests et Optimisation
+### Phase 7: Tests et Optimisation
 **Statut**: À venir
 
-### Phase 7: Déploiement Alpha
+### Phase 8: Déploiement Alpha
 **Statut**: À venir
 
 ---
@@ -99,8 +122,8 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 ## Branches Principales
 
 ### main
-**Commits**: 21 (7 initiaux + 13 de feature/portail-interface + 1 merge)
-**Dernier commit**: 67bda4f - Merge branch 'feature/portail-interface' into main
+**Commits**: 26 (21 précédents + 4 de feature/error-pages + 1 merge)
+**Dernier commit**: Merge branch 'feature/error-pages' into main
 **Description**: Branche de production stable
 
 ### Branches de fonctionnalités (mergées)
@@ -109,6 +132,7 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 - **fix/tailwindcss-v3**: Correction compatibilité TailwindCSS v3 avec React 18 (✓ mergé vers main)
 - **fix/sequelize-operator-syntax**: Correction syntaxe Sequelize v6 pour opérateur OR (✓ mergé vers main)
 - **feature/portail-interface**: Interface complète du portail (✓ mergé vers main le 2025-10-23)
+- **feature/error-pages**: Pages d'erreurs personnalisées (✓ mergé vers main le 2025-10-24)
 
 ---
 
@@ -159,16 +183,26 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 - **Visuels**: Bannière banner.png, image campFire.png avec filtre sepia interactif
 - **Navigation par sections**: Page Univers avec 4 sections (Mise en situation complète + 3 placeholders)
 
+### 2025-10-24: Pages d'Erreurs Personnalisées (feature/error-pages)
+- **Composant générique ErrorPage**: Props pour code, titre, message, type, boutons
+- **6 pages d'erreur**: 401 (Unauthorized), 403 (Forbidden), 404 (Not Found), 500 (Server Error), 503 (Service Unavailable), Network Error
+- **Images de fond**: error4xx.png, error5xx.png, errorNetwork.png avec overlay 60% pour meilleure lisibilité
+- **Codes couleurs**: ochre (erreurs client 4xx), blood (erreurs serveur 5xx), neutral (erreurs réseau)
+- **Gestionnaire global**: errorHandler.js avec fonction handleError() pour redirection automatique
+- **Intégration API**: Modification de api.js pour inclure HTTP status dans les erreurs
+- **Try/catch**: Ajout gestion erreurs dans Login.jsx et Register.jsx avec séparation erreurs majeures/validation
+- **Correction orthographe**: portalIlustrations → portalIllustrations + mise à jour chemins
+
 ---
 
 ## Métriques du Projet
 
 ### Code
 - **Lignes de code backend**: ~800 lignes
-- **Lignes de code frontend**: ~2500+ lignes
-- **Composants React**: 13
-- **Pages**: 5 (Login, Register, Portal, Intro, Univers, Règlement)
-- **Fichiers**: 40+ fichiers de code
+- **Lignes de code frontend**: ~2750+ lignes
+- **Composants React**: 14
+- **Pages**: 11 (Login, Register, Portal, Intro, Univers, Règlement + 6 pages d'erreur)
+- **Fichiers**: 48+ fichiers de code
 - **Couverture de tests**: 0% (tests à venir)
 
 ### Documentation
@@ -176,9 +210,9 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 - **Complétude**: 60% (documentation technique à jour, docs utilisateur à venir)
 
 ### Commits & Branches
-- **Total commits sur main**: 21
+- **Total commits sur main**: 26
 - **Branches actives**: 0
-- **Branches mergées**: 5 (auth-system, database-config, tailwindcss-v3, sequelize-operator-syntax, portail-interface)
+- **Branches mergées**: 6 (auth-system, database-config, tailwindcss-v3, sequelize-operator-syntax, portail-interface, error-pages)
 
 ---
 
@@ -193,9 +227,9 @@ Aucun pour le moment. Les problèmes suivants ont été résolus:
 ## Prochaines Étapes
 
 ### Court terme
-1. Push vers GitHub (branches main et feature/portail-interface)
-2. Compléter la section "Survivre dans ce monde cruel" de la page Univers
-3. Compléter la section "Le bestiaire" de la page Univers
+1. Compléter la section "Survivre dans ce monde cruel" de la page Univers
+2. Compléter la section "Le bestiaire" de la page Univers
+3. Étendre la gestion d'erreurs à tous les appels API du projet
 
 ### Moyen terme (prochaines branches)
 1. Développer l'interface du Forum
@@ -224,4 +258,4 @@ Ce document est mis à jour uniquement lors des merges vers la branche `main`. P
 
 ---
 
-**Dernière mise à jour**: 2025-10-23
+**Dernière mise à jour**: 2025-10-24
