@@ -60,9 +60,10 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 - [x] Correction syntaxe Sequelize v6 (Op.or) dans l'inscription
 
 ### Phase 4: Interface du Portail
-**Statut**: En cours
+**Statut**: Complété
 **Date début**: 2025-10-23
-**Branche**: feature/portail-interface
+**Date fin**: 2025-10-23
+**Branche**: feature/portail-interface (✓ mergé vers main)
 
 #### Tâches
 - [x] Configuration du thème post-apocalyptique (TailwindCSS)
@@ -75,10 +76,14 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 - [x] Page Intro avec bannière
 - [x] Page Univers avec navigation par sections
 - [x] Section "Mise en situation" complète avec texte et image interactive
+- [x] Section "Factions et clans" complète (2 factions + 10 clans neutres)
 - [x] Page Règlement avec bannière
-- [ ] Compléter les sections de la page Univers (Factions et clans, Survivre, Bestiaire)
-- [ ] Définir le contenu de la page Règlement
-- [ ] Section Features à revoir
+- [x] Documentation complète
+
+#### Notes
+- Sections "Survivre" et "Bestiaire" reportées (en cours d'élaboration)
+- Règlement détaillé sera sur le forum avec validation CGU
+- Section Features à revoir ultérieurement
 
 ### Phase 5: Fonctionnalités Core du Jeu
 **Statut**: À venir
@@ -94,21 +99,16 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 ## Branches Principales
 
 ### main
-**Commits**: 7
-**Dernier commit**: Merge branch 'fix/sequelize-operator-syntax' into main
+**Commits**: 21 (7 initiaux + 13 de feature/portail-interface + 1 merge)
+**Dernier commit**: 67bda4f - Merge branch 'feature/portail-interface' into main
 **Description**: Branche de production stable
-
-### feature/portail-interface (en cours)
-**Commits**: 8
-**Dernier commit**: refactor(frontend): réduction taille image campFire
-**Description**: Développement de l'interface du portail avec thème post-apocalyptique
-**Statut**: Prête pour push GitHub et merge vers main
 
 ### Branches de fonctionnalités (mergées)
 - **feature/auth-system**: Système d'authentification (✓ mergé vers main)
 - **setup/database-config**: Configuration de la base de données (✓ mergé vers main)
 - **fix/tailwindcss-v3**: Correction compatibilité TailwindCSS v3 avec React 18 (✓ mergé vers main)
 - **fix/sequelize-operator-syntax**: Correction syntaxe Sequelize v6 pour opérateur OR (✓ mergé vers main)
+- **feature/portail-interface**: Interface complète du portail (✓ mergé vers main le 2025-10-23)
 
 ---
 
@@ -176,9 +176,9 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 - **Complétude**: 60% (documentation technique à jour, docs utilisateur à venir)
 
 ### Commits & Branches
-- **Total commits**: 15 (7 sur main + 8 sur feature/portail-interface)
-- **Branches actives**: 1 (feature/portail-interface)
-- **Branches mergées**: 4
+- **Total commits sur main**: 21
+- **Branches actives**: 0
+- **Branches mergées**: 5 (auth-system, database-config, tailwindcss-v3, sequelize-operator-syntax, portail-interface)
 
 ---
 
@@ -192,12 +192,10 @@ Aucun pour le moment. Les problèmes suivants ont été résolus:
 
 ## Prochaines Étapes
 
-### Court terme (branche feature/portail-interface)
-1. Compléter la section "Les factions et ses clans" de la page Univers
+### Court terme
+1. Push vers GitHub (branches main et feature/portail-interface)
 2. Compléter la section "Survivre dans ce monde cruel" de la page Univers
 3. Compléter la section "Le bestiaire" de la page Univers
-4. Définir et implémenter le contenu de la page Règlement
-5. Push vers GitHub et merge vers main
 
 ### Moyen terme (prochaines branches)
 1. Développer l'interface du Forum
