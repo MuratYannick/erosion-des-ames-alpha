@@ -74,7 +74,7 @@ Cette branche se concentre sur la mise en place de l'interface du portail avec l
 - frontend/src/pages/Login.jsx (thème appliqué)
 - frontend/src/pages/Register.jsx (thème appliqué)
 
-### Commit 2 (à venir)
+### Commit 2
 **Message**: feat(frontend): navigation améliorée avec header fixe et sidebar coulissant
 
 **Fichiers créés**:
@@ -89,9 +89,71 @@ Cette branche se concentre sur la mise en place de l'interface du portail avec l
 - frontend/src/components/portal/layout/PortalLayout.jsx (sidebar + padding)
 - frontend/src/App.jsx (nouvelles routes)
 
+### Commit 3
+**Message**: feat(frontend): ajout banner.png aux sections Hero et pages avec overlay
+
+**Changements**:
+- Hero.jsx: Restructuration avec banner.png en background
+- Titre/sous-titre sur l'image avec overlay sombre
+- Description, boutons CTA et badge Alpha déplacés sous la bannière
+- Factions.jsx: Refonte complète pour jeu de rôle sur table
+- Suppression des références MMORPG et pouvoirs surnaturels
+- Factions renommées avec philosophies détaillées
+- Clans Neutres ajoutés (non jouables en Alpha)
+
+### Commit 4
+**Message**: refactor(frontend): ajustements visuels section Factions
+
+**Changements**:
+- Suppression de la section "atouts" (factions équivalentes)
+- Bordures assombries (nature-800/900, blue-900/950)
+- Amélioration lisibilité philosophie (text-city-200)
+- Letter spacing ajouté (tracking-wide/wider)
+- Footer mis à jour (Portail au lieu d'Accueil)
+
+### Commit 5
+**Message**: feat(frontend): ajout des bannières aux pages Intro, Univers et Règlement
+
+**Changements**:
+- Intro.jsx: Bannière avec sous-titre "Bienvenue dans l'univers dévasté d'Érosion des Âmes"
+- Univers.jsx: Bannière avec sous-titre "Le lore d'un monde post-apocalyptique"
+- Reglement.jsx: Bannière avec sous-titre "Les règles pour jouer ensemble"
+- Structure cohérente avec overlay et drop-shadows
+- Contenu adapté au contexte JdR (suppression éléments surnaturels)
+
+### Commit 6
+**Message**: feat(frontend): restructuration page Univers avec navigation par sections
+
+**Changements**:
+- Navigation interactive avec 4 sections: Mise en situation, Factions et clans, Survivre, Bestiaire
+- Section "Mise en situation" complète avec texte original
+- Image campFire.png positionnée entre les deux parties du texte
+- Sections placeholder pour complétion ultérieure
+- Utilisation de useState pour gestion de l'affichage
+
+### Commit 7
+**Message**: feat(frontend): ajout texte original "Mise en situation" avec effets image
+
+**Changements**:
+- Titre: "Quelque part, au milieu d'un petit village en ruine..."
+- Texte complet récupéré de l'ancien projet (récit des anciens)
+- Image campFire.png avec filtre sepia(65%)
+- Animation hover: sepia(0%) sur transition de 2.5s
+- Structure: Partie 1 → Image → Partie 2
+
+### Commit 8
+**Message**: refactor(frontend): réduction taille image campFire
+
+**Changements**:
+- Mobile: w-2/3 (au lieu de w-3/4)
+- Desktop: w-1/2 (au lieu de w-2/3)
+- Conservation des effets sepia avec transition
+
 ---
 
-## Changements Techniques - Commit 2
+## Changements Techniques Détaillés
+
+### Commit 2 - Navigation Améliorée
 
 ### Header Fixe
 **Fichier**: frontend/src/components/portal/navigation/Header.jsx
@@ -122,10 +184,11 @@ Cette branche se concentre sur la mise en place de l'interface du portail avec l
 - Citation des Archives des Survivants
 
 **Univers.jsx** - Page de lore
-- 6 sections de lore (Érosion, Zones Érodées, Ruines, Créatures, Technologie, Pouvoirs)
-- Description du monde actuel
-- Présentation des Colonies Éveillées et Citadelles Pures
-- Grille responsive avec icônes
+- Navigation par sections (Mise en situation, Factions et clans, Survivre, Bestiaire)
+- Section "Mise en situation" complète avec récit des anciens
+- Image campFire.png interactive avec filtre sepia
+- Sections placeholder pour complétion future
+- Gestion d'état avec useState pour navigation
 
 **Reglement.jsx** - Règlement et CGU
 - 4 sections de règles (Respect, Communication, Gameplay, Sanctions)
@@ -193,11 +256,33 @@ PortalLayout
 
 ---
 
-## Prochaines Actions
+## État Actuel de la Branche
 
-1. Commiter les modifications de navigation
-2. Pousser vers GitHub
-3. Continuer avec les modifications des autres composants du portail
+### ✅ Complété
+- [x] Thème post-apocalyptique intégré
+- [x] Navigation principale avec Header fixe
+- [x] Sidebar de navigation secondaire avec bouton de fermeture
+- [x] Page Hero avec banner.png en background
+- [x] Section Factions adaptée au JdR sur table (sans pouvoirs surnaturels)
+- [x] Page Intro avec bannière
+- [x] Page Univers restructurée avec navigation par sections
+- [x] Section "Mise en situation" complète avec texte original et image interactive
+- [x] Page Règlement avec bannière
+- [x] Footer mis à jour
+
+### 🔄 En cours / À compléter
+- [ ] Page Univers - Section "Les factions et ses clans" (placeholder)
+- [ ] Page Univers - Section "Survivre dans ce monde cruel" (placeholder)
+- [ ] Page Univers - Section "Le bestiaire" (placeholder)
+- [ ] Page Règlement - Contenu à définir
+- [ ] Section Features de la page Portal (à revoir plus tard)
+
+### 📋 Prochaines Actions
+1. ✅ Tous les commits effectués (8 commits au total)
+2. Compléter les sections manquantes de la page Univers
+3. Définir le contenu de la page Règlement
+4. Pousser vers GitHub
+5. Merger dans main après validation
 
 ---
 
@@ -214,7 +299,23 @@ PortalLayout
 - L'état d'ouverture/fermeture est géré localement dans le composant
 - Les transitions CSS sont optimisées pour la performance
 
+### Points d'Attention
+- La page Règlement garde sa structure actuelle et n'a pas été modifiée
+- Les sections placeholder de la page Univers sont prêtes à recevoir du contenu
+- L'image campFire.png utilise des filtres CSS modernes (sepia) compatibles avec tous les navigateurs récents
+- Le state management de la navigation par sections est local au composant Univers
+
+---
+
+## Statistiques de la Branche
+
+**Total de commits**: 8
+**Fichiers créés**: 13
+**Fichiers modifiés**: 15+
+**Lignes de code ajoutées**: ~2000+
+**Durée de développement**: Session continue
+
 ---
 
 **Dernière mise à jour**: 2025-10-23
-**Statut**: Navigation améliorée - Prêt pour commit
+**Statut**: Interface portail complète - 8 commits effectués - Prêt pour push GitHub
