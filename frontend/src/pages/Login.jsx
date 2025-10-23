@@ -42,79 +42,92 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-b from-city-950 via-city-900 to-city-950 flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="text-center text-3xl font-bold text-white">
+        <div className="text-center">
+          <Link to="/" className="inline-block mb-4">
+            <h1 className="text-4xl font-titre-Jeu text-ochre-500 hover:text-ochre-400 transition-colors">
+              Érosion des Âmes
+            </h1>
+          </Link>
+          <h2 className="text-2xl font-alternative-1 text-city-300">
             Connexion
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-400">
-            Érosion des Âmes - Alpha
+          <p className="mt-2 text-sm font-texte-corps text-city-500">
+            Accédez à votre compte
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded">
-              {error}
-            </div>
-          )}
+        <div className="bg-city-800 border-2 border-ochre-600 rounded-lg shadow-xl p-8">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            {error && (
+              <div className="bg-blood-900 border-2 border-blood-700 text-blood-300 px-4 py-3 rounded font-texte-corps text-sm">
+                {error}
+              </div>
+            )}
 
-          <div className="space-y-4">
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="email" className="block text-sm font-texte-corps text-city-300 mb-2">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="block w-full px-4 py-3 bg-city-900 border-2 border-city-700 rounded text-city-200 placeholder-city-600 font-texte-corps focus:outline-none focus:ring-2 focus:ring-ochre-500 focus:border-ochre-500 transition-colors"
+                  placeholder="votre@email.com"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-texte-corps text-city-300 mb-2">
+                  Mot de passe
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="block w-full px-4 py-3 bg-city-900 border-2 border-city-700 rounded text-city-200 placeholder-city-600 font-texte-corps focus:outline-none focus:ring-2 focus:ring-ochre-500 focus:border-ochre-500 transition-colors"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300">
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="votre@email.com"
-              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 px-4 bg-ochre-600 hover:bg-ochre-500 text-white font-texte-corps text-lg rounded transition-all transform hover:scale-105 shadow-lg hover:shadow-ochre-600/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                {loading ? 'Connexion...' : 'Se connecter'}
+              </button>
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300">
-                Mot de passe
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={formData.password}
-                onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="••••••••"
-              />
+            <div className="text-center pt-4 border-t border-city-700">
+              <p className="text-sm font-texte-corps text-city-400">
+                Pas encore de compte ?{' '}
+                <Link to="/register" className="text-ochre-500 hover:text-ochre-400 font-bold transition-colors">
+                  S'inscrire
+                </Link>
+              </p>
             </div>
-          </div>
+          </form>
+        </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Connexion...' : 'Se connecter'}
-            </button>
-          </div>
-
-          <div className="text-center">
-            <p className="text-sm text-gray-400">
-              Pas encore de compte ?{' '}
-              <Link to="/register" className="text-blue-500 hover:text-blue-400">
-                S'inscrire
-              </Link>
-            </p>
-          </div>
-        </form>
+        <div className="text-center">
+          <Link to="/" className="text-sm font-texte-corps text-city-500 hover:text-ochre-500 transition-colors">
+            ← Retour à l'accueil
+          </Link>
+        </div>
       </div>
     </div>
   );

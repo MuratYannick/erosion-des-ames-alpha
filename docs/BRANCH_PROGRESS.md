@@ -2,141 +2,215 @@
 
 ## Informations de Branche
 
-**Branche actuelle**: fix/sequelize-operator-syntax
+**Branche actuelle**: feature/portail-interface
 **Branche source**: main
 **Créée le**: 2025-10-23
-**Objectif**: Corriger l'erreur 500 lors de l'inscription (syntaxe Sequelize v6)
+**Objectif**: Mise en place de l'interface du portail avec le thème post-apocalyptique
 
 ---
 
 ## Contexte
 
-Lors de la validation du formulaire d'inscription sur le frontend, une erreur 500 Internal Server Error se produisait:
-```
-:3000/api/auth/register:1 Failed to load resource: the server responded with a status of 500 (Internal Server Error)
-```
+Le site sera composé de 3 grandes parties distinctes:
+1. **Le Portail** - Page d'accueil et présentation
+2. **Le Forum** - Communication entre joueurs
+3. **Le Jeu** - Interface de jeu
 
-Le login avec les utilisateurs existants (admin, testuser, player1) fonctionnait correctement.
-
-**Cause**: Utilisation de la syntaxe obsolète `$or` de Sequelize v5 au lieu de `Op.or` pour Sequelize v6 dans le contrôleur d'authentification.
+Cette branche se concentre sur la mise en place de l'interface du portail avec le thème visuel post-apocalyptique de l'ancien projet.
 
 ---
 
 ## Tâches de la Branche
 
-### Correction
-- [x] Identifier la cause de l'erreur 500
-- [x] Ajouter l'import `const { Op } = require('sequelize')`
-- [x] Remplacer `$or` par `[Op.or]` dans la requête
-- [x] Redémarrer le backend
-- [x] Tester l'inscription avec succès
+### Configuration du Thème
+- [x] Récupérer le thème de l'ancien projet (tailwind.config.js)
+- [x] Appliquer les couleurs personnalisées au nouveau projet
+- [x] Configurer les polices Google Fonts (Metal Mania, Permanent Marker, Bangers, Creepster)
+- [x] Mettre à jour index.html avec les liens Google Fonts
 
-### Documentation
-- [x] Mettre à jour BRANCH_PROGRESS.md
+### Architecture du Portail
+- [ ] Planifier la structure des composants
+- [ ] Créer le layout principal du portail
+- [ ] Créer le composant Header/Navigation
+- [ ] Créer le composant Hero/Bannière principale
+- [ ] Créer les sections de présentation
+- [ ] Créer le composant Footer
+
+### Intégration
+- [ ] Intégrer le portail dans le routing
+- [ ] Tester le responsive design
+- [ ] Valider l'accessibilité
 
 ---
 
 ## Commits
 
 ### Commit 1 (à venir)
-**Message**: fix(backend): correction syntaxe Sequelize v6 pour opérateur OR dans l'inscription
+**Message**: feat(frontend): configuration du thème post-apocalyptique
 
 **Fichiers modifiés**:
-- backend/src/controllers/authController.js
+- frontend/tailwind.config.js
+- frontend/index.html
 - docs/BRANCH_PROGRESS.md
 
-**Description**: Correction de l'erreur 500 lors de l'inscription d'un nouvel utilisateur.
-- Ajout de l'import `const { Op } = require('sequelize')`
-- Changement de `where: { $or: [...] }` vers `where: { [Op.or]: [...] }`
-- L'inscription fonctionne maintenant correctement
-- Test réussi: création d'un utilisateur "newuser" avec succès
+**Description**: Configuration complète du thème visuel post-apocalyptique
+- Ajout des palettes de couleurs (city, ochre, nature, mutant, pure, blood, neutral)
+- Configuration des polices Google Fonts (Metal Mania, Permanent Marker, Bangers, Creepster)
+- Mise à jour du titre et de la langue du document HTML
+
+---
+
+## Thème Post-Apocalyptique
+
+### Palettes de Couleurs
+
+**city** (Gris urbains)
+- Usage: Arrière-plans, éléments neutres, interface sombre
+- Nuances: Du gris très clair (#f8f9fa) au noir profond (#010409)
+
+**ochre** (Ocre/Rouille)
+- Usage: Éléments d'accentuation, boutons, alertes
+- Nuances: Sable pâle (#fffbeb) à rouille profonde (#431405)
+
+**nature** (Verts)
+- Usage: Éléments positifs, nature, végétation
+- Nuances: Vert clair (#f0fdf4) à vert très foncé (#021208)
+
+**mutant** (Faction Éveillés)
+- light: #4ade80
+- default: #22c55e
+- dark: #16a34a
+
+**pure** (Faction Purs)
+- light: #60a5fa
+- default: #3b82f6
+- dark: #2563eb
+
+**blood** (Rouge sang)
+- Usage: Dangers, erreurs, éléments critiques
+- Nuances: Rose pâle (#fef2f2) à rouge très foncé (#1a0000)
+
+**neutral** (Neutres)
+- light: #a8a29e
+- default: #78716c
+- dark: #57534e
+
+### Polices
+
+**Metal Mania** (font-titre-Jeu)
+- Usage: Titres principaux, logo, éléments majeurs
+
+**Permanent Marker** (font-texte-corps)
+- Usage: Texte de contenu, paragraphes
+
+**Bangers** (font-alternative-1)
+- Usage: Titres secondaires, emphase
+
+**Creepster** (font-alternative-2)
+- Usage: Éléments spéciaux, ambiance horror
+
+---
+
+## Architecture Prévue du Portail
+
+### Structure des Pages
+```
+/                   -> Page d'accueil du portail
+/login              -> Page de connexion (existante)
+/register           -> Page d'inscription (existante)
+/forum              -> Section forum (à venir)
+/game               -> Interface de jeu (à venir)
+```
+
+### Composants du Portail
+
+**Layout**
+- `PortalLayout.jsx` - Layout principal avec header et footer
+
+**Navigation**
+- `Header.jsx` - En-tête avec logo et navigation
+- `Navigation.jsx` - Menu de navigation
+- `UserMenu.jsx` - Menu utilisateur (connecté/déconnecté)
+
+**Sections**
+- `Hero.jsx` - Bannière principale avec titre et accroche
+- `About.jsx` - Présentation du jeu
+- `Factions.jsx` - Présentation des factions (Éveillés vs Purs)
+- `Features.jsx` - Fonctionnalités du jeu
+- `CallToAction.jsx` - Appel à l'action (inscription/connexion)
+
+**Footer**
+- `Footer.jsx` - Pied de page avec liens et informations
 
 ---
 
 ## Changements Techniques
 
-### Code modifié
-**Fichier**: backend/src/controllers/authController.js
+### Fichiers modifiés
 
-**Ligne 4**: Ajout de l'import
-```javascript
-const { Op } = require('sequelize');
-```
+**frontend/tailwind.config.js**
+- Ajout de 7 palettes de couleurs personnalisées
+- Configuration de 4 polices Google Fonts
+- Conservation des polices système par défaut
 
-**Lignes 29-30**: Changement de syntaxe
-```javascript
-// Avant (Sequelize v5 - obsolète)
-where: { $or: [{ email }, { username }] }
-
-// Après (Sequelize v6 - correct)
-where: { [Op.or]: [{ email }, { username }] }
-```
-
----
-
-## Problèmes Rencontrés
-
-**Problème**: Erreur 500 lors de l'inscription via l'endpoint POST /api/auth/register
-**Cause**: Syntaxe obsolète `$or` de Sequelize v5 utilisée avec Sequelize v6
-**Solution**: Utilisation de `Op.or` avec la syntaxe computed property `[Op.or]`
-
----
-
-## Tests Effectués
-
-✓ Test d'inscription via curl:
-```bash
-curl -X POST http://localhost:3000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"username":"newuser","email":"newuser@example.com","password":"password123"}'
-```
-
-**Résultat**: Succès
-- Utilisateur créé avec l'ID 4
-- Token JWT généré correctement
-- Aucune erreur 500
-
-✓ Login existants fonctionnent toujours (admin, testuser, player1)
+**frontend/index.html**
+- Changement de langue: `en` -> `fr`
+- Ajout des liens Google Fonts avec preconnect
+- Mise à jour du titre: "frontend" -> "Érosion des Âmes - Alpha"
 
 ---
 
 ## Notes de Développement
 
-- Sequelize v6 a déprécié les opérateurs préfixés par `$` (comme `$or`, `$and`, etc.)
-- Il faut maintenant utiliser `Op.or`, `Op.and` depuis le module `sequelize`
-- La syntaxe `[Op.or]` est une computed property en JavaScript ES6
-- Cette correction n'affecte pas les fonctionnalités existantes (login, getMe)
+### Décisions de Design
+- Privilégier les tons sombres (city-900, city-950) pour l'arrière-plan
+- Utiliser ochre pour les accents et éléments interactifs
+- Réserver blood pour les alertes et dangers
+- Les polices alternatives (Bangers, Creepster) doivent être utilisées avec parcimonie
+
+### Responsive Design
+- Mobile-first approach
+- Breakpoints Tailwind standard (sm, md, lg, xl, 2xl)
+- Navigation adaptative (hamburger menu sur mobile)
+
+### Performance
+- Polices chargées avec `display=swap` pour éviter FOIT (Flash Of Invisible Text)
+- Utilisation de `preconnect` pour optimiser le chargement des fonts
 
 ---
 
 ## Prochaines Actions
 
-1. Commiter la correction
-2. Pousser vers GitHub
-3. Merger vers main
-4. Mettre à jour PROJECT_PROGRESS.md
+1. Créer la structure de dossiers pour les composants du portail
+2. Implémenter le PortalLayout avec Header et Footer
+3. Créer la section Hero avec le titre du jeu
+4. Ajouter les sections About, Factions, Features
+5. Intégrer le routing pour le portail
+6. Tester et valider le responsive
 
 ---
 
 ## Checklist avant Commit
 
-- [x] Fix testé et validé
-- [x] Backend redémarré sans erreur
-- [x] Inscription fonctionne correctement
-- [x] Login existants toujours fonctionnels
+- [x] Thème Tailwind configuré
+- [x] Google Fonts ajoutées
 - [x] Documentation mise à jour
+- [ ] Composants du portail créés
+- [ ] Tests visuels validés
 
 ---
 
 ## Checklist avant Merge vers Main
 
+- [ ] Tous les composants du portail implémentés
+- [ ] Responsive design validé sur mobile/tablette/desktop
+- [ ] Navigation fonctionnelle
+- [ ] Integration avec l'authentification testée
 - [ ] Code commité sur la branche
 - [ ] Branche poussée vers GitHub
-- [ ] Aucun conflit avec main
 - [ ] PROJECT_PROGRESS.md prêt pour mise à jour
-- [ ] Tests complets validés
 
 ---
 
 **Dernière mise à jour**: 2025-10-23
-**Statut**: Prêt pour commit
+**Statut**: Configuration du thème terminée - Prêt pour développement des composants
