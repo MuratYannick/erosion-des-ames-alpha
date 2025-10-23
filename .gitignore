@@ -33,6 +33,7 @@ logs/
 # IDE - Claude
 .claude/
 *.claude
+.claude.md
 
 # OS
 .DS_Store
