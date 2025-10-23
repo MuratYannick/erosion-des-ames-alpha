@@ -146,13 +146,18 @@ ErrorPage (composant générique)
 - [x] Composant ErrorPage générique
 - [x] 6 pages d'erreur personnalisées
 - [x] Routing complet dans App.jsx
+- [x] Installation prop-types
+- [x] Images de fond pour pages d'erreur
+- [x] Correction orthographe portalIllustrations
+- [x] Gestionnaire d'erreurs global (errorHandler.js)
+- [x] Intégration gestion erreurs dans Login/Register
 - [x] Tests de compilation
 
 ### 📋 Prochaines Actions
-1. ✅ Commit effectué
-2. Documentation de la branche (en cours)
+1. ✅ 3 commits effectués
+2. Tests utilisateur
 3. Push vers GitHub
-4. Merge dans main
+4. Merge dans main (APRÈS validation utilisateur)
 5. Push main vers GitHub
 
 ---
