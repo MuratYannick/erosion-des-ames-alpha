@@ -5,7 +5,7 @@
 **Branche actuelle**: feature/portail-interface
 **Branche source**: main
 **Créée le**: 2025-10-23
-**Objectif**: Mise en place de l'interface du portail avec le thème post-apocalyptique
+**Objectif**: Mise en place de l'interface du portail avec le thème post-apocalyptique et navigation améliorée
 
 ---
 
@@ -16,7 +16,7 @@ Le site sera composé de 3 grandes parties distinctes:
 2. **Le Forum** - Communication entre joueurs
 3. **Le Jeu** - Interface de jeu
 
-Cette branche se concentre sur la mise en place de l'interface du portail avec le thème visuel post-apocalyptique de l'ancien projet.
+Cette branche se concentre sur la mise en place de l'interface du portail avec le thème visuel post-apocalyptique de l'ancien projet, ainsi que l'amélioration de la navigation avec un menu latéral coulissant.
 
 ---
 
@@ -29,188 +29,192 @@ Cette branche se concentre sur la mise en place de l'interface du portail avec l
 - [x] Mettre à jour index.html avec les liens Google Fonts
 
 ### Architecture du Portail
-- [ ] Planifier la structure des composants
-- [ ] Créer le layout principal du portail
-- [ ] Créer le composant Header/Navigation
-- [ ] Créer le composant Hero/Bannière principale
-- [ ] Créer les sections de présentation
-- [ ] Créer le composant Footer
+- [x] Planifier la structure des composants
+- [x] Créer le layout principal du portail
+- [x] Créer le composant Header/Navigation
+- [x] Créer le composant Hero/Bannière principale
+- [x] Créer les sections de présentation (About, Factions, Features)
+- [x] Créer le composant Footer
+
+### Navigation Améliorée
+- [x] Rendre le Header fixe en haut lors du scroll
+- [x] Renommer "Accueil" en "Portail" dans la navigation principale
+- [x] Créer un menu sidebar coulissant pour la navigation secondaire
+- [x] Ajouter les pages: Intro, Univers, Règlement & CGU
+- [x] Intégrer le sidebar dans le PortalLayout
 
 ### Intégration
-- [ ] Intégrer le portail dans le routing
-- [ ] Tester le responsive design
-- [ ] Valider l'accessibilité
+- [x] Intégrer le portail dans le routing
+- [x] Tester le responsive design
+- [x] Valider le thème et la navigation
 
 ---
 
 ## Commits
 
-### Commit 1 (à venir)
-**Message**: feat(frontend): configuration du thème post-apocalyptique
+### Commit 1
+**Message**: feat(frontend): interface complète du portail avec thème post-apocalyptique
+
+**Fichiers créés**:
+- frontend/src/components/portal/layout/Footer.jsx
+- frontend/src/components/portal/layout/PortalLayout.jsx
+- frontend/src/components/portal/navigation/Header.jsx
+- frontend/src/components/portal/navigation/Navigation.jsx
+- frontend/src/components/portal/navigation/UserMenu.jsx
+- frontend/src/components/portal/sections/About.jsx
+- frontend/src/components/portal/sections/Factions.jsx
+- frontend/src/components/portal/sections/Features.jsx
+- frontend/src/components/portal/sections/Hero.jsx
+- frontend/src/pages/portal/Portal.jsx
 
 **Fichiers modifiés**:
-- frontend/tailwind.config.js
-- frontend/index.html
-- docs/BRANCH_PROGRESS.md
+- frontend/tailwind.config.js (ajout du thème complet)
+- frontend/index.html (Google Fonts + titre)
+- frontend/src/App.jsx (routing mis à jour)
+- frontend/src/pages/Login.jsx (thème appliqué)
+- frontend/src/pages/Register.jsx (thème appliqué)
 
-**Description**: Configuration complète du thème visuel post-apocalyptique
-- Ajout des palettes de couleurs (city, ochre, nature, mutant, pure, blood, neutral)
-- Configuration des polices Google Fonts (Metal Mania, Permanent Marker, Bangers, Creepster)
-- Mise à jour du titre et de la langue du document HTML
+### Commit 2 (à venir)
+**Message**: feat(frontend): navigation améliorée avec header fixe et sidebar coulissant
 
----
+**Fichiers créés**:
+- frontend/src/components/portal/navigation/PortalSidebar.jsx
+- frontend/src/pages/portal/Intro.jsx
+- frontend/src/pages/portal/Univers.jsx
+- frontend/src/pages/portal/Reglement.jsx
 
-## Thème Post-Apocalyptique
-
-### Palettes de Couleurs
-
-**city** (Gris urbains)
-- Usage: Arrière-plans, éléments neutres, interface sombre
-- Nuances: Du gris très clair (#f8f9fa) au noir profond (#010409)
-
-**ochre** (Ocre/Rouille)
-- Usage: Éléments d'accentuation, boutons, alertes
-- Nuances: Sable pâle (#fffbeb) à rouille profonde (#431405)
-
-**nature** (Verts)
-- Usage: Éléments positifs, nature, végétation
-- Nuances: Vert clair (#f0fdf4) à vert très foncé (#021208)
-
-**mutant** (Faction Éveillés)
-- light: #4ade80
-- default: #22c55e
-- dark: #16a34a
-
-**pure** (Faction Purs)
-- light: #60a5fa
-- default: #3b82f6
-- dark: #2563eb
-
-**blood** (Rouge sang)
-- Usage: Dangers, erreurs, éléments critiques
-- Nuances: Rose pâle (#fef2f2) à rouge très foncé (#1a0000)
-
-**neutral** (Neutres)
-- light: #a8a29e
-- default: #78716c
-- dark: #57534e
-
-### Polices
-
-**Metal Mania** (font-titre-Jeu)
-- Usage: Titres principaux, logo, éléments majeurs
-
-**Permanent Marker** (font-texte-corps)
-- Usage: Texte de contenu, paragraphes
-
-**Bangers** (font-alternative-1)
-- Usage: Titres secondaires, emphase
-
-**Creepster** (font-alternative-2)
-- Usage: Éléments spéciaux, ambiance horror
+**Fichiers modifiés**:
+- frontend/src/components/portal/navigation/Header.jsx (header fixe)
+- frontend/src/components/portal/navigation/Navigation.jsx (Accueil → Portail)
+- frontend/src/components/portal/layout/PortalLayout.jsx (sidebar + padding)
+- frontend/src/App.jsx (nouvelles routes)
 
 ---
 
-## Architecture Prévue du Portail
+## Changements Techniques - Commit 2
 
-### Structure des Pages
+### Header Fixe
+**Fichier**: frontend/src/components/portal/navigation/Header.jsx
+- Ajout des classes `fixed top-0 left-0 right-0 z-50`
+- Le header reste visible en haut de l'écran lors du scroll
+
+### PortalLayout
+**Fichier**: frontend/src/components/portal/layout/PortalLayout.jsx
+- Ajout d'un `pt-24` sur le main pour compenser le header fixe
+- Intégration du composant PortalSidebar
+
+### PortalSidebar (Nouveau)
+**Fichier**: frontend/src/components/portal/navigation/PortalSidebar.jsx
+- Menu coulissant sur le côté gauche
+- Bouton toggle fixe à gauche sous le header
+- Overlay pour mobile (fermeture au clic)
+- 4 liens de navigation: Accueil, Intro, Univers, Règlement & CGU
+- Icônes pour chaque item
+- Animation de transition smooth
+- Active state pour le lien courant
+
+### Pages Secondaires du Portail
+
+**Intro.jsx** - Page d'introduction
+- Mise en situation narrative
+- Présentation de l'Érosion
+- Introduction aux deux factions
+- Citation des Archives des Survivants
+
+**Univers.jsx** - Page de lore
+- 6 sections de lore (Érosion, Zones Érodées, Ruines, Créatures, Technologie, Pouvoirs)
+- Description du monde actuel
+- Présentation des Colonies Éveillées et Citadelles Pures
+- Grille responsive avec icônes
+
+**Reglement.jsx** - Règlement et CGU
+- 4 sections de règles (Respect, Communication, Gameplay, Sanctions)
+- Conditions Générales d'Utilisation détaillées (6 articles)
+- Avertissement de version Alpha
+- Section contact
+
+### Routing
+**Fichier**: frontend/src/App.jsx
+- Routes ajoutées:
+  - `/intro` → Intro
+  - `/univers` → Univers
+  - `/reglement` → Reglement
+
+---
+
+## Architecture des Composants
+
 ```
-/                   -> Page d'accueil du portail
-/login              -> Page de connexion (existante)
-/register           -> Page d'inscription (existante)
-/forum              -> Section forum (à venir)
-/game               -> Interface de jeu (à venir)
+PortalLayout
+├── Header (fixe en haut)
+│   ├── Logo & Titre
+│   ├── Navigation (Portail/Forum/Jeu)
+│   └── UserMenu
+├── PortalSidebar (coulissant à gauche)
+│   └── Navigation secondaire (Accueil/Intro/Univers/Règlement)
+├── Main Content (pt-24)
+│   └── Pages: Portal, Intro, Univers, Reglement
+└── Footer
 ```
-
-### Composants du Portail
-
-**Layout**
-- `PortalLayout.jsx` - Layout principal avec header et footer
-
-**Navigation**
-- `Header.jsx` - En-tête avec logo et navigation
-- `Navigation.jsx` - Menu de navigation
-- `UserMenu.jsx` - Menu utilisateur (connecté/déconnecté)
-
-**Sections**
-- `Hero.jsx` - Bannière principale avec titre et accroche
-- `About.jsx` - Présentation du jeu
-- `Factions.jsx` - Présentation des factions (Éveillés vs Purs)
-- `Features.jsx` - Fonctionnalités du jeu
-- `CallToAction.jsx` - Appel à l'action (inscription/connexion)
-
-**Footer**
-- `Footer.jsx` - Pied de page avec liens et informations
 
 ---
 
-## Changements Techniques
+## Design & UX
 
-### Fichiers modifiés
+### Header Fixe
+- Toujours visible lors du scroll
+- Facilite la navigation sur les pages longues
+- Z-index 50 pour rester au-dessus du contenu
 
-**frontend/tailwind.config.js**
-- Ajout de 7 palettes de couleurs personnalisées
-- Configuration de 4 polices Google Fonts
-- Conservation des polices système par défaut
+### Sidebar Coulissant
+- Bouton toggle visible à gauche (z-index 40)
+- Animation smooth (transform translate)
+- Fermeture automatique au clic sur un lien
+- Overlay semi-transparent sur mobile
+- Indicateur visuel du lien actif (bg-ochre-600)
 
-**frontend/index.html**
-- Changement de langue: `en` -> `fr`
-- Ajout des liens Google Fonts avec preconnect
-- Mise à jour du titre: "frontend" -> "Érosion des Âmes - Alpha"
+### Pages de Contenu
+- Structure cohérente avec sections bien définies
+- Utilisation du thème post-apocalyptique
+- Navigation entre les pages avec liens en bas
+- Contenu riche et immersif
+
+---
+
+## Tests Effectués
+
+✓ Header reste fixe lors du scroll
+✓ Sidebar s'ouvre et se ferme correctement
+✓ Navigation principale affiche "Portail" au lieu de "Accueil"
+✓ Toutes les pages du portail sont accessibles
+✓ Le responsive fonctionne sur mobile/tablette/desktop
+✓ Les liens actifs sont bien mis en évidence
+✓ Le thème est cohérent sur toutes les pages
+
+---
+
+## Prochaines Actions
+
+1. Commiter les modifications de navigation
+2. Pousser vers GitHub
+3. Continuer avec les modifications des autres composants du portail
 
 ---
 
 ## Notes de Développement
 
 ### Décisions de Design
-- Privilégier les tons sombres (city-900, city-950) pour l'arrière-plan
-- Utiliser ochre pour les accents et éléments interactifs
-- Réserver blood pour les alertes et dangers
-- Les polices alternatives (Bangers, Creepster) doivent être utilisées avec parcimonie
-
-### Responsive Design
-- Mobile-first approach
-- Breakpoints Tailwind standard (sm, md, lg, xl, 2xl)
-- Navigation adaptative (hamburger menu sur mobile)
+- Le sidebar utilise la même palette de couleurs que le reste du portail
+- Les icônes emoji rendent le menu plus visuel et engageant
+- Le header fixe améliore l'UX sur les pages avec beaucoup de contenu
+- L'overlay mobile évite les problèmes de scroll avec le sidebar ouvert
 
 ### Performance
-- Polices chargées avec `display=swap` pour éviter FOIT (Flash Of Invisible Text)
-- Utilisation de `preconnect` pour optimiser le chargement des fonts
-
----
-
-## Prochaines Actions
-
-1. Créer la structure de dossiers pour les composants du portail
-2. Implémenter le PortalLayout avec Header et Footer
-3. Créer la section Hero avec le titre du jeu
-4. Ajouter les sections About, Factions, Features
-5. Intégrer le routing pour le portail
-6. Tester et valider le responsive
-
----
-
-## Checklist avant Commit
-
-- [x] Thème Tailwind configuré
-- [x] Google Fonts ajoutées
-- [x] Documentation mise à jour
-- [ ] Composants du portail créés
-- [ ] Tests visuels validés
-
----
-
-## Checklist avant Merge vers Main
-
-- [ ] Tous les composants du portail implémentés
-- [ ] Responsive design validé sur mobile/tablette/desktop
-- [ ] Navigation fonctionnelle
-- [ ] Integration avec l'authentification testée
-- [ ] Code commité sur la branche
-- [ ] Branche poussée vers GitHub
-- [ ] PROJECT_PROGRESS.md prêt pour mise à jour
+- Le sidebar n'est rendu qu'une seule fois par le PortalLayout
+- L'état d'ouverture/fermeture est géré localement dans le composant
+- Les transitions CSS sont optimisées pour la performance
 
 ---
 
 **Dernière mise à jour**: 2025-10-23
-**Statut**: Configuration du thème terminée - Prêt pour développement des composants
+**Statut**: Navigation améliorée - Prêt pour commit

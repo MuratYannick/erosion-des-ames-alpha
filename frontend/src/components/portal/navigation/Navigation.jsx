@@ -4,7 +4,7 @@ const Navigation = ({ mobile = false }) => {
   const location = useLocation();
 
   const navItems = [
-    { name: 'Accueil', path: '/' },
+    { name: 'Portail', path: '/' },
     { name: 'Forum', path: '/forum' },
     { name: 'Jeu', path: '/game' },
   ];
