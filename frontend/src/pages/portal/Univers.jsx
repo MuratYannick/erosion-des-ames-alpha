@@ -1,48 +1,29 @@
+import { useState } from 'react';
 import PortalLayout from '../../components/portal/layout/PortalLayout';
 
 const Univers = () => {
-  const loreItems = [
+  const [activeSection, setActiveSection] = useState('mise-en-situation');
+
+  const navigationItems = [
     {
-      title: 'L\'Érosion',
-      icon: '⚡',
-      color: 'ochre',
-      content:
-        'L\'événement cataclysmique qui a transformé le monde. Une vague d\'énergie mystérieuse qui a érodé non seulement la matière, mais aussi les âmes elles-mêmes. Son origine reste un mystère que certains cherchent encore à percer.',
+      id: 'mise-en-situation',
+      title: 'Mise en situation',
+      icon: '🔥',
     },
     {
-      title: 'Les Zones Érodées',
-      icon: '🌪️',
-      color: 'blood',
-      content:
-        'Des zones où l\'Érosion est encore active. Le temps et l\'espace y sont distordus, les lois de la physique deviennent imprévisibles. Dangereuses mais riches en ressources rares, elles attirent les plus audacieux.',
+      id: 'factions-clans',
+      title: 'Les factions et ses clans',
+      icon: '⚔️',
     },
     {
-      title: 'Les Ruines',
-      icon: '🏚️',
-      color: 'neutral',
-      content:
-        'Les vestiges des anciennes villes. Certaines sont devenues des refuges pour les survivants, d\'autres sont hantées par des créatures mutantes. Chaque ruine cache des secrets de l\'ancien monde.',
+      id: 'survivre',
+      title: 'Survivre dans ce monde cruel',
+      icon: '🛡️',
     },
     {
-      title: 'Les Créatures',
-      icon: '👾',
-      color: 'nature',
-      content:
-        'L\'Érosion a transformé la faune terrestre. Des bêtes mutées rôdent dans les zones abandonnées. Certaines sont devenues plus intelligentes, d\'autres plus féroces. La nature a repris ses droits... différemment.',
-    },
-    {
-      title: 'La Technologie Pré-Érosion',
-      icon: '⚙️',
-      color: 'pure',
-      content:
-        'Les reliques de l\'ancien monde. Les Purs cherchent à préserver et comprendre cette technologie, tandis que les Éveillés la considèrent comme obsolète. Pourtant, elle reste puissante entre de bonnes mains.',
-    },
-    {
-      title: 'Les Pouvoirs Psioniques',
-      icon: '🧠',
-      color: 'mutant',
-      content:
-        'Les capacités développées par les Éveillés. Télékinésie, manipulation de l\'énergie, sens augmentés... Chaque Éveillé manifeste des pouvoirs uniques, mais tous puisent dans l\'essence même de l\'Érosion.',
+      id: 'bestiaire',
+      title: 'Le bestiaire',
+      icon: '🐺',
     },
   ];
 
@@ -78,102 +59,142 @@ const Univers = () => {
         <div className="bg-gradient-to-b from-city-900 via-city-950 to-city-900 py-16 md:py-24">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-            {/* Introduction */}
-            <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-8 mb-12 shadow-xl">
-              <p className="font-texte-corps text-city-300 text-lg leading-relaxed text-center">
-                Plongez dans le lore d'<span className="text-ochre-500 font-bold">Érosion des Âmes</span>,
-                un monde post-apocalyptique où l'humanité lutte pour sa survie entre mutation et
-                préservation, dans les ruines d'une civilisation disparue.
-              </p>
-            </div>
-
-            {/* Grille des éléments de Lore */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {loreItems.map((item, index) => (
-                <div
-                  key={index}
-                  className={`bg-city-800 border-2 border-${item.color} rounded-lg p-6 hover:bg-city-750 transition-all transform hover:scale-105 hover:shadow-xl hover:shadow-${item.color}/30`}
-                >
-                  <div className="text-5xl mb-4 text-center">{item.icon}</div>
-                  <h3 className={`text-xl font-alternative-1 text-${item.color} text-center mb-4`}>
-                    {item.title}
-                  </h3>
-                  <p className="font-texte-corps text-city-300 text-sm leading-relaxed">
-                    {item.content}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Section détaillée */}
-            <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-8 md:p-12 shadow-xl">
-              <h2 className="text-3xl font-titre-Jeu text-ochre-500 mb-6 text-center">
-                Le Monde d'Aujourd'hui
-              </h2>
-
-              <div className="space-y-6 font-texte-corps text-city-300 leading-relaxed">
-                <p className="text-lg">
-                  Les grandes métropoles ne sont plus que des coquilles vides, des squelettes
-                  de béton et d'acier envahis par la végétation mutante. Entre ces ruines,
-                  des communautés de survivants se sont formées, chacune avec sa propre vision
-                  de l'avenir.
+              {/* Introduction */}
+              <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-8 mb-12 shadow-xl">
+                <p className="font-texte-corps text-city-300 text-lg leading-relaxed text-center">
+                  Plongez dans le lore d'<span className="text-ochre-500 font-bold">Érosion des Âmes</span>,
+                  un monde post-apocalyptique où l'humanité lutte pour sa survie entre mutation et
+                  préservation, dans les ruines d'une civilisation disparue.
                 </p>
-
-                <div className="grid md:grid-cols-2 gap-6 my-8">
-                  <div className="bg-city-900 border-l-4 border-mutant p-6 rounded">
-                    <h4 className="text-lg font-alternative-1 text-mutant mb-3">
-                      Les Colonies Éveillées
-                    </h4>
-                    <p className="text-sm">
-                      Établies dans les Zones Érodées, ces communautés vivent en symbiose avec
-                      l'énergie de l'Érosion. Leurs architectures défient la géométrie euclidienne,
-                      leurs cultures célèbrent la transformation.
-                    </p>
-                  </div>
-
-                  <div className="bg-city-900 border-l-4 border-pure p-6 rounded">
-                    <h4 className="text-lg font-alternative-1 text-pure mb-3">
-                      Les Citadelles Pures
-                    </h4>
-                    <p className="text-sm">
-                      Protégées par des boucliers technologiques, ces forteresses maintiennent
-                      les traditions de l'ancien monde. Ordre, science et discipline sont leurs
-                      piliers fondamentaux.
-                    </p>
-                  </div>
-                </div>
-
-                <p className="text-lg">
-                  Entre ces deux extrêmes, des zones neutres existent - des marchés où les deux
-                  factions commercent, des territoires disputés où la guerre fait rage, et des
-                  terres sauvages où seuls les plus forts survivent.
-                </p>
-
-                <div className="border-l-4 border-ochre-600 pl-6 my-8 bg-city-900 p-6 rounded">
-                  <p className="text-lg italic text-ochre-400">
-                    "Dans ce nouveau monde, chaque choix a un prix. Chaque pouvoir a un coût.
-                    Et chaque survivant doit décider : qui était-il avant l'Érosion, et qui
-                    veut-il devenir après ?"
-                  </p>
-                </div>
               </div>
-            </div>
 
-            {/* Navigation */}
-            <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/intro"
-                className="px-6 py-3 bg-city-700 hover:bg-city-600 text-ochre-400 font-texte-corps text-center rounded-lg transition-all"
-              >
-                ← Retour à l'Introduction
-              </a>
-              <a
-                href="/reglement"
-                className="px-6 py-3 bg-ochre-600 hover:bg-ochre-500 text-white font-texte-corps text-center rounded-lg transition-all transform hover:scale-105 shadow-lg"
-              >
-                Règlement & CGU →
-              </a>
-            </div>
+              {/* Navigation des sections */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+                {navigationItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveSection(item.id)}
+                    className={`p-6 rounded-lg font-texte-corps text-center transition-all transform hover:scale-105 ${
+                      activeSection === item.id
+                        ? 'bg-ochre-600 text-white shadow-xl border-2 border-ochre-500'
+                        : 'bg-city-800 text-city-300 hover:bg-city-700 border-2 border-city-700'
+                    }`}
+                  >
+                    <div className="text-4xl mb-2">{item.icon}</div>
+                    <span className="text-sm font-alternative-1">{item.title}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Section Mise en situation */}
+              {activeSection === 'mise-en-situation' && (
+                <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-8 md:p-12 shadow-xl">
+                  <h2 className="text-3xl font-titre-Jeu text-ochre-500 mb-8 text-center">
+                    Mise en situation
+                  </h2>
+
+                  {/* Image */}
+                  <div className="mb-8">
+                    <img
+                      src="/portalIlustrations/campFire.png"
+                      alt="Feu de camp dans les ruines"
+                      className="w-full rounded-lg shadow-2xl"
+                    />
+                  </div>
+
+                  {/* Texte d'introduction */}
+                  <div className="space-y-6 font-texte-corps text-city-300 leading-relaxed">
+                    <p className="text-lg">
+                      L'année exacte a été oubliée. Les calendriers, comme tant d'autres vestiges
+                      de l'ancien monde, n'ont plus de sens. Ce que les survivants savent avec certitude,
+                      c'est que <span className="text-ochre-500 font-bold">le Grand Cataclysme</span> a tout détruit.
+                    </p>
+
+                    <p className="text-lg">
+                      Un jour, sans avertissement, la civilisation s'est effondrée. Les villes se sont vidées,
+                      les gouvernements ont disparu, et la nature a reconquis ce que l'humanité lui avait pris.
+                      Les technologies complexes de l'ancien monde sont tombées dans l'oubli. Les survivants,
+                      organisés en clans tribaux, ont régressé à un stade pré-technologique.
+                    </p>
+
+                    <p className="text-lg">
+                      Mais le Cataclysme a laissé une autre marque : certains humains ont subi une légère
+                      mutation, leur peau prenant une teinte <span className="text-nature-600 font-bold">légèrement grisâtre</span>.
+                      Rien de plus. Pas de pouvoirs mystiques, pas de capacités surhumaines. Juste une différence
+                      physique mineure... qui a suffi à diviser à jamais l'humanité.
+                    </p>
+
+                    <div className="border-l-4 border-ochre-600 pl-6 my-8 bg-city-900 p-6 rounded">
+                      <p className="text-xl italic text-ochre-400">
+                        "Nous sommes tous des survivants du même cataclysme. Pourtant, nous nous entretuons
+                        pour une nuance de peau. La folie de l'ancien monde n'a pas disparu avec lui."
+                      </p>
+                      <p className="text-sm text-city-500 mt-4">
+                        - Carnet d'un voyageur neutre, Date inconnue
+                      </p>
+                    </div>
+
+                    <p className="text-lg">
+                      Aujourd'hui, deux grandes factions s'affrontent dans un conflit sans merci, chacune
+                      organisée en clans internes unis par une vision radicale de l'avenir. Entre foi en la
+                      nature et culte de la technologie perdue, chaque survivant doit choisir son camp ou
+                      vivre en marge, condamné à errer dans un monde qui ne pardonne aucune faiblesse.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Section Factions et Clans - Placeholder */}
+              {activeSection === 'factions-clans' && (
+                <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-8 md:p-12 shadow-xl">
+                  <h2 className="text-3xl font-titre-Jeu text-ochre-500 mb-6 text-center">
+                    Les factions et ses clans
+                  </h2>
+                  <p className="font-texte-corps text-city-400 text-center text-lg">
+                    Section à compléter...
+                  </p>
+                </div>
+              )}
+
+              {/* Section Survivre - Placeholder */}
+              {activeSection === 'survivre' && (
+                <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-8 md:p-12 shadow-xl">
+                  <h2 className="text-3xl font-titre-Jeu text-ochre-500 mb-6 text-center">
+                    Survivre dans ce monde cruel
+                  </h2>
+                  <p className="font-texte-corps text-city-400 text-center text-lg">
+                    Section à compléter...
+                  </p>
+                </div>
+              )}
+
+              {/* Section Bestiaire - Placeholder */}
+              {activeSection === 'bestiaire' && (
+                <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-8 md:p-12 shadow-xl">
+                  <h2 className="text-3xl font-titre-Jeu text-ochre-500 mb-6 text-center">
+                    Le bestiaire
+                  </h2>
+                  <p className="font-texte-corps text-city-400 text-center text-lg">
+                    Section à compléter...
+                  </p>
+                </div>
+              )}
+
+              {/* Navigation vers autres pages */}
+              <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="/intro"
+                  className="px-6 py-3 bg-city-700 hover:bg-city-600 text-ochre-400 font-texte-corps text-center rounded-lg transition-all"
+                >
+                  ← Retour à l'Introduction
+                </a>
+                <a
+                  href="/reglement"
+                  className="px-6 py-3 bg-ochre-600 hover:bg-ochre-500 text-white font-texte-corps text-center rounded-lg transition-all transform hover:scale-105 shadow-lg"
+                >
+                  Règlement & CGU →
+                </a>
+              </div>
             </div>
           </div>
         </div>
