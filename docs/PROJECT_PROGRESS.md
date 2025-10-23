@@ -45,16 +45,18 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 - [x] Protection des routes frontend
 
 ### Phase 3: Configuration de la Base de Données
-**Statut**: En cours
+**Statut**: Complété
 **Date début**: 2025-10-22
-**Date fin prévue**: -
+**Date fin**: 2025-10-22
 
 #### Tâches
-- [ ] Installation de Sequelize CLI
-- [ ] Configuration des migrations
-- [ ] Création de la migration initiale pour la table users
-- [ ] Création des seeders de test
-- [ ] Test de connexion à la base de données
+- [x] Installation de Sequelize CLI
+- [x] Configuration des migrations
+- [x] Création de la migration initiale pour la table users
+- [x] Création des seeders de test
+- [x] Test de connexion à la base de données
+- [x] Scripts npm pour gérer les migrations et seeders
+- [x] Test complet du système d'authentification
 
 ### Phase 4: Fonctionnalités Core
 **Statut**: À venir
@@ -70,13 +72,13 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 ## Branches Principales
 
 ### main
-**Commits**: 2 (à venir après merge)
-**Dernier commit**: feat(auth): système d'authentification complet avec JWT
+**Commits**: 3
+**Dernier commit**: setup(db): configuration complète de la base de données avec migrations et seeders
 **Description**: Branche de production stable
 
 ### Branches de fonctionnalités
-- **feature/auth-system**: Système d'authentification (mergé vers main)
-- **setup/database-config**: Configuration de la base de données (en cours)
+- **feature/auth-system**: Système d'authentification (✓ mergé vers main)
+- **setup/database-config**: Configuration de la base de données (✓ mergé vers main)
 
 ---
 
@@ -103,6 +105,14 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 - Pages frontend Login et Register
 - Gestion des sessions avec localStorage
 
+### 2025-10-22: Configuration Base de Données
+- Sequelize CLI configuré avec migrations et seeders
+- Migration pour la table users avec index
+- 3 utilisateurs de test (admin, testuser, player1)
+- Scripts npm pour gérer la base de données
+- Script de test de connexion
+- Système d'authentification testé et fonctionnel
+
 ---
 
 ## Métriques du Projet
@@ -126,11 +136,11 @@ Aucun pour le moment.
 
 ## Prochaines Étapes
 
-1. Configurer Sequelize CLI et les migrations
-2. Créer la migration pour la table users
-3. Créer les seeders de test
-4. Tester le système d'authentification complet
-5. Développer les fonctionnalités core du jeu
+1. Développer le frontend avec les pages d'authentification
+2. Créer les fonctionnalités core du jeu
+3. Définir le schéma complet de la base de données (personnages, items, etc.)
+4. Implémenter les fonctionnalités de jeu
+5. Tests et optimisation
 
 ---
 
