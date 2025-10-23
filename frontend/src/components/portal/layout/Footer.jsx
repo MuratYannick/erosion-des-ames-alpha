@@ -14,8 +14,7 @@ const Footer = () => {
               Érosion des Âmes
             </h3>
             <p className="font-texte-corps text-city-400 text-sm leading-relaxed">
-              Un MMORPG post-apocalyptique où deux factions luttent pour la survie
-              dans un monde dévasté par l'Érosion.
+              Un jeu de rôle post-apocalyptique où deux factions luttent pour la survie dans un monde dévasté par l'Érosion.
             </p>
           </div>
 
@@ -30,7 +29,7 @@ const Footer = () => {
                   to="/"
                   className="font-texte-corps text-city-400 hover:text-ochre-500 transition-colors text-sm"
                 >
-                  Accueil
+                  Portail
                 </Link>
               </li>
               <li>

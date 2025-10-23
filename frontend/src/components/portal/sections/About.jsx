@@ -16,10 +16,11 @@ const About = () => {
                 Un Monde Dévasté
               </h3>
               <p className="font-texte-corps text-city-300 leading-relaxed">
-                Suite à une catastrophe mystérieuse connue sous le nom d'<span className="text-ochre-500 font-bold">Érosion</span>,
-                le monde tel que nous le connaissions a disparu. Les ruines des anciennes villes
-                servent désormais de refuge aux survivants, tandis que la nature reprend
-                ses droits sur les vestiges de la civilisation.
+                Suite à une catastrophe dont les origines ont été oubliées, le
+                monde tel que nous le connaissions a disparu. Les ruines des
+                anciennes villes servent désormais de refuge aux survivants,
+                tandis qu'une guerre sans fin fait rage et que la nature reprend ses droits sur les vestiges de la
+                civilisation.
               </p>
             </div>
 
@@ -29,9 +30,10 @@ const About = () => {
                 Survie et Évolution
               </h3>
               <p className="font-texte-corps text-city-300 leading-relaxed">
-                Dans ce nouveau monde hostile, chaque décision compte. Explorez des zones
-                dangereuses, collectez des ressources rares, combattez des créatures mutantes
-                et d'autres joueurs. Votre capacité à vous adapter déterminera votre survie.
+                Dans ce nouveau monde hostile, chaque décision compte. Explorez
+                des zones dangereuses, collectez des ressources rares, combattez
+                des créatures mutantes et d'autres joueurs. Votre capacité à
+                vous adapter déterminera votre survie.
               </p>
             </div>
           </div>
@@ -39,11 +41,11 @@ const About = () => {
           {/* Description Additionnelle */}
           <div className="bg-city-850 p-8 rounded-lg border-2 border-city-700">
             <p className="font-texte-corps text-city-300 text-center text-lg leading-relaxed">
-              <span className="text-ochre-500 font-bold">Érosion des Âmes</span> est un jeu
-              de rôle en ligne massivement multijoueur (MMORPG) où vous incarnez un survivant
-              dans un univers post-apocalyptique. Choisissez votre faction, développez vos
-              compétences, forgez des alliances et participez à l'histoire évolutive de ce
-              monde en ruine.
+              <span className="text-ochre-500 font-bold">Érosion des Âmes</span>{" "}
+              est un jeu de rôle en ligne où vous incarnez un survivant dans un
+              univers post-apocalyptique. Choisissez votre faction, développez
+              vos compétences, &oelig;uvrez pour votre clan et participez à
+              l'histoire évolutive de ce monde en ruine.
             </p>
           </div>
         </div>

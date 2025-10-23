@@ -1,36 +1,26 @@
 const Factions = () => {
   const factions = [
     {
-      name: 'Les Éveillés',
-      tagline: 'Mutation et Pouvoir',
+      name: 'Les Éclaireurs de l\'Aube Nouvelle',
+      tagline: 'Évolution et Ordre Naturel',
       color: 'mutant',
-      icon: '⚡',
+      icon: '🌿',
       description:
-        'Les Éveillés ont été transformés par l\'Érosion. Ils possèdent des capacités surnaturelles qui défient les lois de la nature. Certains peuvent manipuler l\'énergie, d\'autres ont développé une force surhumaine ou des sens aiguisés.',
-      strengths: [
-        'Pouvoirs psioniques et mutations',
-        'Résistance accrue aux radiations',
-        'Capacités de régénération',
-        'Sens développés',
-      ],
+        'Faction exclusive aux Éveillés, ces survivants à la peau légèrement grisâtre se considèrent comme les élus d\'un dieu qui a purgé la Terre de l\'humanité corrompue. Pour eux, le grand cataclysme était nécessaire pour libérer la nature de l\'emprise destructrice de la technologie. Organisés en clans, ils ne jurent que par l\'ordre naturel.',
       philosophy:
-        'L\'évolution est inévitable. Embrassez le changement ou périssez.',
+        'Nous n\'avons pas muté, nous avons évolué. Les Purs sont une abomination qui doit disparaître.',
+      objective: 'Éradiquer les Veilleurs de l\'Ancien Monde et purifier la Terre des derniers vestiges technologiques.',
     },
     {
-      name: 'Les Purs',
-      tagline: 'Technologie et Préservation',
+      name: 'Les Veilleurs de l\'Ancien Monde',
+      tagline: 'Savoir et Reconquête',
       color: 'pure',
-      icon: '🛡',
+      icon: '⚙️',
       description:
-        'Les Purs ont résisté aux effets de l\'Érosion grâce à la technologie et leur volonté de préserver l\'humanité originelle. Ils maîtrisent les anciennes technologies et développent constamment de nouveaux équipements pour survivre.',
-      strengths: [
-        'Maîtrise technologique avancée',
-        'Équipements de protection sophistiqués',
-        'Arsenal d\'armes high-tech',
-        'Connaissances scientifiques',
-      ],
+        'Faction exclusive aux Purs, ces survivants non-mutants se considèrent comme les derniers vrais humains. Ils vouent un culte aux technologies oubliées de l\'ancien monde, seule arme capable de reconquérir une nature devenue hostile et dégénérée. Pour eux, les Éveillés font partie de cette dégénérescence et représentent une menace de contamination.',
       philosophy:
-        'L\'humanité doit rester humaine. La technologie est notre salut.',
+        'La technologie nous a élevés au-dessus de la nature. Les mutants sont une maladie à éradiquer.',
+      objective: 'Éliminer les Éclaireurs de l\'Aube Nouvelle et restaurer la suprématie humaine par la technologie.',
     },
   ];
 
@@ -39,11 +29,12 @@ const Factions = () => {
       <div className="container mx-auto px-4">
         {/* Titre de Section */}
         <h2 className="text-4xl md:text-5xl font-titre-Jeu text-ochre-500 text-center mb-6">
-          Choisissez Votre Faction
+          Les Factions Principales
         </h2>
-        <p className="font-texte-corps text-city-400 text-center text-lg mb-12 max-w-2xl mx-auto">
-          Deux philosophies s'opposent dans ce monde nouveau. Votre choix déterminera
-          votre gameplay et vos alliances.
+        <p className="font-texte-corps text-city-400 text-center text-lg mb-12 max-w-3xl mx-auto">
+          Deux grandes factions s'affrontent dans un conflit sans merci. Les sociétés tribales
+          qui subsistent ont régressé au stade pré-technologique. Chaque faction est organisée
+          en clans internes, unis par une même vision radicale de l'avenir.
         </p>
 
         {/* Grille des Factions */}
@@ -51,15 +42,27 @@ const Factions = () => {
           {factions.map((faction) => (
             <div
               key={faction.name}
-              className={`bg-city-800 border-2 border-${faction.color} rounded-lg overflow-hidden shadow-xl hover:shadow-${faction.color}/50 transition-all transform hover:scale-[1.02]`}
+              className={`bg-city-800 rounded-lg overflow-hidden shadow-xl transition-all transform hover:scale-[1.02] ${
+                faction.color === 'mutant'
+                  ? 'border-2 border-nature-800 hover:shadow-nature-800/50'
+                  : 'border-2 border-blue-900 hover:shadow-blue-900/50'
+              }`}
             >
               {/* Header */}
-              <div className={`bg-${faction.color}-dark p-6 text-center border-b-2 border-${faction.color}`}>
+              <div className={`p-6 text-center ${
+                faction.color === 'mutant'
+                  ? 'bg-nature-900 border-b-2 border-nature-800'
+                  : 'bg-blue-950 border-b-2 border-blue-900'
+              }`}>
                 <div className="text-6xl mb-3">{faction.icon}</div>
-                <h3 className={`text-3xl font-titre-Jeu text-${faction.color}-light mb-2`}>
+                <h3 className={`text-3xl font-titre-Jeu mb-2 ${
+                  faction.color === 'mutant' ? 'text-nature-600' : 'text-blue-600'
+                }`}>
                   {faction.name}
                 </h3>
-                <p className={`font-alternative-1 text-xl text-${faction.color}-light`}>
+                <p className={`font-alternative-1 text-xl tracking-wide ${
+                  faction.color === 'mutant' ? 'text-nature-500' : 'text-blue-500'
+                }`}>
                   {faction.tagline}
                 </p>
               </div>
@@ -71,28 +74,29 @@ const Factions = () => {
                   {faction.description}
                 </p>
 
-                {/* Forces */}
+                {/* Philosophie */}
                 <div className="mb-6">
-                  <h4 className={`font-alternative-1 text-lg text-${faction.color} mb-3`}>
-                    Forces principales :
+                  <h4 className={`font-alternative-1 text-lg mb-3 tracking-wider ${
+                    faction.color === 'mutant' ? 'text-nature-600' : 'text-blue-600'
+                  }`}>
+                    Philosophie de la faction :
                   </h4>
-                  <ul className="space-y-2">
-                    {faction.strengths.map((strength, index) => (
-                      <li
-                        key={index}
-                        className="flex items-start font-texte-corps text-city-400"
-                      >
-                        <span className={`text-${faction.color} mr-2`}>▸</span>
-                        {strength}
-                      </li>
-                    ))}
-                  </ul>
+                  <p className={`font-texte-corps text-city-200 text-base italic leading-relaxed`}>
+                    "{faction.philosophy}"
+                  </p>
                 </div>
 
-                {/* Philosophie */}
-                <div className={`bg-city-900 border-l-4 border-${faction.color} p-4 rounded`}>
-                  <p className={`font-texte-corps text-${faction.color}-light italic text-sm`}>
-                    "{faction.philosophy}"
+                {/* Objectif */}
+                <div className={`bg-city-800 p-4 rounded ${
+                  faction.color === 'mutant'
+                    ? 'border-l-4 border-nature-800'
+                    : 'border-l-4 border-blue-900'
+                }`}>
+                  <h4 className="font-alternative-1 text-sm text-ochre-400 mb-2 tracking-wider">
+                    Objectif principal :
+                  </h4>
+                  <p className="font-texte-corps text-city-300 text-sm leading-relaxed">
+                    {faction.objective}
                   </p>
                 </div>
               </div>
@@ -100,11 +104,23 @@ const Factions = () => {
           ))}
         </div>
 
-        {/* Note */}
-        <div className="text-center mt-12">
-          <p className="font-texte-corps text-city-500 text-sm">
-            Note : Votre choix de faction sera définitif et influencera votre expérience de jeu.
-          </p>
+        {/* Note sur les Clans Neutres */}
+        <div className="text-center mt-12 max-w-4xl mx-auto">
+          <div className="bg-city-800 border-2 border-neutral-dark rounded-lg p-6">
+            <h3 className="text-xl font-alternative-1 text-neutral mb-3">
+              Les Clans Neutres
+            </h3>
+            <p className="font-texte-corps text-city-400 text-sm leading-relaxed mb-3">
+              En marge de ces deux factions, des clans neutres survivent tant bien que mal.
+              Certains sont exclusifs à une ethnie, d'autres sont mixtes. Ils servent d'espions,
+              de mercenaires, de marchands ou de messagers pour l'une ou l'autre faction, parfois
+              les deux. Mal vus par les factions principales, ils naviguent dans un équilibre précaire.
+            </p>
+            <p className="font-texte-corps text-blood-400 text-xs italic">
+              Note : Les clans neutres ne seront pas jouables dans la version Alpha, mais pourront
+              être utiles aux Maîtres de Jeu pour enrichir leurs campagnes.
+            </p>
+          </div>
         </div>
       </div>
     </section>
