@@ -178,8 +178,7 @@ const Univers = () => {
                   {/* Introduction */}
                   <div className="mb-12 font-texte-corps text-city-300 text-lg leading-relaxed">
                     <p className="mb-4">
-                      Deux grandes factions se disputent le contrôle des Terres Désolées, chacune organisée en clans
-                      spécialisés. Entre elles, quelques clans neutres tentent de survivre en marge du conflit.
+                      Deux grandes factions se disputent le contrôle des Terres Désolées, chacune organisée en clans spécialisés. Entre elles, quelques clans neutres tentent de survivre en marge du conflit.
                     </p>
                   </div>
 
@@ -193,10 +192,7 @@ const Univers = () => {
                       Avant-poste : L'Oasis des Transformés
                     </p>
                     <p className="font-texte-corps text-city-300 mb-6 leading-relaxed">
-                      Pour eux, ils n'ont pas muté, ils ont évolué. Le Grand Cataclysme a été lancé par leur dieu pour
-                      purifier la Terre de l'homme et de sa technologie, responsables de la destruction de la nature.
-                      Ils sont les élus, et tous les non-mutants doivent périr. Leur priorité absolue reste l'éradication
-                      des Veilleurs de l'Ancien Monde.
+                      Pour eux, ils n'ont pas muté, ils ont évolué. Le Grand Cataclysme a été lancé par leur dieu pour purifier la Terre de l'homme et de sa technologie, responsables de la destruction de la nature. Ils sont les élus, et tous les non-mutants doivent périr. Leur priorité absolue reste l'éradication des Veilleurs de l'Ancien Monde.
                     </p>
 
                     {/* Ordre Supérieur */}
@@ -205,8 +201,7 @@ const Univers = () => {
                         👁️ Les Prophètes de l'Harmonie (Ordre Supérieur)
                       </h4>
                       <p className="font-texte-corps text-city-300 text-sm">
-                        Chef religieux et disciples fanatiques. Ils guident la faction dans sa compréhension de la mutation
-                        comme voie d'évolution, interprètent les signes du monde nouveau et maintiennent la cohésion spirituelle.
+                        Chef religieux et disciples fanatiques. Ils guident la faction dans sa compréhension de la mutation comme voie d'évolution, interprètent les signes du monde nouveau et maintiennent la cohésion spirituelle.
                       </p>
                     </div>
 
@@ -217,9 +212,7 @@ const Univers = () => {
                           🌱 La Caste des Symbiotes
                         </h5>
                         <p className="font-texte-corps text-city-400 text-xs">
-                          <span className="text-nature-500 font-semibold">Rôle :</span> Ressources & Adaptation. Exploitent
-                          les ressources du monde muté, développent des techniques de culture et construisent les structures
-                          de l'avant-poste.
+                          <span className="text-nature-500 font-semibold">Rôle :</span> Ressources & Adaptation. Exploitent les ressources du monde muté, développent des techniques de culture et construisent les structures de l'avant-poste.
                         </p>
                       </div>
 
@@ -228,9 +221,7 @@ const Univers = () => {
                           👁️ La Caste des Sensitifs
                         </h5>
                         <p className="font-texte-corps text-city-400 text-xs">
-                          <span className="text-nature-500 font-semibold">Rôle :</span> Exploration & Perception. Sens aiguisés,
-                          ils servent d'éclaireurs et de guides infaillibles, détectent les ressources cachées et traquent
-                          proies et menaces.
+                          <span className="text-nature-500 font-semibold">Rôle :</span> Exploration & Perception. Sens aiguisés, ils servent d'éclaireurs et de guides infaillibles, détectent les ressources cachées et traquent proies et menaces.
                         </p>
                       </div>
 
@@ -239,8 +230,7 @@ const Univers = () => {
                           🧪 Les Forgerons de Chair
                         </h5>
                         <p className="font-texte-corps text-city-400 text-xs">
-                          <span className="text-nature-500 font-semibold">Rôle :</span> Guérison & Évolution. Médecins et
-                          biologistes utilisant les propriétés de la faune et flore mutées pour soigner, empoisonner ou nourrir.
+                          <span className="text-nature-500 font-semibold">Rôle :</span> Guérison & Évolution. Médecins et biologistes utilisant les propriétés de la faune et flore mutées pour soigner, empoisonner ou nourrir.
                         </p>
                       </div>
 
@@ -249,8 +239,7 @@ const Univers = () => {
                           ⚔️ Les Sentinelles du Chaos
                         </h5>
                         <p className="font-texte-corps text-city-400 text-xs">
-                          <span className="text-nature-500 font-semibold">Rôle :</span> Défense & Confrontation. Capacités
-                          physiques exacerbées, ils assurent la défense de l'avant-poste et mènent les affrontements.
+                          <span className="text-nature-500 font-semibold">Rôle :</span> Défense & Confrontation. Capacités physiques exacerbées, ils assurent la défense de l'avant-poste et mènent les affrontements.
                         </p>
                       </div>
 
@@ -259,9 +248,7 @@ const Univers = () => {
                           📜 Les Scrutateurs
                         </h5>
                         <p className="font-texte-corps text-city-400 text-xs">
-                          <span className="text-nature-500 font-semibold">Rôle :</span> Connaissance & Mystères du passé.
-                          Fouillent les ruines de l'ancien monde pour comprendre sa chute et empêcher que des technologies
-                          tombent aux mains ennemies.
+                          <span className="text-nature-500 font-semibold">Rôle :</span> Connaissance & Mystères du passé. Fouillent les ruines de l'ancien monde pour comprendre sa chute et empêcher que des technologies tombent aux mains ennemies.
                         </p>
                       </div>
                     </div>
@@ -277,10 +264,7 @@ const Univers = () => {
                       Avant-poste : La Citadelle du Renouveau
                     </p>
                     <p className="font-texte-corps text-city-300 mb-6 leading-relaxed">
-                      Ils ne jurent que par les anciens savoirs oubliés : la technologie. C'est le seul moyen de reprendre
-                      le dessus sur cette nature dégénérée devenue hostile. Pour eux, les mutants font partie de cette
-                      dégénérescence et doivent tous être exterminés avant qu'ils ne contaminent les rares humains encore
-                      purs qu'ils sont.
+                      Ils ne jurent que par les anciens savoirs oubliés : la technologie. C'est le seul moyen de reprendre le dessus sur cette nature dégénérée devenue hostile. Pour eux, les mutants font partie de cette dégénérescence et doivent tous être exterminés avant qu'ils ne contaminent les rares humains encore purs qu'ils sont.
                     </p>
 
                     {/* Clan Supérieur */}
@@ -289,8 +273,7 @@ const Univers = () => {
                         👑 Les Élus d'Avant (Clan Supérieur)
                       </h4>
                       <p className="font-texte-corps text-city-300 text-sm">
-                        Chef de l'avant-poste et ses conseillers. Dépositaires de l'héritage de l'Ancien Monde, ils prennent
-                        les décisions stratégiques, définissent les lois et maintiennent la "pureté" idéologique et génétique.
+                        Chef de l'avant-poste et ses conseillers. Dépositaires de l'héritage de l'Ancien Monde, ils prennent les décisions stratégiques, définissent les lois et maintiennent la "pureté" idéologique et génétique.
                       </p>
                     </div>
 
@@ -301,8 +284,7 @@ const Univers = () => {
                           🛡️ Le Clan des Sentinelles
                         </h5>
                         <p className="font-texte-corps text-city-400 text-xs">
-                          <span className="text-blue-300 font-semibold">Rôle :</span> Défense & Ordre. Bras armé de la faction,
-                          ils assurent la défense, patrouillent les alentours et maintiennent l'ordre interne.
+                          <span className="text-blue-300 font-semibold">Rôle :</span> Défense & Ordre. Bras armé de la faction, ils assurent la défense, patrouillent les alentours et maintiennent l'ordre interne.
                         </p>
                       </div>
 
@@ -311,8 +293,7 @@ const Univers = () => {
                           🔧 Le Clan des Pourvoyeurs
                         </h5>
                         <p className="font-texte-corps text-city-400 text-xs">
-                          <span className="text-blue-300 font-semibold">Rôle :</span> Ressources & Production. Garants de la
-                          survie matérielle, ils gèrent la collecte des ressources et l'entretien des infrastructures vitales.
+                          <span className="text-blue-300 font-semibold">Rôle :</span> Ressources & Production. Garants de la survie matérielle, ils gèrent la collecte des ressources et l'entretien des infrastructures vitales.
                         </p>
                       </div>
 
@@ -321,8 +302,7 @@ const Univers = () => {
                           📚 Le Clan des Archivistes
                         </h5>
                         <p className="font-texte-corps text-city-400 text-xs">
-                          <span className="text-blue-300 font-semibold">Rôle :</span> Savoir & Tradition. Gardiens de l'héritage,
-                          ils préservent et étudient les reliques et transmettent les connaissances aux jeunes générations.
+                          <span className="text-blue-300 font-semibold">Rôle :</span> Savoir & Tradition. Gardiens de l'héritage, ils préservent et étudient les reliques et transmettent les connaissances aux jeunes générations.
                         </p>
                       </div>
 
@@ -331,8 +311,7 @@ const Univers = () => {
                           🧬 Le Clan des Purificateurs
                         </h5>
                         <p className="font-texte-corps text-city-400 text-xs">
-                          <span className="text-blue-300 font-semibold">Rôle :</span> Santé & Hygiène. Veillent à la "pureté"
-                          biologique, fournissent les soins et surveillent tout signe de mutation ou contamination.
+                          <span className="text-blue-300 font-semibold">Rôle :</span> Santé & Hygiène. Veillent à la "pureté" biologique, fournissent les soins et surveillent tout signe de mutation ou contamination.
                         </p>
                       </div>
 
@@ -341,8 +320,7 @@ const Univers = () => {
                           🗺️ Le Clan des Explorateurs
                         </h5>
                         <p className="font-texte-corps text-city-400 text-xs">
-                          <span className="text-blue-300 font-semibold">Rôle :</span> Reconnaissance & Découverte. Cartographes
-                          et éclaireurs, ils s'aventurent au-delà des murs pour trouver ressources et artefacts.
+                          <span className="text-blue-300 font-semibold">Rôle :</span> Reconnaissance & Découverte. Cartographes et éclaireurs, ils s'aventurent au-delà des murs pour trouver ressources et artefacts.
                         </p>
                       </div>
                     </div>
@@ -355,9 +333,7 @@ const Univers = () => {
                       Les Clans Neutres
                     </h3>
                     <p className="font-texte-corps text-city-300 mb-6 leading-relaxed">
-                      En marge du conflit, quelques clans indépendants refusent de prendre parti. Certains cherchent la paix,
-                      d'autres la survie par tous les moyens. Ils ne sont pas jouables durant l'Alpha mais peuvent être
-                      rencontrés au cours des aventures.
+                      En marge du conflit, quelques clans indépendants refusent de prendre parti. Certains cherchent la paix, d'autres la survie par tous les moyens. Ils ne sont pas jouables durant l'Alpha mais peuvent être rencontrés au cours des aventures.
                     </p>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
