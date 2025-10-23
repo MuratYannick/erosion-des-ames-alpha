@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/api';
 import { storage } from '../utils/localStorage';
+import { handleError } from '../utils/errorHandler';
 
 function Register() {
   const navigate = useNavigate();
@@ -54,7 +55,13 @@ function Register() {
       // Rediriger vers la page d'accueil
       navigate('/');
     } catch (err) {
-      setError(err.message);
+      // Si c'est une erreur HTTP majeure (500, 503, network), rediriger vers page d'erreur
+      if (err.response?.status >= 500 || err.message === 'Failed to fetch') {
+        handleError(err, navigate);
+      } else {
+        // Pour les erreurs de validation (400), afficher le message
+        setError(err.message || 'Une erreur est survenue lors de l\'inscription');
+      }
     } finally {
       setLoading(false);
     }

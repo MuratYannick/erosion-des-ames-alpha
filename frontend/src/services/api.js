@@ -21,13 +21,26 @@ const fetchConfig = (token = null) => {
  * Gestion des erreurs API
  */
 const handleResponse = async (response) => {
-  const data = await response.json();
-
+  // Créer un objet d'erreur avec le statut HTTP
   if (!response.ok) {
-    throw new Error(data.error || 'Une erreur est survenue');
+    const error = new Error('HTTP Error');
+    error.response = {
+      status: response.status,
+      statusText: response.statusText
+    };
+
+    try {
+      const data = await response.json();
+      error.message = data.error || data.message || 'Une erreur est survenue';
+      error.response.data = data;
+    } catch (e) {
+      error.message = response.statusText || 'Une erreur est survenue';
+    }
+
+    throw error;
   }
 
-  return data;
+  return await response.json();
 };
 
 /**

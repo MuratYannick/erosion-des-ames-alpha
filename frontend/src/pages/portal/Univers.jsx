@@ -34,7 +34,7 @@ const Univers = () => {
         <div
           className="relative bg-cover bg-center bg-no-repeat py-20 md:py-32"
           style={{
-            backgroundImage: 'url(/portalIlustrations/banner.png)',
+            backgroundImage: 'url(/portalIllustrations/banner.png)',
           }}
         >
           {/* Overlay sombre pour améliorer la lisibilité */}
@@ -112,7 +112,7 @@ const Univers = () => {
                   {/* Image avec filtre sepia */}
                   <div className="mb-8 flex justify-center">
                     <img
-                      src="/portalIlustrations/campFire.png"
+                      src="/portalIllustrations/campFire.png"
                       alt="Feu de camp dans les ruines"
                       className="w-2/3 md:w-1/2 rounded-lg shadow-2xl sepia-[65%] hover:sepia-0 transition-all duration-[2500ms]"
                     />
