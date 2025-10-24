@@ -18,10 +18,38 @@ const User = sequelize.define('User', {
   email: {
     type: DataTypes.STRING(100),
     allowNull: false,
-    unique: true,
+    unique: false, // Modifié : email non unique (certains utilisateurs peuvent avoir 2 comptes)
     validate: {
       isEmail: true
     }
+  },
+  email_verified: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
+  },
+  role: {
+    type: DataTypes.ENUM('admin', 'moderator', 'game-master', 'player'),
+    defaultValue: 'player',
+    allowNull: false
+  },
+  forum_rules_accepted: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
+  },
+  forum_rules_accepted_at: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  terms_accepted: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
+  },
+  terms_accepted_at: {
+    type: DataTypes.DATE,
+    allowNull: true
   },
   password_hash: {
     type: DataTypes.STRING(255),
@@ -49,6 +77,10 @@ const User = sequelize.define('User', {
     {
       name: 'idx_email',
       fields: ['email']
+    },
+    {
+      name: 'idx_role',
+      fields: ['role']
     }
   ]
 });
