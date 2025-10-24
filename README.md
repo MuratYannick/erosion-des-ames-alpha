@@ -8,6 +8,7 @@ Projet de refonte complète du jeu "Érosion des Âmes".
 - **Framework**: Vite + React
 - **Styling**: TailwindCSS v3
 - **Routing**: React Router
+- **Tests**: Vitest + React Testing Library
 
 ### Backend
 - **Runtime**: Node.js 22.17.0
@@ -44,7 +45,9 @@ erosion-des-ames-alpha/
 ```bash
 cd frontend
 npm install
-npm run dev
+npm run dev      # Démarrer le serveur de développement
+npm test         # Lancer les tests en mode watch
+npm run test:run # Lancer les tests une fois
 ```
 
 ### Backend
@@ -56,11 +59,18 @@ npm run dev
 
 ## Documentation
 
-Pour plus d'informations, consultez:
+### Documentation Générale
 - [Documentation Technique](docs/TECHNICAL.md)
 - [Documentation Base de Données](docs/DATABASE.md)
 - [Avancement Général](docs/PROJECT_PROGRESS.md)
 - [Avancement de la Branche](docs/BRANCH_PROGRESS.md)
+
+### Gestion des Erreurs
+- [Guide de Gestion des Erreurs](GUIDE_GESTION_ERREURS.md) - Utilisation et tests
+- [Démonstration Visuelle](DEMO_ERREURS.html) - Ouvrir dans un navigateur
+
+### Tests
+- [Documentation Tests Frontend](frontend/TESTS.md) - Tests unitaires (43 tests)
 
 ## Workflow Git
 
