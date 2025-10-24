@@ -55,11 +55,13 @@ function Register() {
       // Rediriger vers la page d'accueil
       navigate('/');
     } catch (err) {
-      // Si c'est une erreur HTTP majeure (500, 503, network), rediriger vers page d'erreur
-      if (err.response?.status >= 500 || err.message === 'Failed to fetch') {
-        handleError(err, navigate);
-      } else {
-        // Pour les erreurs de validation (400), afficher le message
+      // Gérer toutes les erreurs HTTP via handleError
+      // Les erreurs 4xx/5xx/network seront redirigées vers les pages d'erreur appropriées
+      // sauf les erreurs 400 qui sont des erreurs de validation
+      const wasRedirected = handleError(err, navigate, { skipValidationErrors: true });
+
+      // Si l'erreur n'a pas été redirigée (erreur 400), afficher le message dans le formulaire
+      if (!wasRedirected) {
         setError(err.message || 'Une erreur est survenue lors de l\'inscription');
       }
     } finally {

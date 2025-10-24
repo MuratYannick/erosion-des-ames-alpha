@@ -6,8 +6,13 @@
  * Redirige vers la page d'erreur appropriée en fonction du code d'erreur
  * @param {Error|Object} error - L'erreur capturée
  * @param {Function} navigate - La fonction de navigation de react-router-dom
+ * @param {Object} options - Options de configuration
+ * @param {boolean} options.skipValidationErrors - Si true, ne redirige pas les erreurs de formulaire (400, 401, 409)
+ * @returns {boolean} - true si l'erreur a été redirigée, false sinon
  */
-export const handleError = (error, navigate) => {
+export const handleError = (error, navigate, options = {}) => {
+  const { skipValidationErrors = false } = options;
+
   console.error('Error caught:', error);
 
   // Erreur réseau (Failed to fetch, Network error, etc.)
@@ -18,45 +23,56 @@ export const handleError = (error, navigate) => {
     !navigator.onLine
   ) {
     navigate('/error/network');
-    return;
+    return true;
   }
 
   // Erreur HTTP avec code de statut
   if (error.response?.status) {
     const status = error.response.status;
 
+    // Si skipValidationErrors est activé, ne pas rediriger les erreurs de formulaire
+    // 400: Erreurs de validation (champs invalides)
+    // 401: Erreurs d'authentification (mauvais identifiants)
+    // 409: Erreurs de conflit (email/username déjà existant)
+    if (skipValidationErrors && (status === 400 || status === 401 || status === 409)) {
+      return false;
+    }
+
     switch (status) {
       case 401:
         navigate('/error/401');
-        break;
+        return true;
       case 403:
         navigate('/error/403');
-        break;
+        return true;
       case 404:
         navigate('/error/404');
-        break;
+        return true;
       case 500:
         navigate('/error/500');
-        break;
+        return true;
       case 503:
         navigate('/error/503');
-        break;
+        return true;
       default:
         // Pour les autres erreurs 4xx, rediriger vers 404
         if (status >= 400 && status < 500) {
           navigate('/error/404');
+          return true;
         }
         // Pour les autres erreurs 5xx, rediriger vers 500
         else if (status >= 500) {
           navigate('/error/500');
+          return true;
         }
         break;
     }
-    return;
+    return false;
   }
 
   // Erreur JavaScript non gérée - rediriger vers 500
   navigate('/error/500');
+  return true;
 };
 
 /**
