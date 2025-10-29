@@ -147,10 +147,10 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 
 ### 2025-10-22: Structure de Documentation
 - README.md: Vue d'ensemble du projet
-- TECHNICAL.md: Documentation technique détaillée
-- DATABASE.md: Documentation de la base de données
-- PROJECT_PROGRESS.md: Avancement général
-- BRANCH_PROGRESS.md: Avancement de la branche courante
+- docs/architecture/technical.md: Documentation technique détaillée
+- docs/architecture/database.md: Documentation de la base de données
+- docs/progress/project-progress.md: Avancement général
+- docs/progress/branch-progress.md: Avancement de la branche courante
 
 ### 2025-10-22: Système d'Authentification
 - Authentification JWT avec expiration de 24h
@@ -206,7 +206,7 @@ Projet de refonte complète du jeu "Érosion des Âmes". Phase de développement
 - **Couverture de tests**: 0% (tests à venir)
 
 ### Documentation
-- **Fichiers de documentation**: 5 (README, TECHNICAL, DATABASE, PROJECT_PROGRESS, BRANCH_PROGRESS)
+- **Fichiers de documentation**: 7 (README, docs/architecture/*, docs/guides/*, docs/security/*, docs/progress/*)
 - **Complétude**: 60% (documentation technique à jour, docs utilisateur à venir)
 
 ### Commits & Branches
@@ -254,7 +254,7 @@ Aucun pour le moment. Les problèmes suivants ont été résolus:
 
 ## Notes
 
-Ce document est mis à jour uniquement lors des merges vers la branche `main`. Pour suivre l'avancement des branches de développement, consulter [BRANCH_PROGRESS.md](BRANCH_PROGRESS.md).
+Ce document est mis à jour uniquement lors des merges vers la branche `main`. Pour suivre l'avancement des branches de développement, consulter [branch-progress.md](branch-progress.md).
 
 ---
 

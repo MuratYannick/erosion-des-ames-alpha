@@ -130,4 +130,4 @@ backend/
 
 ## Documentation
 
-Voir [../docs/DATABASE.md](../docs/DATABASE.md) pour plus d'informations sur la base de données.
+Voir [../docs/architecture/database.md](../docs/architecture/database.md) pour plus d'informations sur la base de données.

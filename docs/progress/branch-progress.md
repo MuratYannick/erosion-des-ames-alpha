@@ -42,7 +42,7 @@ Cette branche prépare le développement du forum, qui sera une fonctionnalité 
 ### Sécurité
 - [x] Vérifier que la route /api/auth/register interdit toujours les emails en double
 - [x] Vérifier que le formulaire Register gère correctement l'erreur 409
-- [x] Documenter les protections applicatives (VERIFICATION_SECURITE_EMAIL.md)
+- [x] Documenter les protections applicatives (docs/security/email-verification.md)
 
 ---
 
@@ -54,7 +54,7 @@ Cette branche prépare le développement du forum, qui sera une fonctionnalité 
 **Fichiers créés**:
 - backend/migrations/002-update-users-for-forum.js
 - backend/src/scripts/showUsersTable.js
-- VERIFICATION_SECURITE_EMAIL.md
+- docs/security/email-verification.md
 
 **Fichiers modifiés**:
 - backend/src/models/User.js (ajout 6 nouveaux champs)
@@ -156,7 +156,7 @@ if (!wasRedirected) {
 ✓ Frontend affiche l'erreur dans le formulaire (pas de redirection)
 ✓ Base de données accepte les doublons (contrainte supprimée)
 
-**Documentation complète**: [VERIFICATION_SECURITE_EMAIL.md](../VERIFICATION_SECURITE_EMAIL.md)
+**Documentation complète**: [email-verification.md](../security/email-verification.md)
 
 ---
 

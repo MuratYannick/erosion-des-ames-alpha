@@ -107,7 +107,7 @@ backend/
 - **Migrations**: Gestion du schéma de base de données
 - **Seeders**: Données de test/initialisation
 
-Voir [DATABASE.md](DATABASE.md) pour le schéma détaillé.
+Voir [database.md](database.md) pour le schéma détaillé.
 
 ---
 
@@ -183,7 +183,7 @@ Voir [DATABASE.md](DATABASE.md) pour le schéma détaillé.
 - Convention: type(scope): description
 
 ### Documentation
-- Mise à jour de `BRANCH_PROGRESS.md` pour chaque commit sur branche
+- Mise à jour de `docs/progress/branch-progress.md` pour chaque commit sur branche
 - Mise à jour complète de toutes les docs lors du merge vers `main`
 
 ---

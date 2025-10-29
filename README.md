@@ -59,15 +59,22 @@ npm run dev
 
 ## Documentation
 
-### Documentation Générale
-- [Documentation Technique](docs/TECHNICAL.md)
-- [Documentation Base de Données](docs/DATABASE.md)
-- [Avancement Général](docs/PROJECT_PROGRESS.md)
-- [Avancement de la Branche](docs/BRANCH_PROGRESS.md)
+### Architecture
+- [Documentation Technique](docs/architecture/technical.md)
+- [Documentation Base de Données](docs/architecture/database.md)
 
-### Gestion des Erreurs
-- [Guide de Gestion des Erreurs](GUIDE_GESTION_ERREURS.md) - Utilisation et tests
-- [Démonstration Visuelle](DEMO_ERREURS.html) - Ouvrir dans un navigateur
+### Guides
+- [Guide de Gestion des Erreurs](docs/guides/error-handling.md) - Utilisation et tests
+
+### Sécurité
+- [Vérification Sécurité Email](docs/security/email-verification.md)
+
+### Progression
+- [Avancement Général](docs/progress/project-progress.md)
+- [Avancement de la Branche](docs/progress/branch-progress.md)
+
+### Démos
+- [Démonstration Visuelle Erreurs](docs/demos/error-demo.html) - Ouvrir dans un navigateur
 
 ### Tests
 - [Documentation Tests Frontend](frontend/TESTS.md) - Tests unitaires (43 tests)

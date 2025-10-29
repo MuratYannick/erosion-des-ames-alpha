@@ -245,4 +245,4 @@ Le fichier `errorHandler.js` expose :
 
 ## 🎬 Démonstration visuelle
 
-Ouvrez [DEMO_ERREURS.html](DEMO_ERREURS.html) dans votre navigateur pour voir une présentation visuelle interactive de la gestion des erreurs.
+Ouvrez [error-demo.html](../demos/error-demo.html) dans votre navigateur pour voir une présentation visuelle interactive de la gestion des erreurs.
