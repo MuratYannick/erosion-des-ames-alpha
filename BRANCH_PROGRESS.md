@@ -58,27 +58,38 @@ Revoir pas à pas le contenu des tables généré par les seeders en les sépara
 
 ## État actuel des seeders
 
-### Seeders existants
-- [001-demo-users.js](backend/seeders/001-demo-users.js)
-- [002-demo-ethnies.js](backend/seeders/002-demo-ethnies.js)
-- [003-demo-factions.js](backend/seeders/003-demo-factions.js)
-- [004-demo-clans.js](backend/seeders/004-demo-clans.js)
-- [005-demo-characters.js](backend/seeders/005-demo-characters.js)
-- [006-demo-categories.js](backend/seeders/006-demo-categories.js)
-- [007-demo-sections.js](backend/seeders/007-demo-sections.js)
-- [008-demo-topics.js](backend/seeders/008-demo-topics.js)
-- [009-demo-posts.js](backend/seeders/009-demo-posts.js)
+### Seeders de production
+- [001-prod-users.js](backend/seeders/prod/001-prod-users.js) - Vide
+- [002-prod-ethnies.js](backend/seeders/prod/002-prod-ethnies.js) - 5 ethnies
+- [003-prod-factions.js](backend/seeders/prod/003-prod-factions.js) - 5 factions
+- [004-prod-clans.js](backend/seeders/prod/004-prod-clans.js) - 6 clans
+- [005-prod-characters.js](backend/seeders/prod/005-prod-characters.js) - Vide
+- [006-prod-categories.js](backend/seeders/prod/006-prod-categories.js) - 5 catégories
+- [007-prod-sections.js](backend/seeders/prod/007-prod-sections.js) - 10 sections
+- [008-prod-topics.js](backend/seeders/prod/008-prod-topics.js) - Vide
+- [009-prod-posts.js](backend/seeders/prod/009-prod-posts.js) - Vide
+
+### Seeders de développement
+- [101-dev-users.js](backend/seeders/dev/101-dev-users.js) - 3 comptes test
+- [102-dev-ethnies.js](backend/seeders/dev/102-dev-ethnies.js) - Vide
+- [103-dev-factions.js](backend/seeders/dev/103-dev-factions.js) - Vide
+- [104-dev-clans.js](backend/seeders/dev/104-dev-clans.js) - Vide
+- [105-dev-characters.js](backend/seeders/dev/105-dev-characters.js) - 9 personnages
+- [106-dev-categories.js](backend/seeders/dev/106-dev-categories.js) - Vide
+- [107-dev-sections.js](backend/seeders/dev/107-dev-sections.js) - Vide
+- [108-dev-topics.js](backend/seeders/dev/108-dev-topics.js) - 7 topics
+- [109-dev-posts.js](backend/seeders/dev/109-dev-posts.js) - 10 posts
 
 ---
 
 ## Plan de révision
 
-### Phase 1 : Restructuration des fichiers seeders
-- [ ] Créer les répertoires `backend/seeders/prod/` et `backend/seeders/dev/`
-- [ ] Créer tous les seeders de production (00x-prod-*.js)
-- [ ] Créer tous les seeders de développement (10x-dev-*.js)
-- [ ] Supprimer les anciens seeders obsolètes (00x-demo-*.js)
-- [ ] Mettre à jour package.json avec de nouveaux scripts npm
+### Phase 1 : Restructuration des fichiers seeders ✅
+- [x] Créer les répertoires `backend/seeders/prod/` et `backend/seeders/dev/`
+- [x] Créer tous les seeders de production (00x-prod-*.js)
+- [x] Créer tous les seeders de développement (10x-dev-*.js)
+- [x] Supprimer les anciens seeders obsolètes (00x-demo-*.js)
+- [x] Mettre à jour package.json avec de nouveaux scripts npm
 
 ### Phase 2 : Révision seeders de production
 - [ ] 001-prod-users.js - Définir le contenu (probablement vide)
@@ -113,7 +124,9 @@ Revoir pas à pas le contenu des tables généré par les seeders en les sépara
 
 ## Travail effectué
 
-### 2025-10-30 - Initialisation de la branche
+### 2025-10-30 - Initialisation et restructuration complète
+
+#### Initialisation
 - ✅ Création de la branche feature/seeders-review
 - ✅ Création du fichier BRANCH_PROGRESS.md
 - ✅ Documentation de la stratégie des seeders
@@ -121,13 +134,26 @@ Revoir pas à pas le contenu des tables généré par les seeders en les sépara
 - ✅ Convention de nommage : 00x-prod-*.js et 10x-dev-*.js
 - ✅ Décision : tous les seeders pour toutes les tables (même vides)
 
+#### Restructuration complète (Phase 1)
+- ✅ Création des répertoires backend/seeders/prod/ et backend/seeders/dev/
+- ✅ Création des 9 seeders de production
+- ✅ Création des 9 seeders de développement
+- ✅ Suppression des 9 anciens seeders obsolètes
+- ✅ Mise à jour du package.json avec les nouveaux scripts npm :
+  - `db:seed:prod` - Exécuter uniquement les seeders de production
+  - `db:seed:dev` - Exécuter uniquement les seeders de développement
+  - `db:seed:all` - Exécuter tous les seeders (prod + dev)
+  - `db:reset:prod` - Reset complet avec seulement les données de production
+  - `db:reset:dev` - Reset complet avec prod + dev
+
 ---
 
 ## Prochaines étapes
 
-1. Commencer par la restructuration des fichiers
-2. Définir précisément le contenu de chaque seeder de production
-3. Définir précisément le contenu de chaque seeder de développement
+1. ~~Commencer par la restructuration des fichiers~~ ✅ Terminé
+2. Tester les seeders pour vérifier le bon fonctionnement
+3. Réviser le contenu des seeders de production (Phase 2)
+4. Réviser le contenu des seeders de développement (Phase 3)
 
 ---
 
@@ -163,11 +189,17 @@ backend/seeders/
 - **Développement** : `10x-dev-<table_name>.js` (dans `backend/seeders/dev/`)
 - **Toutes les tables ont un seeder** dans chaque catégorie (même vide)
 
-### Scripts npm à créer
-```json
-"db:seed:prod": "Exécuter uniquement les seeders de production",
-"db:seed:dev": "Exécuter uniquement les seeders de développement",
-"db:seed:all": "Exécuter tous les seeders (prod + dev)"
+### Scripts npm disponibles
+```bash
+# Seeders
+npm run db:seed:prod      # Exécuter uniquement les seeders de production
+npm run db:seed:dev       # Exécuter uniquement les seeders de développement
+npm run db:seed:all       # Exécuter tous les seeders (prod + dev)
+
+# Reset complet
+npm run db:reset:prod     # Reset + migrations + seeders de production
+npm run db:reset:dev      # Reset + migrations + tous les seeders (prod + dev)
+npm run db:reset          # Alias de db:reset:dev
 ```
 
 ---
