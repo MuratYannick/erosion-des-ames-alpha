@@ -1,214 +1,275 @@
-# Avancement de la Branche - Mise à jour Users pour Forum
+# Avancement de la Branche - Développement Forum
 
 ## Informations de Branche
 
-**Branche actuelle**: feature/forum
-**Branche parent**: main
-**Créée le**: 2025-10-24
-**Objectif**: Modification de la table users pour supporter les fonctionnalités du forum
+**Branche actuelle**: feature/forum-tables
+**Branche parent**: feature/forum
+**Créée le**: 2025-10-30
+**Objectif**: Création des tables de base de données pour le système de forum complet (ethnies, factions, clans, characters, categories, sections, topics, posts)
 
 ---
 
 ## Contexte
 
-Dans le cadre de la préparation du système de forum, la table `users` doit être enrichie pour supporter:
-- La gestion des rôles utilisateurs (admin, moderator, game-master, player)
-- La vérification des emails
-- L'acceptation des règlements du forum et des CGU
-- La possibilité de créer plusieurs comptes par email (pour certains utilisateurs autorisés)
-
-Cette branche prépare le développement du forum, qui sera une fonctionnalité importante de l'application.
+Suite à la préparation de la table `users` pour le forum (branche feature/forum-users-update), cette branche implémente l'intégralité du système de forum avec:
+- Tables de jeu: ethnies, factions, clans, characters
+- Tables de forum: categories, sections, topics, posts
+- Relations complexes entre toutes ces entités
+- Système de soft-delete (paranoid mode)
+- Hiérarchie de sections
+- Double système d'auteurs (user OU character) pour topics et posts
+- Gestion des permissions par faction/clan
+- Données de test complètes (seeders)
 
 ---
 
 ## Tâches de la Branche
 
-### Modifications de la table users
-- [x] Retirer la contrainte UNIQUE sur la colonne email
-- [x] Ajouter colonne `email_verified` (BOOLEAN, défaut: false)
-- [x] Ajouter colonne `role` (ENUM: admin/moderator/game-master/player, défaut: player)
-- [x] Ajouter colonne `forum_rules_accepted` (BOOLEAN, défaut: false)
-- [x] Ajouter colonne `forum_rules_accepted_at` (DATE nullable)
-- [x] Ajouter colonne `terms_accepted` (BOOLEAN, défaut: false)
-- [x] Ajouter colonne `terms_accepted_at` (DATE nullable)
-- [x] Ajouter index sur la colonne `role` pour performance
+### Migrations (9 nouvelles migrations)
+- [x] 003-create-ethnies.js: Table de référence des ethnies
+- [x] 004-create-factions.js: Table des factions avec soft-delete
+- [x] 005-create-clans.js: Table des clans avec soft-delete
+- [x] 006-create-characters.js: Table des personnages avec soft-delete
+- [x] 007-create-categories.js: Table des catégories de forum
+- [x] 008-create-sections.js: Table des sections avec hiérarchie
+- [x] 009-create-topics.js: Table des topics avec double auteur
+- [x] 010-create-posts.js: Table des posts avec double auteur
+- [x] 011-add-foreign-keys-constraints.js: Résolution des références circulaires
 
-### Backend
-- [x] Créer migration 002-update-users-for-forum.js
-- [x] Mettre à jour le modèle User.js avec les nouveaux champs
-- [x] Mettre à jour le seeder 001-demo-users.js
-- [x] Créer script utilitaire showUsersTable.js
+### Modèles Sequelize (9 modèles)
+- [x] Ethnie.js: Modèle sans timestamps
+- [x] Faction.js: Modèle avec paranoid mode
+- [x] Clan.js: Modèle avec paranoid mode
+- [x] Character.js: Modèle avec paranoid mode
+- [x] Category.js: Modèle avec paranoid mode
+- [x] Section.js: Modèle avec paranoid mode et auto-référence
+- [x] Topic.js: Modèle avec paranoid mode et validation XOR auteur
+- [x] Post.js: Modèle avec paranoid mode et validation XOR auteur
+- [x] index.js: Fichier central définissant toutes les associations
 
-### Sécurité
-- [x] Vérifier que la route /api/auth/register interdit toujours les emails en double
-- [x] Vérifier que le formulaire Register gère correctement l'erreur 409
-- [x] Documenter les protections applicatives (docs/security/email-verification.md)
+### Seeders (8 nouveaux seeders)
+- [x] 001-demo-users.js: Modification pour IDs explicites
+- [x] 002-demo-ethnies.js: 5 ethnies
+- [x] 003-demo-factions.js: 5 factions
+- [x] 004-demo-clans.js: 6 clans
+- [x] 005-demo-characters.js: 9 characters (4 PCs, 5 NPCs)
+- [x] 006-demo-categories.js: 5 catégories
+- [x] 007-demo-sections.js: 10 sections (avec hiérarchie)
+- [x] 008-demo-topics.js: 7 topics
+- [x] 009-demo-posts.js: 10 posts avec dialogues RP
+
+### Scripts et Commandes
+- [x] clearTable.js: Script pour vider une table spécifique
+- [x] db:clear: Commande npm pour vider des tables
+- [x] db:seed:undo: Modifié pour annuler tous les seeders
+- [x] Suppression de db:seed:undo:all (redondant)
+
+### Documentation
+- [x] database.md: Documentation complète des tables et relations
+- [x] database.md: Documentation des commandes seeders et limitations
+- [x] branch-progress.md: Mise à jour avec progression branche forum-tables
 
 ---
 
 ## Commits
 
-### Commit 1: Mise à jour table users
-**Message**: feat(backend): mise à jour table users pour le forum
+### Historique précédent (branche feature/forum)
+- Commit 1: feat(backend): mise à jour table users pour le forum
+- Commit 2: docs(forum): ajout documentation sécurité et progression branche users
+- Commit 3: Merge branch 'feature/forum-users-update' into feature/forum
+
+### Branche feature/forum-tables (en cours)
+
+#### Commit à venir: Création complète des tables forum
+**Message prévu**:
+```
+feat(forum): création tables de base de données forum complet
+
+- 9 migrations: ethnies, factions, clans, characters, categories, sections, topics, posts + contraintes FK
+- 9 modèles Sequelize avec associations complètes
+- 8 seeders avec données de test complètes
+- Script clearTable.js pour vider tables individuelles
+- Commande db:clear pour gestion granulaire
+- Documentation complète dans database.md et branch-progress.md
+
+Résolution références circulaires via migration 011
+Validation XOR pour auteurs (user OU character) dans models
+Soft-delete (paranoid) sur toutes tables sauf ethnies
+```
 
 **Fichiers créés**:
-- backend/migrations/002-update-users-for-forum.js
-- backend/src/scripts/showUsersTable.js
-- docs/security/email-verification.md
+- backend/migrations/003-create-ethnies.js
+- backend/migrations/004-create-factions.js
+- backend/migrations/005-create-clans.js
+- backend/migrations/006-create-characters.js
+- backend/migrations/007-create-categories.js
+- backend/migrations/008-create-sections.js
+- backend/migrations/009-create-topics.js
+- backend/migrations/010-create-posts.js
+- backend/migrations/011-add-foreign-keys-constraints.js
+- backend/src/models/Ethnie.js
+- backend/src/models/Faction.js
+- backend/src/models/Clan.js
+- backend/src/models/Character.js
+- backend/src/models/Category.js
+- backend/src/models/Section.js
+- backend/src/models/Topic.js
+- backend/src/models/Post.js
+- backend/src/models/index.js
+- backend/seeders/002-demo-ethnies.js
+- backend/seeders/003-demo-factions.js
+- backend/seeders/004-demo-clans.js
+- backend/seeders/005-demo-characters.js
+- backend/seeders/006-demo-categories.js
+- backend/seeders/007-demo-sections.js
+- backend/seeders/008-demo-topics.js
+- backend/seeders/009-demo-posts.js
+- backend/src/scripts/clearTable.js
 
 **Fichiers modifiés**:
-- backend/src/models/User.js (ajout 6 nouveaux champs)
-- backend/seeders/001-demo-users.js (ajout données pour nouveaux champs)
-
-**Détails techniques**:
-- Utilisation de requêtes SQL brutes pour supprimer la contrainte unique email
-- Ajout de 6 nouveaux champs avec validations appropriées
-- Création de données de test avec rôles variés (admin, players)
-- Index créé sur `role` pour optimiser les requêtes de filtrage par rôle
-
-### Commit 2: Documentation
-**Message**: docs(forum): ajout documentation sécurité et progression branche users
-
-**Fichiers créés**:
-- docs/BRANCH_PROGRESS_FORUM_USERS.md
-
-### Commit 3: Merge sous-branche
-**Message**: Merge branch 'feature/forum-users-update' into feature/forum
-
-**Détails**: Intégration complète de la mise à jour de la table users
+- backend/package.json (commandes db:clear, db:seed:undo)
+- backend/seeders/001-demo-users.js (IDs explicites)
+- docs/architecture/database.md (documentation complète)
+- docs/progress/branch-progress.md (mise à jour progression)
 
 ---
 
 ## Architecture des Données
 
-### Nouveaux champs User
+### Tables créées (8 tables)
 
-```javascript
-{
-  email_verified: BOOLEAN (false),          // Email vérifié ou non
-  role: ENUM (player),                      // admin|moderator|game-master|player
-  forum_rules_accepted: BOOLEAN (false),    // Règlement forum accepté
-  forum_rules_accepted_at: DATE (null),     // Date acceptation règlement
-  terms_accepted: BOOLEAN (false),          // CGU acceptées
-  terms_accepted_at: DATE (null)            // Date acceptation CGU
-}
-```
+1. **ethnies**: Table de référence statique (pas de soft-delete)
+2. **factions**: Organisations majeures avec ethnie optionnelle
+3. **clans**: Sous-groupes des factions avec leader
+4. **characters**: Personnages joueurs et NPCs
+5. **categories**: Catégories principales du forum
+6. **sections**: Sections hiérarchiques avec permissions faction/clan
+7. **topics**: Sujets de discussion avec auteur user OU character
+8. **posts**: Messages avec auteur user OU character
 
-### Rôles disponibles
-- **admin**: Administrateur avec tous les droits
-- **moderator**: Modérateur du forum
-- **game-master**: Maître du jeu
-- **player**: Joueur standard (rôle par défaut)
+### Relations Clés
 
-### Données de test (seeders)
+- **Références circulaires** (résolues dans migration 011):
+  - factions.main_clan_id → clans.id
+  - clans.leader_character_id → characters.id
 
-| Username | Email | Role | Email Verified | Forum Rules | Terms |
-|----------|-------|------|----------------|-------------|-------|
-| admin | admin@erosion-des-ames.com | admin | ✓ | ✓ | ✓ |
-| testuser | test@example.com | player | ✓ | ✓ | ✓ |
-| player1 | player1@example.com | player | ✗ | ✗ | ✓ |
+- **Hiérarchie**:
+  - sections.parent_section_id → sections.id (auto-référence)
+
+- **Double auteur (XOR)**:
+  - topics: author_user_id XOR author_character_id
+  - posts: author_user_id XOR author_character_id
+
+- **Permissions**:
+  - sections peuvent être privées (faction/clan)
+  - topics héritent des permissions de la section
 
 ---
 
 ## Problèmes Résolus
 
-### 1. Suppression contrainte UNIQUE email
-**Problème**: La méthode Sequelize `changeColumn` ne supprimait pas correctement la contrainte unique en MySQL.
+### 1. Références Circulaires FK
+**Problème**: Migration 004 (factions) référençait clans.id avant création, et migration 005 (clans) référençait characters.id avant création.
 
-**Solution**: Utilisation de requêtes SQL brutes :
-```javascript
-await queryInterface.sequelize.query('ALTER TABLE users DROP INDEX email');
-await queryInterface.sequelize.query('ALTER TABLE users DROP INDEX idx_email');
+**Solution**:
+- Migrations 004 et 005 créent les colonnes sans FK constraints
+- Migration 011 ajoute les FK constraints après création de toutes les tables
+- Rollback corrigé: supprimer FK AVANT indexes
+
+### 2. CHECK Constraints MySQL sur colonnes FK
+**Problème**: MySQL n'autorise pas les CHECK constraints sur colonnes avec FK.
+```
+ERROR: Column 'author_user_id' cannot be used in a check constraint 'chk_topics_author'
 ```
 
-### 2. MySQL créait automatiquement un nouvel index unique
-**Problème**: Après la migration, MySQL créait un index `email_2` unique automatiquement.
-
-**Solution**: Suppression manuelle de l'index après vérification de la structure.
-
----
-
-## Sécurité - Protection Email
-
-Malgré la suppression de la contrainte UNIQUE au niveau de la base de données, les protections suivantes restent actives:
-
-### Backend ([authController.js:28-45](../backend/src/controllers/authController.js))
+**Solution**:
+- Suppression des CHECK constraints des migrations
+- Validation XOR implémentée dans les modèles Sequelize
 ```javascript
-const existingUser = await User.findOne({
-  where: { [Op.or]: [{ email }, { username }] }
-});
-if (existingUser?.email === email) {
-  return res.status(409).json({ error: 'Cet email est déjà utilisé' });
+validate: {
+  authorXor() {
+    const hasUser = this.author_user_id !== null;
+    const hasCharacter = this.author_character_id !== null;
+    if (hasUser && hasCharacter) throw new Error('Un seul type d\'auteur');
+    if (!hasUser && !hasCharacter) throw new Error('Un auteur requis');
+  }
 }
 ```
 
-### Frontend ([Register.jsx:61](../frontend/src/pages/Register.jsx))
+### 3. Seeders - Contraintes FK avec auto-increment
+**Problème**: Users créés avec auto-increment (7, 8, 9) mais characters attendaient IDs 1, 2, 3.
+
+**Solution**: Ajout d'IDs explicites dans seeder 001-demo-users.js
 ```javascript
-const wasRedirected = handleError(err, navigate, { skipValidationErrors: true });
-if (!wasRedirected) {
-  setError(err.message); // Affiche "Cet email est déjà utilisé"
-}
+{ id: 1, username: 'admin', ... }
 ```
 
-### Tests effectués
-✓ Route /register refuse les emails en double (HTTP 409)
-✓ Route /register refuse les usernames en double (HTTP 409)
-✓ Frontend affiche l'erreur dans le formulaire (pas de redirection)
-✓ Base de données accepte les doublons (contrainte supprimée)
+### 4. Sequelize CLI ne track pas les seeders individuels
+**Problème**: Impossible d'annuler uniquement le dernier seeder.
 
-**Documentation complète**: [email-verification.md](../security/email-verification.md)
+**Solution**:
+- db:seed:undo modifié pour annuler TOUS les seeders
+- db:seed:undo:all supprimé (redondant)
+- Ajout commande db:clear pour vider tables individuelles
+- Documentation de la limitation
 
 ---
 
-## Tests de Migration
+## Tests Effectués
 
-### Test 1: Undo/Redo complet
+### Test 1: Migrations complètes
 ```bash
 npm run db:migrate:undo:all
 npm run db:migrate
+```
+✓ **Résultat**: Toutes les migrations (001-011) s'exécutent sans erreur
+✓ **Rollback**: Toutes les migrations se rollback correctement
+
+### Test 2: Seeders complets
+```bash
 npm run db:seed
 ```
-✓ **Résultat**: Migration et seeder fonctionnent correctement
+✓ **Résultat**: Tous les seeders (001-009) s'exécutent sans erreur
+✓ **Données**: 3 users, 5 ethnies, 5 factions, 6 clans, 9 characters, 5 categories, 10 sections, 7 topics, 10 posts
 
-### Test 2: Structure de la table
+### Test 3: Commande db:seed:undo
 ```bash
-node src/scripts/showUsersTable.js
+npm run db:seed:undo
 ```
-✓ **Résultat**:
-- 14 colonnes au total (8 originales + 6 nouvelles)
-- Email n'est plus UNIQUE
-- Index créé sur role
-- Tous les champs DATE incluent l'heure
+✓ **Résultat**: Tous les seeders sont annulés (toutes les tables vidées)
 
-### Test 3: Insertion email dupliqué
+### Test 4: Commande db:clear
 ```bash
-INSERT INTO users (username, email, ...)
-VALUES ('admin2', 'admin@erosion-des-ames.com', ...)
+npm run db:clear -- posts
 ```
-✓ **Résultat**: Insertion réussie - contrainte unique bien supprimée
+✓ **Résultat**: Table posts vidée sans affecter les autres tables
+✓ **FK**: Désactivation temporaire des contraintes FK fonctionne
+
+### Test 5: Validation XOR dans modèles
+✓ **Résultat**: Sequelize valide correctement l'exclusivité des auteurs (user OU character)
 
 ---
 
 ## État Actuel de la Branche
 
-### ✅ Complété
-- [x] Migration 002-update-users-for-forum.js créée et testée
-- [x] Modèle User.js mis à jour
-- [x] Seeder 001-demo-users.js mis à jour
-- [x] Script utilitaire showUsersTable.js créé
-- [x] Contrainte unique email supprimée
-- [x] 6 nouveaux champs ajoutés et fonctionnels
-- [x] Protection applicative email vérifiée
-- [x] Documentation sécurité créée
+### ✅ Complété (branche feature/forum-tables)
+- [x] 9 migrations créées et testées (003-011)
+- [x] 9 modèles Sequelize avec associations
+- [x] 8 seeders créés avec données de test complètes
+- [x] Script clearTable.js créé
+- [x] Commandes db:clear et db:seed:undo mises à jour
+- [x] Résolution références circulaires (migration 011)
+- [x] Validation XOR auteurs implémentée
+- [x] Soft-delete sur toutes tables (sauf ethnies)
+- [x] Documentation complète mise à jour
 - [x] Tests complets effectués
-- [x] Merge avec feature/forum effectué
-- [x] Push vers GitHub effectué
 
 ### 📋 Prochaines Actions
-1. Continuer développement forum (catégories, topics, posts...)
-2. Implémenter système de permissions basé sur les rôles
-3. Créer interface de vérification email
-4. Créer pages d'acceptation des règles et CGU
+1. **Immédiat**: Commit, push et merge avec feature/forum
+2. **Backend API**: Créer routes CRUD pour toutes les tables
+3. **Permissions**: Implémenter système de permissions basé sur rôles/factions/clans
+4. **Frontend**: Créer interfaces pour catégories, sections, topics, posts
+5. **RP**: Implémenter système de roleplay avec sélection de character
 
 ---
 
@@ -216,53 +277,63 @@ VALUES ('admin2', 'admin@erosion-des-ames.com', ...)
 
 ### Décisions Techniques
 
-**1. Suppression contrainte UNIQUE email**
-- Permet aux utilisateurs autorisés d'avoir plusieurs comptes
-- Protection maintenue au niveau applicatif via authController
-- Future route dédiée pour création de comptes multiples
+**1. Migration 011 pour références circulaires**
+- Permet de créer toutes les tables avant d'ajouter les FK constraints complexes
+- Pattern réutilisable pour futures relations circulaires
+- Rollback sécurisé: FK supprimées avant indexes
 
-**2. Choix de l'ENUM pour role**
-- Garantit l'intégrité des données (valeurs limitées)
-- Index créé pour optimiser les requêtes de filtrage
-- Facilite l'ajout de permissions basées sur les rôles
+**2. Validation XOR dans modèles plutôt que CHECK constraints**
+- MySQL ne supporte pas CHECK sur colonnes avec FK
+- Validation Sequelize plus flexible et maintenable
+- Messages d'erreur personnalisables en français
 
-**3. Séparation forum_rules et terms**
-- Permet une acceptation indépendante
-- Traçabilité avec dates d'acceptation
-- Conformité juridique (CGU) et modération (règlement forum)
+**3. Soft-delete (paranoid) sur toutes tables sauf ethnies**
+- Permet de conserver l'historique des posts/topics supprimés
+- Ethnie = table de référence statique, pas de soft-delete nécessaire
+- Facilite la modération et la récupération de contenu
 
-### Utilisation Future
+**4. Double système d'auteurs (user OU character)**
+- Permet le roleplay in-game (auteur = character)
+- Permet les posts hors-jeu (auteur = user)
+- Champ author_name conserve le nom après suppression
 
-Les nouveaux champs seront utilisés pour:
-- Système de permissions basé sur les rôles
-- Vérification email obligatoire pour certaines actions
-- Acceptation obligatoire des règles avant accès au forum
-- Traçabilité des acceptations (date/heure)
+**5. Script clearTable.js vs seeders**
+- Sequelize CLI ne track pas les seeders individuellement
+- clearTable permet un vidage granulaire table par table
+- Plus efficace pour le développement et les tests
 
 ---
 
 ## Scripts Utiles
 
-### Voir la structure de la table users
+### Réinitialiser complètement la base de données
 ```bash
-node backend/src/scripts/showUsersTable.js
+cd backend
+npm run db:reset
+```
+Cette commande: undo all migrations → migrate → seed
+
+### Vider une table spécifique
+```bash
+npm run db:clear -- posts
+npm run db:clear -- topics
+npm run db:clear -- characters
 ```
 
-### Réinitialiser la base de données
+### Migrations uniquement
 ```bash
-npm run db:migrate:undo:all
-npm run db:migrate
-npm run db:seed
+npm run db:migrate              # Exécuter toutes les migrations
+npm run db:migrate:undo         # Annuler la dernière
+npm run db:migrate:undo:all     # Tout annuler
 ```
 
-### Tester la route register
+### Seeders uniquement
 ```bash
-curl -w "\nHTTP: %{http_code}\n" -X POST http://localhost:3000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"username":"test","email":"existing@email.com","password":"123456"}'
+npm run db:seed                 # Exécuter tous les seeders
+npm run db:seed:undo            # Annuler TOUS les seeders
 ```
 
 ---
 
-**Dernière mise à jour**: 2025-10-25
-**Statut**: ✅ Phase users complétée - Prêt pour développement forum
+**Dernière mise à jour**: 2025-10-30
+**Statut**: ✅ Tables forum créées - Prêt pour développement API backend
