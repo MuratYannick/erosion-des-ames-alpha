@@ -15,6 +15,16 @@ const Topic = sequelize.define('Topic', {
       len: [2, 200]
     }
   },
+  slug: {
+    type: DataTypes.STRING(250),
+    allowNull: false,
+    unique: true,
+    validate: {
+      notEmpty: true,
+      len: [2, 250],
+      is: /^[a-z0-9-]+$/i // Alphanumeric + hyphens only
+    }
+  },
   section_id: {
     type: DataTypes.INTEGER,
     allowNull: false

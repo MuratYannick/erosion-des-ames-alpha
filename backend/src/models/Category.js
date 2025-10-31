@@ -15,6 +15,16 @@ const Category = sequelize.define('Category', {
       len: [2, 100]
     }
   },
+  slug: {
+    type: DataTypes.STRING(150),
+    allowNull: false,
+    unique: true,
+    validate: {
+      notEmpty: true,
+      len: [2, 150],
+      is: /^[a-z0-9-]+$/i // Alphanumeric + hyphens only
+    }
+  },
   description: {
     type: DataTypes.TEXT,
     allowNull: true
