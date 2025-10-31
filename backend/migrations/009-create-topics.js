@@ -14,6 +14,12 @@ module.exports = {
         type: Sequelize.STRING(200),
         allowNull: false
       },
+      slug: {
+        type: Sequelize.STRING(250),
+        allowNull: false,
+        unique: true,
+        comment: 'URL-friendly identifier for topic'
+      },
       section_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

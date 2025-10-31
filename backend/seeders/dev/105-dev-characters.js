@@ -4,125 +4,105 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     const now = new Date();
+    const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+    const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
     await queryInterface.bulkInsert('characters', [
-      // Personnages joueurs (PJ) liés aux users
+      // Personnage pour PJ-eclaireur (user_id: 4) - Éclaireur sans clan
       {
         id: 1,
-        name: 'Arathorn le Preux',
-        user_id: 1, // admin
-        ethnie_id: 1, // Humain
-        faction_id: 1, // Royaume de Lumière
-        clan_id: 1, // Chevaliers de l'Aube
+        name: 'Kael l\'Éveillé',
+        user_id: 4,
+        ethnie_id: 1, // Les Éveillés
+        faction_id: 1, // Les Éclaireurs de l'Aube Nouvelle
+        clan_id: null, // Sans clan
         is_dead: false,
-        description: 'Chevalier valeureux défendant les faibles et les opprimés.',
-        created_at: now,
-        updated_at: now,
+        description: 'Un jeune Éveillé qui n\'a pas encore choisi son clan. Il observe et apprend les différentes castes avant de prendre sa décision.',
+        created_at: oneHourAgo,
+        updated_at: oneHourAgo,
         deleted_at: null
       },
+      // Personnage pour PJ-veilleur (user_id: 5) - Veilleur sans clan
       {
         id: 2,
-        name: 'Elendil le Sage',
-        user_id: 2, // testuser
-        ethnie_id: 2, // Elfe
-        faction_id: 4, // Gardiens de la Forêt
-        clan_id: 5, // Gardes-Feuilles
+        name: 'Elena la Pure',
+        user_id: 5,
+        ethnie_id: 2, // Les Inaltérés
+        faction_id: 2, // Les Veilleurs de l'Ancien Monde
+        clan_id: null, // Sans clan
         is_dead: false,
-        description: 'Ranger elfe gardant les frontières de la forêt ancestrale.',
-        created_at: now,
-        updated_at: now,
+        description: 'Une Inaltérée récemment arrivée à la Citadelle du Renouveau. Elle doit encore prouver sa valeur avant de rejoindre un clan.',
+        created_at: oneHourAgo,
+        updated_at: oneHourAgo,
         deleted_at: null
       },
+      // Personnage pour PJ-neutre (user_id: 6) - Neutre sans clan
       {
         id: 3,
-        name: 'Gimli Pieddur',
-        user_id: 3, // player1
-        ethnie_id: 3, // Nain
+        name: 'Ash le Solitaire',
+        user_id: 6,
+        ethnie_id: 1, // Les Éveillés (mais neutre)
         faction_id: null, // Pas de faction
-        clan_id: 6, // Forgerons de Pierre
+        clan_id: null, // Sans clan
         is_dead: false,
-        description: 'Forgeron nain renommé pour ses armes légendaires.',
-        created_at: now,
-        updated_at: now,
+        description: 'Un mutant qui a choisi de rester neutre, refusant de rejoindre les Éclaireurs. Il survit seul dans les Terres Désolées.',
+        created_at: oneHourAgo,
+        updated_at: oneHourAgo,
         deleted_at: null
       },
+      // Personnage pour PJ-symbiote (user_id: 7) - Éclaireur avec clan Symbiotes
       {
         id: 4,
-        name: 'Shadowblade',
-        user_id: 2, // testuser (second personnage)
-        ethnie_id: 1, // Humain
-        faction_id: 2, // Confrérie des Ombres
-        clan_id: 3, // Assassins Silencieux
+        name: 'Lyra la Cultivatrice',
+        user_id: 7,
+        ethnie_id: 1, // Les Éveillés
+        faction_id: 1, // Les Éclaireurs de l'Aube Nouvelle
+        clan_id: 2, // La Caste des Symbiotes
         is_dead: false,
-        description: 'Assassin mystérieux travaillant dans l\'ombre.',
-        created_at: now,
-        updated_at: now,
+        description: 'Une Symbiote talentueuse qui a développé des techniques uniques pour cultiver des plantes mutées. Elle est respectée pour sa capacité à comprendre la nature transformée.',
+        created_at: oneDayAgo,
+        updated_at: oneDayAgo,
         deleted_at: null
       },
-
-      // Personnages non-joueurs (PNJ)
+      // Personnage pour PJ-sentinelles (user_id: 8) - Veilleur avec clan Sentinelles
       {
         id: 5,
-        name: 'Roi Aldric',
-        user_id: null, // PNJ
-        ethnie_id: 1, // Humain
-        faction_id: 1, // Royaume de Lumière
-        clan_id: null,
+        name: 'Marcus le Protecteur',
+        user_id: 8,
+        ethnie_id: 2, // Les Inaltérés
+        faction_id: 2, // Les Veilleurs de l'Ancien Monde
+        clan_id: 8, // Le Clan des Sentinelles
         is_dead: false,
-        description: 'Roi sage et juste du Royaume de Lumière.',
-        created_at: now,
-        updated_at: now,
+        description: 'Un guerrier expérimenté des Sentinelles, défendant la Citadelle du Renouveau contre les menaces extérieures. Sa loyauté envers les Veilleurs est absolue.',
+        created_at: oneDayAgo,
+        updated_at: oneDayAgo,
         deleted_at: null
       },
+      // Personnage pour PJ-vagabond (user_id: 9) - Neutre avec clan Vagabonds du Vent
       {
         id: 6,
-        name: 'Grom le Destructeur',
-        user_id: null, // PNJ
-        ethnie_id: 4, // Orc
-        faction_id: 3, // Horde Sauvage
-        clan_id: 4, // Tribu du Crâne Brisé
+        name: 'Zara la Marcheuse',
+        user_id: 9,
+        ethnie_id: 2, // Les Inaltérés (mais neutre)
+        faction_id: null, // Pas de faction
+        clan_id: 15, // Les Vagabonds du Vent
         is_dead: false,
-        description: 'Chef de guerre redoutable menant la Horde Sauvage.',
-        created_at: now,
-        updated_at: now,
+        description: 'Une marchande itinérante des Vagabonds du Vent. Elle parcourt les terres désolées, commerçant avec tous sans distinction, apportant des nouvelles et des marchandises rares.',
+        created_at: oneDayAgo,
+        updated_at: oneDayAgo,
         deleted_at: null
       },
+      // Personnage pour PJ-dead (user_id: 10) - Personnage mort
       {
         id: 7,
-        name: 'Azrael le Corrompu',
-        user_id: null, // PNJ
-        ethnie_id: 5, // Démon
-        faction_id: 5, // Légion Infernale
-        clan_id: null,
-        is_dead: false,
-        description: 'Seigneur démon cherchant à envahir le monde mortel.',
-        created_at: now,
-        updated_at: now,
-        deleted_at: null
-      },
-      {
-        id: 8,
-        name: 'Marcus le Commandant',
-        user_id: null, // PNJ
-        ethnie_id: 1, // Humain
-        faction_id: 1, // Royaume de Lumière
-        clan_id: 1, // Chevaliers de l'Aube
-        is_dead: false,
-        description: 'Commandant des Chevaliers de l\'Aube.',
-        created_at: now,
-        updated_at: now,
-        deleted_at: null
-      },
-      {
-        id: 9,
-        name: 'Ancien Héros Déchu',
-        user_id: null, // PNJ
-        ethnie_id: 1, // Humain
-        faction_id: null,
-        clan_id: null,
+        name: 'Theron le Tombé',
+        user_id: 10,
+        ethnie_id: 1, // Les Éveillés
+        faction_id: 1, // Les Éclaireurs de l'Aube Nouvelle
+        clan_id: 5, // La Caste des Sentinelles du Chaos
         is_dead: true, // Personnage mort
-        description: 'Héros légendaire tombé au combat il y a des années.',
-        created_at: now,
+        description: 'Un guerrier des Sentinelles du Chaos qui a trouvé la mort lors d\'un affrontement contre une horde de créatures mutées. Son sacrifice est honoré par sa faction.',
+        created_at: oneDayAgo,
         updated_at: now,
         deleted_at: null
       }

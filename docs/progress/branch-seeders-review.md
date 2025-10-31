@@ -5,28 +5,34 @@
 **Branche actuelle**: feature/seeders-review
 **Branche parent**: main
 **Créée le**: 2025-10-31
-**Objectif**: Révision complète des seeders de production avec les données définitives du jeu "Érosion des Âmes"
+**Objectif**: Révision complète des seeders de production avec les données définitives du jeu "Érosion des Âmes" et restructuration complète du système de seeding
 
 ---
 
 ## Contexte
 
-Cette branche restructure complètement les seeders pour séparer les données de développement (dev) des données de production (prod), et implémente les vraies données du jeu post-apocalyptique "Érosion des Âmes".
+Cette branche restructure complètement les seeders pour séparer les données de développement (dev) des données de production (prod), implémente les vraies données du jeu post-apocalyptique "Érosion des Âmes", et refactore le système de seeding avec des scripts Node.js personnalisés.
 
 ---
 
 ## Tâches de la Branche
 
-### Restructuration des Seeders
+### Restructuration des Seeders ✅
 - [x] Créer sous-répertoire `backend/seeders/dev/` pour données de développement
 - [x] Créer sous-répertoire `backend/seeders/prod/` pour données de production
 - [x] Migrer anciens seeders démo vers dev/
 - [x] Ajouter scripts npm pour seeders dev et prod
 - [x] Documenter la nouvelle structure dans README
 
-### Seeders de Production (prod/)
+### Migration Forum - Ajout de Slugs ✅
+- [x] Ajout champ `slug` dans les tables categories, sections, topics
+- [x] Création migrations pour ajout des slugs
+- [x] Mise à jour des modèles Category, Section, Topic
+- [x] Mise à jour seeders prod avec slugs générés
 
-#### Ethnies
+### Seeders de Production (prod/) ✅
+
+#### Utilisateurs et Ethnies
 - [x] 001-prod-users.js: Seeder vide (utilisateurs créés par inscription)
 - [x] 002-prod-ethnies.js: 2 ethnies (Les Éveillés, Les Inaltérés)
 
@@ -43,28 +49,66 @@ Cette branche restructure complètement les seeders pour séparer les données d
   - 10 clans neutres (non jouables pour le moment)
 
 #### Personnages
-- [x] 005-prod-characters.js: 132 personnages PNJ
-  - 22 leaders de clans
-  - 30 membres clans jouables (3 par clan)
-  - 60 membres clans neutres (5 par clan)
-  - 10 membres sans clan dans factions (5 par faction)
-  - 10 personnages solitaires (5 Éveillés, 5 Inaltérés)
+- [x] 005-prod-characters.js: Seeder vide (characters créés par les joueurs)
 
 #### Forum
-- [x] 006-prod-categories.js: 3 catégories
+- [x] 006-prod-categories.js: 3 catégories avec slugs
   - Forum Général
   - Forum HRP (Hors Role-Play)
   - Forum RP (Role-Play)
-- [x] 007-prod-sections.js: 9 sections principales
+- [x] 007-prod-sections.js: 79 sections avec slugs
   - 4 sections Forum Général
   - 2 sections Forum HRP
-  - 3 sections Forum RP (par faction)
-- [x] 008-prod-topics.js: 4 topics
+  - 3 sections principales Forum RP
+  - 70 sous-sections (factions, clans, neutres)
+- [x] 008-prod-topics.js: 4 topics avec slugs
   - Message de bienvenue
-  - Règlement du Forum
-  - CGU
+  - Règlement du Forum (avec contenu complet)
+  - CGU (avec contenu complet)
   - Présentation utilisateurs
-- [x] 009-prod-posts.js: 1 post (message de bienvenue)
+- [x] 009-prod-posts.js: 3 posts
+  - Message de bienvenue
+  - Règlement du Forum complet (7 sections)
+  - CGU complètes (8 sections, âge minimum 16 ans)
+
+### Seeders de Développement (dev/) ✅
+
+#### Utilisateurs et Ethnies
+- [x] 101-dev-users.js: 13 comptes de test
+  - 1 admin, 1 moderator, 1 game-master
+  - 9 comptes player avec différents états
+  - Tous avec le même mot de passe test
+
+#### Ethnies, Factions, Clans
+- [x] 102-dev-ethnies.js: Seeder vide (données en prod)
+- [x] 103-dev-factions.js: Seeder vide (données en prod)
+- [x] 104-dev-clans.js: Seeder vide (données en prod)
+
+#### Personnages
+- [x] 105-dev-characters.js: 7 personnages de test
+  - Personnages pour les comptes player
+  - Couvrant différentes factions/clans
+
+#### Forum
+- [x] 106-dev-categories.js: Seeder vide (données en prod)
+- [x] 107-dev-sections.js: Seeder vide (données en prod)
+- [x] 108-dev-topics.js: 7 topics de test
+  - Topics HRP (annonces, suggestions, présentations)
+  - Topics RP (sections privées et publiques)
+- [x] 109-dev-posts.js: 15 posts de test
+  - Posts HRP et RP
+  - Respectant les permissions privé/public
+
+### Refactoring Système de Seeding ✅
+- [x] Création scripts Node.js personnalisés
+  - seedProd.js: Exécute seeders prod
+  - seedDev.js: Exécute seeders dev
+  - seedAll.js: Exécute tous les seeders
+  - seedUndoAll.js: Vide toutes les tables
+  - seedInit.js: Init mode prod (undo → prod)
+  - seedAllComplete.js: Init complète (undo → prod → dev)
+- [x] Mise à jour commandes npm
+- [x] Optimisation commandes db:reset
 
 ---
 
@@ -113,66 +157,43 @@ Cette branche restructure complètement les seeders pour séparer les données d
 9. Les Loups Solitaires (bandits)
 10. Les Dévoreurs d'Âmes (cannibales fanatiques)
 
-### Personnages (132 PNJ)
-- 31 personnages faction Éclaireurs (6 + 20 + 5)
-- 31 personnages faction Veilleurs (6 + 20 + 5)
-- 60 personnages clans neutres (10 clans × 6)
-- 10 personnages solitaires
-
 ### Forum
 - 3 catégories
-- 9 sections
-- 4 topics (1 avec post de bienvenue, 3 vides)
+- 79 sections (avec sous-sections pour factions et clans)
+- 4 topics prod + 7 topics dev
+- 3 posts prod + 15 posts dev
 
 ---
 
-## Commits
+## Scripts NPM
 
-### Commit 1: feat(seeders): restructuration complète avec séparation prod/dev
-```
-feat(seeders): restructuration complète avec séparation prod/dev
-
-- Création sous-répertoires backend/seeders/prod/ et backend/seeders/dev/
-- Migration anciens seeders démo vers dev/
-- Ajout scripts npm: db:seed:prod et db:seed:dev
-- Documentation de la nouvelle structure
-
-📁 Structure:
-  - prod/: données de production (vraies données du jeu)
-  - dev/: données de développement (données de test)
+### Migrations
+```bash
+npm run db:migrate              # Exécuter migrations
+npm run db:migrate:undo         # Annuler dernière migration
+npm run db:migrate:undo:all     # Annuler toutes migrations
 ```
 
-### Commit 2 (à venir): feat(seeders): ajout données production complètes
+### Seeders
+```bash
+npm run db:seed                 # Init mode prod (undo → prod)
+npm run db:seed:prod            # Exécuter seeders prod uniquement
+npm run db:seed:dev             # Exécuter seeders dev uniquement
+npm run db:seed:all             # Init complète (undo → prod → dev)
+npm run db:seed:undo            # Vider toutes les tables
+npm run db:seed:undo:all        # Vider toutes les tables (alias)
 ```
-feat(seeders): ajout données production complètes Érosion des Âmes
 
-Ethnies et Factions:
-- 2 ethnies: Les Éveillés (mutants), Les Inaltérés (humains purs)
-- 2 factions jouables avec avant-postes et idéologies
-- Ajout champ outpost_name dans migration/modèle Faction
+### Reset
+```bash
+npm run db:reset                # Reset prod (undo migrations → migrate → seed)
+npm run db:reset:dev            # Reset complet (undo migrations → migrate → seed all)
+```
 
-Clans:
-- 22 clans au total (2 leaders, 10 jouables, 10 neutres)
-- 6 clans Éclaireurs (ressources, exploration, guérison, défense, archives)
-- 6 clans Veilleurs (défense, production, savoir, santé, exploration)
-- 10 clans neutres (marchands, mercenaires, pacifistes, bandits, etc.)
-
-Personnages:
-- 132 PNJ avec noms et descriptions détaillées
-- 1 leader par clan (22 leaders)
-- 3 membres par clan jouable (30 personnages)
-- 5 membres par clan neutre (60 personnages)
-- 5 membres sans clan par faction (10 personnages)
-- 10 personnages solitaires (5 par ethnie)
-
-Forum:
-- 3 catégories (Général, HRP, RP)
-- 9 sections principales (4 Général, 2 HRP, 3 RP par faction)
-- 4 topics (bienvenue, règlement, CGU, présentation)
-- 1 post de bienvenue avec markdown
-
-🎮 Toutes les données reflètent l'univers post-apocalyptique du jeu
-📝 Descriptions détaillées pour chaque entité
+### Autres
+```bash
+npm run db:test                 # Tester connexion DB
+npm run db:clear                # Vider une table spécifique
 ```
 
 ---
@@ -182,73 +203,86 @@ Forum:
 ### Structure
 - backend/seeders/dev/ (nouveau répertoire)
 - backend/seeders/prod/ (nouveau répertoire)
+- backend/src/scripts/ (scripts de seeding personnalisés)
 
 ### Migrations
 - backend/migrations/004-create-factions.js (ajout outpost_name)
+- backend/migrations/017-add-slug-to-categories.js (nouveau)
+- backend/migrations/018-add-slug-to-sections.js (nouveau)
+- backend/migrations/019-add-slug-to-topics.js (nouveau)
 
 ### Modèles
 - backend/src/models/Faction.js (ajout outpost_name)
+- backend/src/models/Category.js (ajout slug)
+- backend/src/models/Section.js (ajout slug)
+- backend/src/models/Topic.js (ajout slug)
 
-### Seeders Production (nouveau)
-- backend/seeders/prod/001-prod-users.js
+### Scripts de Seeding
+- backend/src/scripts/seedProd.js (nouveau)
+- backend/src/scripts/seedDev.js (nouveau)
+- backend/src/scripts/seedAll.js (nouveau)
+- backend/src/scripts/seedUndoAll.js (nouveau)
+- backend/src/scripts/seedInit.js (nouveau)
+- backend/src/scripts/seedAllComplete.js (nouveau)
+
+### Seeders Production (9 fichiers)
+- backend/seeders/prod/001-prod-users.js (vide)
 - backend/seeders/prod/002-prod-ethnies.js
 - backend/seeders/prod/003-prod-factions.js
 - backend/seeders/prod/004-prod-clans.js
-- backend/seeders/prod/005-prod-characters.js
-- backend/seeders/prod/006-prod-categories.js
-- backend/seeders/prod/007-prod-sections.js
-- backend/seeders/prod/008-prod-topics.js
-- backend/seeders/prod/009-prod-posts.js
+- backend/seeders/prod/005-prod-characters.js (vide)
+- backend/seeders/prod/006-prod-categories.js (avec slugs)
+- backend/seeders/prod/007-prod-sections.js (79 sections avec slugs)
+- backend/seeders/prod/008-prod-topics.js (avec slugs)
+- backend/seeders/prod/009-prod-posts.js (contenu CGU et règlement complets)
 
-### Seeders Dev (déplacés)
-- backend/seeders/dev/001-demo-users.js
-- backend/seeders/dev/002-demo-ethnies.js
-- backend/seeders/dev/003-demo-factions.js
-- backend/seeders/dev/004-demo-clans.js
-- backend/seeders/dev/005-demo-characters.js
-- backend/seeders/dev/006-demo-categories.js
-- backend/seeders/dev/007-demo-sections.js
-- backend/seeders/dev/008-demo-topics.js
-- backend/seeders/dev/009-demo-posts.js
+### Seeders Dev (9 fichiers)
+- backend/seeders/dev/101-dev-users.js (13 comptes test)
+- backend/seeders/dev/102-dev-ethnies.js (vide)
+- backend/seeders/dev/103-dev-factions.js (vide)
+- backend/seeders/dev/104-dev-clans.js (vide)
+- backend/seeders/dev/105-dev-characters.js (7 personnages test)
+- backend/seeders/dev/106-dev-categories.js (vide)
+- backend/seeders/dev/107-dev-sections.js (vide)
+- backend/seeders/dev/108-dev-topics.js (7 topics test)
+- backend/seeders/dev/109-dev-posts.js (15 posts test)
 
 ### Configuration
-- backend/package.json (ajout scripts db:seed:prod, db:seed:dev)
+- backend/package.json (refactoring complet des scripts db)
 
 ### Documentation
-- docs/progress/branch-seeders-review.md (nouveau)
-- backend/seeders/README.md (mise à jour structure)
-
----
-
-## Scripts NPM Ajoutés
-
-```bash
-# Seeders de production
-npm run db:seed:prod           # Exécuter tous les seeders prod
-npm run db:seed:prod:undo      # Annuler tous les seeders prod
-
-# Seeders de développement
-npm run db:seed:dev            # Exécuter tous les seeders dev
-npm run db:seed:dev:undo       # Annuler tous les seeders dev
-```
+- docs/progress/branch-seeders-review.md (mis à jour)
 
 ---
 
 ## Tests Effectués
 
-### Test 1: Migration avec nouveau champ outpost_name
+### Test 1: Migrations avec slugs
 ```bash
-npm run db:migrate:undo
+npm run db:migrate:undo:all
 npm run db:migrate
 ```
-✓ **Résultat**: Migration s'exécute sans erreur, champ ajouté
+✓ **Résultat**: Toutes les migrations s'exécutent sans erreur
 
 ### Test 2: Seeders production
 ```bash
-npm run db:seed:prod
+npm run db:seed
 ```
-✓ **Résultat**: Tous les seeders prod s'exécutent sans erreur
-✓ **Données**: 2 ethnies, 2 factions, 22 clans, 132 characters, 3 categories, 9 sections, 4 topics, 1 post
+✓ **Résultat**: Seeders prod s'exécutent sans erreur
+✓ **Données**: 2 ethnies, 2 factions, 22 clans, 3 categories, 79 sections, 4 topics, 3 posts
+
+### Test 3: Seeders développement
+```bash
+npm run db:seed:dev
+```
+✓ **Résultat**: Seeders dev s'exécutent sans erreur
+✓ **Données**: 13 users, 7 characters, 7 topics, 15 posts
+
+### Test 4: Reset complet
+```bash
+npm run db:reset:dev
+```
+✓ **Résultat**: Reset complet fonctionne correctement
 
 ---
 
@@ -258,15 +292,21 @@ npm run db:seed:prod
 - [x] Restructuration répertoires seeders (prod/dev)
 - [x] Scripts npm pour seeders séparés
 - [x] Ajout champ outpost_name aux factions
-- [x] Seeders prod: ethnies, factions, clans, characters
-- [x] Seeders prod: categories, sections, topics, posts
+- [x] Ajout slugs pour categories, sections, topics
+- [x] Seeders prod: ethnies, factions, clans
+- [x] Seeders prod: categories, sections (79 avec sous-sections), topics, posts
+- [x] Contenu complet CGU et règlement du forum
+- [x] Seeders dev: users (13 comptes), characters (7 persos)
+- [x] Seeders dev: topics (7) et posts (15) de test
+- [x] Refactoring système de seeding avec scripts Node.js
+- [x] Optimisation commandes npm
 - [x] Documentation complète
-- [x] Tests de tous les seeders prod
+- [x] Tests de tous les seeders
 
 ### 📋 Prochaine Action
 1. **Commit et push** des modifications
-2. Tester en environnement complet
-3. Merger vers main
+2. **Merger** vers feature/forum
+3. Tester en environnement complet
 
 ---
 
@@ -279,22 +319,32 @@ npm run db:seed:prod
 - Permet d'exécuter séparément les environnements
 - Facilite le déploiement en production
 
-**2. Champ outpost_name dans Faction**
-- Stocke le nom de l'avant-poste principal
-- Permet l'affichage sans dépendre du clan principal
-- Cohérent avec l'univers du jeu
+**2. Slugs pour URLs SEO-friendly**
+- Ajout de slugs uniques pour categories, sections, topics
+- Format kebab-case pour URLs propres
+- Améliore le SEO et l'expérience utilisateur
 
-**3. Personnages PNJ détaillés**
-- Chaque clan a ses leaders et membres nommés
-- Descriptions riches pour le roleplay
-- Base solide pour interactions futures
+**3. Structure forum étendue**
+- 79 sections incluant sous-sections pour factions et clans
+- Sections privées/publiques selon affiliations
+- Organisation hiérarchique avec parent_section_id
 
-**4. Forum structuré par faction**
-- Sections RP séparées par faction
-- Permet gestion permissions futures
-- Structure évolutive pour sous-sections
+**4. Scripts de seeding personnalisés**
+- Remplacement des commandes sequelize-cli par scripts Node.js
+- Meilleur contrôle et gestion des erreurs
+- Affichage progressif et logs détaillés
+
+**5. Optimisation commandes npm**
+- db:reset pour production (seed prod uniquement)
+- db:reset:dev pour développement (seed all)
+- Commandes plus intuitives et adaptées aux cas d'usage
+
+**6. Seeders dev complets**
+- 13 comptes utilisateurs couvrant tous les rôles et états
+- 7 personnages de test pour différentes factions/clans
+- 7 topics et 15 posts simulant activité réelle
 
 ---
 
 **Dernière mise à jour**: 2025-10-31
-**Statut**: ✅ Seeders production complétés - Prêt pour commit et push
+**Statut**: ✅ Tous les objectifs atteints - Prêt pour commit, push et merge

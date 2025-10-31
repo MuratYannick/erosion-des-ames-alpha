@@ -10,6 +10,7 @@ module.exports = {
       {
         id: 1,
         title: 'Bienvenue sur Érosion des Âmes !',
+        slug: 'bienvenue-sur-erosion-des-ames',
         section_id: 1, // Section "Annonces"
         author_user_id: 1, // Premier utilisateur (admin)
         author_character_id: null,
@@ -30,6 +31,7 @@ module.exports = {
       {
         id: 2,
         title: 'Règlement du Forum',
+        slug: 'reglement-du-forum',
         section_id: 2, // Section "Règlement et CGU"
         author_user_id: 1,
         author_character_id: null,
@@ -50,6 +52,7 @@ module.exports = {
       {
         id: 3,
         title: 'CGU',
+        slug: 'cgu',
         section_id: 2, // Section "Règlement et CGU"
         author_user_id: 1,
         author_character_id: null,
@@ -70,6 +73,7 @@ module.exports = {
       {
         id: 4,
         title: 'Hey toi!! Qui es-tu ?',
+        slug: 'hey-toi-qui-es-tu',
         section_id: 4, // Section "Campement de Réfugiés"
         author_user_id: 1,
         author_character_id: null,
