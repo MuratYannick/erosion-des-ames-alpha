@@ -44,6 +44,11 @@ module.exports = {
         allowNull: true,
         comment: 'Nom du leader conservé même après suppression du clan principal'
       },
+      outpost_name: {
+        type: Sequelize.STRING(200),
+        allowNull: true,
+        comment: 'Nom de l\'avant-poste principal de la faction'
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,

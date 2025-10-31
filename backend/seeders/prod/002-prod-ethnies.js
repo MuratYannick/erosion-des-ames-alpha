@@ -6,28 +6,13 @@ module.exports = {
     await queryInterface.bulkInsert('ethnies', [
       {
         id: 1,
-        name: 'Humains',
-        description: 'Les humains sont polyvalents et adaptables. Ils dominent de nombreuses régions du monde.'
+        name: 'Les Éveillés',
+        description: 'Les membres de l\'ethnie mutante, qui se désignent eux-mêmes comme les éveillés, ont subi une mutation légère et commune à tous, les distinguant des non-mutants sans leur conférer de capacités surhumaines ou d\'avantages significatifs. Cette mutation se manifeste par une peau grisâtre. La plupart d\'entre eux considèrent cette transformation comme une évolution naturelle pour la survie.'
       },
       {
         id: 2,
-        name: 'Elfes',
-        description: 'Les elfes sont des êtres immortels dotés d\'une grande maîtrise de la magie et en harmonie avec la nature.'
-      },
-      {
-        id: 3,
-        name: 'Nains',
-        description: 'Les nains sont des maîtres forgerons et artisans, vivant principalement dans les montagnes.'
-      },
-      {
-        id: 4,
-        name: 'Orcs',
-        description: 'Les orcs sont des guerriers redoutables, organisés en clans et tribus belliqueuses.'
-      },
-      {
-        id: 5,
-        name: 'Démons',
-        description: 'Les démons sont des créatures corrompues par les ténèbres, dotées de pouvoirs surnaturels.'
+        name: 'Les Inaltérés',
+        description: 'Se faisant appeler les inaltérés, ils n\'ont pas subi les mutations physiques qui ont touché les autres, restant ainsi "intacts". La plupart se perçoivent comme les dépositaires de la véritable humanité et voient les mutants comme des aberrations ou des corrompus.'
       }
     ], {});
   },

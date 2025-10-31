@@ -6,13 +6,15 @@ module.exports = {
     const now = new Date();
 
     await queryInterface.bulkInsert('sections', [
-      // Catégorie 1: Annonces Officielles
+      // ==========================================
+      // CATÉGORIE 1: FORUM GÉNÉRAL
+      // ==========================================
       {
         id: 1,
-        name: 'Annonces du Staff',
-        description: 'Annonces officielles de l\'équipe d\'administration.',
-        category_id: 1,
-        parent_section_id: null, // Section de premier niveau
+        name: 'Annonces',
+        description: 'Annonces de Staff et events.',
+        category_id: 1, // Forum Général
+        parent_section_id: null,
         faction_id: null,
         clan_id: null,
         is_public: true,
@@ -25,8 +27,8 @@ module.exports = {
       },
       {
         id: 2,
-        name: 'Événements & Quêtes',
-        description: 'Annonces des événements et quêtes spéciales.',
+        name: 'Règlement et CGU',
+        description: 'Règlement du site et Conditions Générales d\'Utilisation.',
         category_id: 1,
         parent_section_id: null,
         faction_id: null,
@@ -34,18 +36,52 @@ module.exports = {
         is_public: true,
         display_order: 2,
         is_pinned: false,
+        is_locked: true,
+        created_at: now,
+        updated_at: now,
+        deleted_at: null
+      },
+      {
+        id: 3,
+        name: 'Survivre dans ce Monde Cruel',
+        description: 'Règles du jeu et FAQ.',
+        category_id: 1,
+        parent_section_id: null,
+        faction_id: null,
+        clan_id: null,
+        is_public: true,
+        display_order: 3,
+        is_pinned: false,
+        is_locked: true,
+        created_at: now,
+        updated_at: now,
+        deleted_at: null
+      },
+      {
+        id: 4,
+        name: 'Campement de Réfugiés',
+        description: 'Présentez-vous à la communauté !',
+        category_id: 1,
+        parent_section_id: null,
+        faction_id: null,
+        clan_id: null,
+        is_public: true,
+        display_order: 4,
+        is_pinned: false,
         is_locked: false,
         created_at: now,
         updated_at: now,
         deleted_at: null
       },
 
-      // Catégorie 2: Taverne du Voyageur
+      // ==========================================
+      // CATÉGORIE 2: FORUM HRP (HORS ROLE-PLAY)
+      // ==========================================
       {
-        id: 3,
-        name: 'Présentations',
-        description: 'Venez vous présenter à la communauté !',
-        category_id: 2,
+        id: 5,
+        name: 'Autour du Jeu',
+        description: 'Idées d\'amélioration du jeu, rapport de bugs, suggestions, etc.',
+        category_id: 2, // Forum HRP
         parent_section_id: null,
         faction_id: null,
         clan_id: null,
@@ -58,9 +94,9 @@ module.exports = {
         deleted_at: null
       },
       {
-        id: 4,
-        name: 'Discussions Générales',
-        description: 'Discussions hors-jeu sur tous les sujets.',
+        id: 6,
+        name: 'Autour d\'un Feu de Camp',
+        description: 'Discussions sur tout et n\'importe quoi : centres d\'intérêts, cinéma, musique, blagues, etc.',
         category_id: 2,
         parent_section_id: null,
         faction_id: null,
@@ -74,50 +110,18 @@ module.exports = {
         deleted_at: null
       },
 
-      // Catégorie 3: Le Monde d'Érosion des Âmes
-      {
-        id: 5,
-        name: 'Lore & Histoire',
-        description: 'Découvrez l\'histoire et les légendes du monde.',
-        category_id: 3,
-        parent_section_id: null,
-        faction_id: null,
-        clan_id: null,
-        is_public: true,
-        display_order: 1,
-        is_pinned: false,
-        is_locked: false,
-        created_at: now,
-        updated_at: now,
-        deleted_at: null
-      },
-
-      // Catégorie 4: Roleplay In-Game (avec affiliations)
-      {
-        id: 6,
-        name: 'Le Royaume de Lumière',
-        description: 'Section RP pour la faction du Royaume de Lumière.',
-        category_id: 4,
-        parent_section_id: null,
-        faction_id: 1, // Royaume de Lumière
-        clan_id: null,
-        is_public: true, // Visible par tous
-        display_order: 1,
-        is_pinned: false,
-        is_locked: false,
-        created_at: now,
-        updated_at: now,
-        deleted_at: null
-      },
+      // ==========================================
+      // CATÉGORIE 3: FORUM RP (ROLE-PLAY)
+      // ==========================================
       {
         id: 7,
-        name: 'Quartier des Chevaliers',
-        description: 'Zone réservée aux Chevaliers de l\'Aube.',
-        category_id: 4,
-        parent_section_id: 6, // Sous-section du Royaume
-        faction_id: 1,
-        clan_id: 1, // Chevaliers de l'Aube
-        is_public: false, // Restreint au clan
+        name: 'Entrée de l\'Oasis des Transformés',
+        description: 'Tout ce qui concerne les Éclaireurs de l\'Aube Nouvelle.',
+        category_id: 3, // Forum RP
+        parent_section_id: null,
+        faction_id: 1, // Les Éclaireurs de l'Aube Nouvelle
+        clan_id: null,
+        is_public: true,
         display_order: 1,
         is_pinned: false,
         is_locked: false,
@@ -127,11 +131,11 @@ module.exports = {
       },
       {
         id: 8,
-        name: 'La Horde Sauvage',
-        description: 'Section RP pour la faction de la Horde Sauvage.',
-        category_id: 4,
+        name: 'Portes de la Citadelle du Renouveau',
+        description: 'Tout ce qui concerne les Veilleurs de l\'Ancien Monde.',
+        category_id: 3,
         parent_section_id: null,
-        faction_id: 3, // Horde Sauvage
+        faction_id: 2, // Les Veilleurs de l'Ancien Monde
         clan_id: null,
         is_public: true,
         display_order: 2,
@@ -143,32 +147,14 @@ module.exports = {
       },
       {
         id: 9,
-        name: 'Campement du Crâne Brisé',
-        description: 'Zone privée de la tribu du Crâne Brisé.',
-        category_id: 4,
-        parent_section_id: 8, // Sous-section de la Horde
-        faction_id: 3,
-        clan_id: 4, // Tribu du Crâne Brisé
-        is_public: false, // Restreint au clan
-        display_order: 1,
-        is_pinned: false,
-        is_locked: false,
-        created_at: now,
-        updated_at: now,
-        deleted_at: null
-      },
-
-      // Catégorie 5: Support & Aide
-      {
-        id: 10,
-        name: 'Questions Techniques',
-        description: 'Problèmes techniques ? Posez vos questions ici.',
-        category_id: 5,
+        name: 'Les Rumeurs des Terres Abandonnées',
+        description: 'Tout ce qui se passe en dehors des factions.',
+        category_id: 3,
         parent_section_id: null,
-        faction_id: null,
+        faction_id: null, // Pas de faction
         clan_id: null,
         is_public: true,
-        display_order: 1,
+        display_order: 3,
         is_pinned: false,
         is_locked: false,
         created_at: now,

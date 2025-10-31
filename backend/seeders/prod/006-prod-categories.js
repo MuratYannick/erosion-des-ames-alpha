@@ -8,8 +8,8 @@ module.exports = {
     await queryInterface.bulkInsert('categories', [
       {
         id: 1,
-        name: 'Annonces Officielles',
-        description: 'Annonces importantes de l\'équipe de modération et des game masters.',
+        name: 'Forum Général',
+        description: 'Tout ce qui concerne le fonctionnement du site : annonces, présentation, règlement et CGU, FAQ, etc.',
         display_order: 1,
         created_at: now,
         updated_at: now,
@@ -17,8 +17,8 @@ module.exports = {
       },
       {
         id: 2,
-        name: 'Taverne du Voyageur',
-        description: 'Discussions hors-jeu, présentations et discussions générales.',
+        name: 'Forum HRP (Hors Role-Play)',
+        description: 'Discussions autour du jeu mais aussi sur un peu tout et n\'importe quoi : centres d\'intérêts, cinéma, musique, blagues, etc.',
         display_order: 2,
         created_at: now,
         updated_at: now,
@@ -26,27 +26,9 @@ module.exports = {
       },
       {
         id: 3,
-        name: 'Le Monde d\'Érosion des Âmes',
-        description: 'Discussions sur l\'univers, le lore et l\'histoire du jeu.',
+        name: 'Forum RP (Role-Play)',
+        description: 'Tout ce qui se passe dans le jeu : récits des personnages, annonces de contrat, etc.',
         display_order: 3,
-        created_at: now,
-        updated_at: now,
-        deleted_at: null
-      },
-      {
-        id: 4,
-        name: 'Roleplay In-Game',
-        description: 'Sections dédiées au jeu de rôle pour chaque faction et clan.',
-        display_order: 4,
-        created_at: now,
-        updated_at: now,
-        deleted_at: null
-      },
-      {
-        id: 5,
-        name: 'Support & Aide',
-        description: 'Besoin d\'aide ? Questions techniques ou sur le jeu.',
-        display_order: 5,
         created_at: now,
         updated_at: now,
         deleted_at: null

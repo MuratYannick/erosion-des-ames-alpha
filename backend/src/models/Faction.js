@@ -40,6 +40,13 @@ const Faction = sequelize.define('Faction', {
       len: [0, 200]
     }
   },
+  outpost_name: {
+    type: DataTypes.STRING(200),
+    allowNull: true,
+    validate: {
+      len: [0, 200]
+    }
+  },
   deleted_at: {
     type: DataTypes.DATE,
     allowNull: true
