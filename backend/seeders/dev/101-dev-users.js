@@ -14,7 +14,6 @@ module.exports = {
     await queryInterface.bulkInsert('users', [
       // Compte admin
       {
-        id: 1,
         user_name: 'admin',
         email: 'admin@erosion-des-ames.com',
         password_hash: testPassword,
@@ -30,7 +29,6 @@ module.exports = {
       },
       // Compte moderator
       {
-        id: 2,
         user_name: 'moderator',
         email: 'moderator@erosion-des-ames.com',
         password_hash: testPassword,
@@ -46,7 +44,6 @@ module.exports = {
       },
       // Compte game-master
       {
-        id: 3,
         user_name: 'game-master',
         email: 'gm@erosion-des-ames.com',
         password_hash: testPassword,
@@ -62,7 +59,6 @@ module.exports = {
       },
       // Player 1: PJ-eclaireur (Éclaireur sans clan)
       {
-        id: 4,
         user_name: 'PJ-eclaireur',
         email: 'pj-eclaireur@example.com',
         password_hash: testPassword,
@@ -78,7 +74,6 @@ module.exports = {
       },
       // Player 2: PJ-veilleur (Veilleur sans clan)
       {
-        id: 5,
         user_name: 'PJ-veilleur',
         email: 'pj-veilleur@example.com',
         password_hash: testPassword,
@@ -94,7 +89,6 @@ module.exports = {
       },
       // Player 3: PJ-neutre (personnage neutre sans clan)
       {
-        id: 6,
         user_name: 'PJ-neutre',
         email: 'pj-neutre@example.com',
         password_hash: testPassword,
@@ -110,7 +104,6 @@ module.exports = {
       },
       // Player 4: PJ-symbiote (Éclaireur avec clan Symbiotes)
       {
-        id: 7,
         user_name: 'PJ-symbiote',
         email: 'pj-symbiote@example.com',
         password_hash: testPassword,
@@ -126,7 +119,6 @@ module.exports = {
       },
       // Player 5: PJ-sentinelles (Veilleur avec clan Sentinelles)
       {
-        id: 8,
         user_name: 'PJ-sentinelles',
         email: 'pj-sentinelles@example.com',
         password_hash: testPassword,
@@ -142,7 +134,6 @@ module.exports = {
       },
       // Player 6: PJ-vagabond (neutre avec clan Vagabonds du Vent)
       {
-        id: 9,
         user_name: 'PJ-vagabond',
         email: 'pj-vagabond@example.com',
         password_hash: testPassword,
@@ -158,7 +149,6 @@ module.exports = {
       },
       // Player 7: PJ-dead (personnage mort)
       {
-        id: 10,
         user_name: 'PJ-dead',
         email: 'pj-dead@example.com',
         password_hash: testPassword,
@@ -174,7 +164,6 @@ module.exports = {
       },
       // Player 8: no-PJ (sans personnage)
       {
-        id: 11,
         user_name: 'no-PJ',
         email: 'no-pj@example.com',
         password_hash: testPassword,
@@ -190,7 +179,6 @@ module.exports = {
       },
       // Player 9: no-rules (sans personnage, règlement non accepté)
       {
-        id: 12,
         user_name: 'no-rules',
         email: 'no-rules@example.com',
         password_hash: testPassword,
@@ -206,7 +194,6 @@ module.exports = {
       },
       // Player 10: no-rules-cgu (sans personnage, règlement et CGU non acceptés)
       {
-        id: 13,
         user_name: 'no-rules-cgu',
         email: 'no-rules-cgu@example.com',
         password_hash: testPassword,

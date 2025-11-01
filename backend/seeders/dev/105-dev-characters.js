@@ -7,12 +7,24 @@ module.exports = {
     const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
     const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
+    // Récupérer les IDs des utilisateurs par leur nom
+    const [users] = await queryInterface.sequelize.query(
+      `SELECT id, user_name FROM users WHERE user_name IN ('PJ-eclaireur', 'PJ-veilleur', 'PJ-neutre', 'PJ-symbiote', 'PJ-sentinelles', 'PJ-vagabond', 'PJ-dead')`
+    );
+
+    const userEclaireur = users.find(u => u.user_name === 'PJ-eclaireur');
+    const userVeilleur = users.find(u => u.user_name === 'PJ-veilleur');
+    const userNeutre = users.find(u => u.user_name === 'PJ-neutre');
+    const userSymbiote = users.find(u => u.user_name === 'PJ-symbiote');
+    const userSentinelles = users.find(u => u.user_name === 'PJ-sentinelles');
+    const userVagabond = users.find(u => u.user_name === 'PJ-vagabond');
+    const userDead = users.find(u => u.user_name === 'PJ-dead');
+
     await queryInterface.bulkInsert('characters', [
-      // Personnage pour PJ-eclaireur (user_id: 4) - Éclaireur sans clan
+      // Personnage pour PJ-eclaireur - Éclaireur sans clan
       {
-        id: 1,
         name: 'Kael l\'Éveillé',
-        user_id: 4,
+        user_id: userEclaireur.id,
         ethnie_id: 1, // Les Éveillés
         faction_id: 1, // Les Éclaireurs de l'Aube Nouvelle
         clan_id: null, // Sans clan
@@ -23,11 +35,10 @@ module.exports = {
         updated_at: oneHourAgo,
         deleted_at: null
       },
-      // Personnage pour PJ-veilleur (user_id: 5) - Veilleur sans clan
+      // Personnage pour PJ-veilleur - Veilleur sans clan
       {
-        id: 2,
         name: 'Elena la Pure',
-        user_id: 5,
+        user_id: userVeilleur.id,
         ethnie_id: 2, // Les Inaltérés
         faction_id: 2, // Les Veilleurs de l'Ancien Monde
         clan_id: null, // Sans clan
@@ -38,11 +49,10 @@ module.exports = {
         updated_at: oneHourAgo,
         deleted_at: null
       },
-      // Personnage pour PJ-neutre (user_id: 6) - Neutre sans clan
+      // Personnage pour PJ-neutre - Neutre sans clan
       {
-        id: 3,
         name: 'Ash le Solitaire',
-        user_id: 6,
+        user_id: userNeutre.id,
         ethnie_id: 1, // Les Éveillés (mais neutre)
         faction_id: null, // Pas de faction
         clan_id: null, // Sans clan
@@ -53,11 +63,10 @@ module.exports = {
         updated_at: oneHourAgo,
         deleted_at: null
       },
-      // Personnage pour PJ-symbiote (user_id: 7) - Éclaireur avec clan Symbiotes
+      // Personnage pour PJ-symbiote - Éclaireur avec clan Symbiotes
       {
-        id: 4,
         name: 'Lyra la Cultivatrice',
-        user_id: 7,
+        user_id: userSymbiote.id,
         ethnie_id: 1, // Les Éveillés
         faction_id: 1, // Les Éclaireurs de l'Aube Nouvelle
         clan_id: 2, // La Caste des Symbiotes
@@ -68,11 +77,10 @@ module.exports = {
         updated_at: oneDayAgo,
         deleted_at: null
       },
-      // Personnage pour PJ-sentinelles (user_id: 8) - Veilleur avec clan Sentinelles
+      // Personnage pour PJ-sentinelles - Veilleur avec clan Sentinelles
       {
-        id: 5,
         name: 'Marcus le Protecteur',
-        user_id: 8,
+        user_id: userSentinelles.id,
         ethnie_id: 2, // Les Inaltérés
         faction_id: 2, // Les Veilleurs de l'Ancien Monde
         clan_id: 8, // Le Clan des Sentinelles
@@ -83,11 +91,10 @@ module.exports = {
         updated_at: oneDayAgo,
         deleted_at: null
       },
-      // Personnage pour PJ-vagabond (user_id: 9) - Neutre avec clan Vagabonds du Vent
+      // Personnage pour PJ-vagabond - Neutre avec clan Vagabonds du Vent
       {
-        id: 6,
         name: 'Zara la Marcheuse',
-        user_id: 9,
+        user_id: userVagabond.id,
         ethnie_id: 2, // Les Inaltérés (mais neutre)
         faction_id: null, // Pas de faction
         clan_id: 15, // Les Vagabonds du Vent
@@ -98,11 +105,10 @@ module.exports = {
         updated_at: oneDayAgo,
         deleted_at: null
       },
-      // Personnage pour PJ-dead (user_id: 10) - Personnage mort
+      // Personnage pour PJ-dead - Personnage mort
       {
-        id: 7,
         name: 'Theron le Tombé',
-        user_id: 10,
+        user_id: userDead.id,
         ethnie_id: 1, // Les Éveillés
         faction_id: 1, // Les Éclaireurs de l'Aube Nouvelle
         clan_id: 5, // La Caste des Sentinelles du Chaos
