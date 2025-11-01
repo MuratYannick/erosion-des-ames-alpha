@@ -15,7 +15,7 @@ module.exports = {
       // Compte admin
       {
         id: 1,
-        username: 'admin',
+        user_name: 'admin',
         email: 'admin@erosion-des-ames.com',
         password_hash: testPassword,
         is_active: true,
@@ -31,7 +31,7 @@ module.exports = {
       // Compte moderator
       {
         id: 2,
-        username: 'moderator',
+        user_name: 'moderator',
         email: 'moderator@erosion-des-ames.com',
         password_hash: testPassword,
         is_active: true,
@@ -47,7 +47,7 @@ module.exports = {
       // Compte game-master
       {
         id: 3,
-        username: 'game-master',
+        user_name: 'game-master',
         email: 'gm@erosion-des-ames.com',
         password_hash: testPassword,
         is_active: true,
@@ -63,7 +63,7 @@ module.exports = {
       // Player 1: PJ-eclaireur (Éclaireur sans clan)
       {
         id: 4,
-        username: 'PJ-eclaireur',
+        user_name: 'PJ-eclaireur',
         email: 'pj-eclaireur@example.com',
         password_hash: testPassword,
         is_active: true,
@@ -79,7 +79,7 @@ module.exports = {
       // Player 2: PJ-veilleur (Veilleur sans clan)
       {
         id: 5,
-        username: 'PJ-veilleur',
+        user_name: 'PJ-veilleur',
         email: 'pj-veilleur@example.com',
         password_hash: testPassword,
         is_active: true,
@@ -95,7 +95,7 @@ module.exports = {
       // Player 3: PJ-neutre (personnage neutre sans clan)
       {
         id: 6,
-        username: 'PJ-neutre',
+        user_name: 'PJ-neutre',
         email: 'pj-neutre@example.com',
         password_hash: testPassword,
         is_active: true,
@@ -111,7 +111,7 @@ module.exports = {
       // Player 4: PJ-symbiote (Éclaireur avec clan Symbiotes)
       {
         id: 7,
-        username: 'PJ-symbiote',
+        user_name: 'PJ-symbiote',
         email: 'pj-symbiote@example.com',
         password_hash: testPassword,
         is_active: true,
@@ -127,7 +127,7 @@ module.exports = {
       // Player 5: PJ-sentinelles (Veilleur avec clan Sentinelles)
       {
         id: 8,
-        username: 'PJ-sentinelles',
+        user_name: 'PJ-sentinelles',
         email: 'pj-sentinelles@example.com',
         password_hash: testPassword,
         is_active: true,
@@ -143,7 +143,7 @@ module.exports = {
       // Player 6: PJ-vagabond (neutre avec clan Vagabonds du Vent)
       {
         id: 9,
-        username: 'PJ-vagabond',
+        user_name: 'PJ-vagabond',
         email: 'pj-vagabond@example.com',
         password_hash: testPassword,
         is_active: true,
@@ -159,7 +159,7 @@ module.exports = {
       // Player 7: PJ-dead (personnage mort)
       {
         id: 10,
-        username: 'PJ-dead',
+        user_name: 'PJ-dead',
         email: 'pj-dead@example.com',
         password_hash: testPassword,
         is_active: true,
@@ -175,7 +175,7 @@ module.exports = {
       // Player 8: no-PJ (sans personnage)
       {
         id: 11,
-        username: 'no-PJ',
+        user_name: 'no-PJ',
         email: 'no-pj@example.com',
         password_hash: testPassword,
         is_active: true,
@@ -191,7 +191,7 @@ module.exports = {
       // Player 9: no-rules (sans personnage, règlement non accepté)
       {
         id: 12,
-        username: 'no-rules',
+        user_name: 'no-rules',
         email: 'no-rules@example.com',
         password_hash: testPassword,
         is_active: true,
@@ -207,7 +207,7 @@ module.exports = {
       // Player 10: no-rules-cgu (sans personnage, règlement et CGU non acceptés)
       {
         id: 13,
-        username: 'no-rules-cgu',
+        user_name: 'no-rules-cgu',
         email: 'no-rules-cgu@example.com',
         password_hash: testPassword,
         is_active: true,
