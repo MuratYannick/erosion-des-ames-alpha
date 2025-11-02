@@ -5,6 +5,11 @@ const router = express.Router();
 const ethniesController = require('../controllers/forum/ethniesController');
 const factionsController = require('../controllers/forum/factionsController');
 const clansController = require('../controllers/forum/clansController');
+const charactersController = require('../controllers/forum/charactersController');
+const categoriesController = require('../controllers/forum/categoriesController');
+const sectionsController = require('../controllers/forum/sectionsController');
+const topicsController = require('../controllers/forum/topicsController');
+const postsController = require('../controllers/forum/postsController');
 
 // Middleware (à implémenter)
 // const { authenticateToken, requireAdmin } = require('../middleware/auth');
@@ -50,5 +55,53 @@ router.get('/clans/:id', clansController.getClanById);
 router.post('/clans', clansController.createClan);
 router.put('/clans/:id', clansController.updateClan);
 router.delete('/clans/:id', clansController.deleteClan);
+
+// ==========================================
+// Routes Personnages
+// ==========================================
+router.get('/characters', charactersController.getAllCharacters);
+router.get('/characters/:id', charactersController.getCharacterById);
+router.post('/characters', charactersController.createCharacter);
+router.put('/characters/:id', charactersController.updateCharacter);
+router.delete('/characters/:id', charactersController.deleteCharacter);
+
+// ==========================================
+// Routes Catégories
+// ==========================================
+router.get('/categories', categoriesController.getAllCategories);
+router.get('/categories/:id', categoriesController.getCategoryById);
+router.get('/categories/slug/:slug', categoriesController.getCategoryBySlug);
+router.post('/categories', categoriesController.createCategory);
+router.put('/categories/:id', categoriesController.updateCategory);
+router.delete('/categories/:id', categoriesController.deleteCategory);
+
+// ==========================================
+// Routes Sections
+// ==========================================
+router.get('/sections', sectionsController.getAllSections);
+router.get('/sections/:id', sectionsController.getSectionById);
+router.get('/sections/slug/:slug', sectionsController.getSectionBySlug);
+router.post('/sections', sectionsController.createSection);
+router.put('/sections/:id', sectionsController.updateSection);
+router.delete('/sections/:id', sectionsController.deleteSection);
+
+// ==========================================
+// Routes Topics
+// ==========================================
+router.get('/topics', topicsController.getAllTopics);
+router.get('/topics/:id', topicsController.getTopicById);
+router.get('/topics/slug/:slug', topicsController.getTopicBySlug);
+router.post('/topics', topicsController.createTopic);
+router.put('/topics/:id', topicsController.updateTopic);
+router.delete('/topics/:id', topicsController.deleteTopic);
+
+// ==========================================
+// Routes Posts
+// ==========================================
+router.get('/posts', postsController.getAllPosts);
+router.get('/posts/:id', postsController.getPostById);
+router.post('/posts', postsController.createPost);
+router.put('/posts/:id', postsController.updatePost);
+router.delete('/posts/:id', postsController.deletePost);
 
 module.exports = router;
