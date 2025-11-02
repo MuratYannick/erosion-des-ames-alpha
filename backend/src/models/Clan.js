@@ -33,9 +33,10 @@ const Clan = sequelize.define('Clan', {
     defaultValue: true,
     allowNull: false
   },
-  leader_character_id: {
-    type: DataTypes.INTEGER,
-    allowNull: true // null = pas de leader
+  is_leader: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
   },
   leader_name: {
     type: DataTypes.STRING(200),
@@ -72,10 +73,6 @@ const Clan = sequelize.define('Clan', {
     {
       name: 'idx_clans_deleted',
       fields: ['deleted_at']
-    },
-    {
-      name: 'idx_clans_leader_character',
-      fields: ['leader_character_id']
     }
   ]
 });

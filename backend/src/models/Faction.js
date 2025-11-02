@@ -29,10 +29,6 @@ const Faction = sequelize.define('Faction', {
     defaultValue: true,
     allowNull: false
   },
-  main_clan_id: {
-    type: DataTypes.INTEGER,
-    allowNull: true // null = pas de clan principal
-  },
   leader_name: {
     type: DataTypes.STRING(200),
     allowNull: true,
@@ -71,10 +67,6 @@ const Faction = sequelize.define('Faction', {
     {
       name: 'idx_factions_deleted',
       fields: ['deleted_at']
-    },
-    {
-      name: 'idx_factions_main_clan',
-      fields: ['main_clan_id']
     }
   ]
 });
