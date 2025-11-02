@@ -5,14 +5,30 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const now = new Date();
 
+    // Dynamic lookups for foreign keys
+    const [sections] = await queryInterface.sequelize.query(
+      `SELECT id, slug FROM sections WHERE slug IN ('annonces', 'reglement-et-cgu', 'campement-de-refugies')`
+    );
+
+    const sectionIdBySlug = {};
+    sections.forEach(section => {
+      sectionIdBySlug[section.slug] = section.id;
+    });
+
+    const [users] = await queryInterface.sequelize.query(
+      `SELECT id, user_name FROM users WHERE user_name = 'l\\'équipe de développement'`
+    );
+
+    const devUserId = users[0].id;
+
+
     await queryInterface.bulkInsert('topics', [
       // Topic 1: Message de bienvenue dans "Annonces"
       {
-        id: 1,
         title: 'Bienvenue sur Érosion des Âmes !',
         slug: 'bienvenue-sur-erosion-des-ames',
-        section_id: 1, // Section "Annonces"
-        author_user_id: 1, // Premier utilisateur (admin)
+        section_id: sectionIdBySlug['annonces'], // Section "Annonces"
+        author_user_id: devUserId, // Premier utilisateur (admin)
         author_character_id: null,
         author_name: 'Équipe de Développement',
         faction_id: null,
@@ -29,11 +45,10 @@ module.exports = {
 
       // Topic 2: Règlement du Forum dans "Règlement et CGU"
       {
-        id: 2,
         title: 'Règlement du Forum',
         slug: 'reglement-du-forum',
-        section_id: 2, // Section "Règlement et CGU"
-        author_user_id: 1,
+        section_id: sectionIdBySlug['reglement-et-cgu'], // Section "Règlement et CGU"
+        author_user_id: devUserId,
         author_character_id: null,
         author_name: 'Équipe de Développement',
         faction_id: null,
@@ -50,11 +65,10 @@ module.exports = {
 
       // Topic 3: CGU dans "Règlement et CGU"
       {
-        id: 3,
         title: 'CGU',
         slug: 'cgu',
-        section_id: 2, // Section "Règlement et CGU"
-        author_user_id: 1,
+        section_id: sectionIdBySlug['reglement-et-cgu'], // Section "Règlement et CGU"
+        author_user_id: devUserId,
         author_character_id: null,
         author_name: 'Équipe de Développement',
         faction_id: null,
@@ -71,11 +85,10 @@ module.exports = {
 
       // Topic 4: Présentation dans "Campement de Réfugiés"
       {
-        id: 4,
         title: 'Hey toi!! Qui es-tu ?',
         slug: 'hey-toi-qui-es-tu',
-        section_id: 4, // Section "Campement de Réfugiés"
-        author_user_id: 1,
+        section_id: sectionIdBySlug['campement-de-refugies'], // Section "Campement de Réfugiés"
+        author_user_id: devUserId,
         author_character_id: null,
         author_name: 'Équipe de Développement',
         faction_id: null,
