@@ -42,31 +42,37 @@ module.exports = {
       is_playable: {
         type: Sequelize.BOOLEAN,
         defaultValue: true,
-        allowNull: false
+        allowNull: false,
+        comment: 'Indique si le clan est jouable'
       },
-      leader_character_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-        // La contrainte de clé étrangère sera ajoutée dans une migration ultérieure
+      is_leader: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+        comment: 'Indique si le clan est le clan leader de sa faction'
       },
       leader_name: {
         type: Sequelize.STRING(200),
         allowNull: true,
-        comment: 'Nom du leader conservé même après suppression du personnage'
+        comment: 'Nom du leader du clan (conservé pour l\'historique)'
       },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        comment: 'Date de création'
       },
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+        comment: 'Date de dernière modification'
       },
       deleted_at: {
         type: Sequelize.DATE,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null,
+        comment: 'Date de suppression (soft-delete)'
       }
     });
 

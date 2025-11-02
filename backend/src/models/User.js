@@ -7,18 +7,22 @@ const User = sequelize.define('User', {
     primaryKey: true,
     autoIncrement: true
   },
-  username: {
+  user_name: {
     type: DataTypes.STRING(50),
     allowNull: false,
     unique: true,
     validate: {
-      len: [3, 50]
+      len: [5, 50]
     }
+  },
+  password_hash: {
+    type: DataTypes.STRING(255),
+    allowNull: false
   },
   email: {
     type: DataTypes.STRING(100),
     allowNull: false,
-    unique: false, // Modifié : email non unique (certains utilisateurs peuvent avoir 2 comptes)
+    unique: false, // Email non unique pour permettre multicompte
     validate: {
       isEmail: true
     }
@@ -26,6 +30,11 @@ const User = sequelize.define('User', {
   email_verified: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
+    allowNull: false
+  },
+  is_active: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true,
     allowNull: false
   },
   role: {
@@ -50,18 +59,6 @@ const User = sequelize.define('User', {
   terms_accepted_at: {
     type: DataTypes.DATE,
     allowNull: true
-  },
-  password_hash: {
-    type: DataTypes.STRING(255),
-    allowNull: false
-  },
-  last_login: {
-    type: DataTypes.DATE,
-    allowNull: true
-  },
-  is_active: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true
   }
 }, {
   tableName: 'users',
@@ -69,18 +66,25 @@ const User = sequelize.define('User', {
   underscored: true,
   createdAt: 'created_at',
   updatedAt: 'updated_at',
+  paranoid: true, // Active le soft-delete
+  deletedAt: 'deleted_at',
   indexes: [
     {
-      name: 'idx_username',
-      fields: ['username']
+      name: 'idx_users_user_name',
+      fields: ['user_name'],
+      unique: true
     },
     {
-      name: 'idx_email',
+      name: 'idx_users_email',
       fields: ['email']
     },
     {
-      name: 'idx_role',
+      name: 'idx_users_role',
       fields: ['role']
+    },
+    {
+      name: 'idx_users_deleted_at',
+      fields: ['deleted_at']
     }
   ]
 });
