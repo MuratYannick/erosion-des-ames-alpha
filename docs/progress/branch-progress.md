@@ -35,7 +35,24 @@ Préparation table users pour le forum
 ### 🔄 feature/forum-frontend (créée 2025-11-03)
 **Parent**: feature/forum
 **Objectif**: Implémentation du frontend du forum (Phase 3)
-**Statut**: En cours
+**Statut**: En cours - Architecture de base complétée
+
+**Commits**:
+- `2b9e872` - docs: initialisation branche
+- `abc8a3c` - feat: architecture complète frontend forum
+
+**Réalisations**:
+- ✅ Structure complète (components/, pages/, services/, hooks/, styles/)
+- ✅ Design system responsive 5 breakpoints mobile-first
+- ✅ Thème post-apocalyptique complet
+- ✅ ForumLayout avec navbar fixe + breadcrumb
+- ✅ ForumNavbar responsive avec menu hamburger
+- ✅ 4 composants cards (Category, Section, Topic, Post)
+- ✅ Services API complets (categories, sections, topics, posts)
+- ✅ Hook useBreakpoint pour responsive
+- ✅ Page CategoriesPage fonctionnelle
+- ✅ Dépendances: lucide-react, date-fns
+- ✅ Documentation complète (README.md)
 
 ---
 
@@ -83,11 +100,36 @@ Préparation table users pour le forum
 
 ## Phase 3: Frontend Forum 🔄 EN COURS (feature/forum-frontend)
 
+### Architecture & Design System ✅ COMPLÉTÉ
+- [x] Structure dossiers (components/, pages/, services/, hooks/, styles/)
+- [x] Breakpoints responsive (mobile, sm, md, lg, xl)
+- [x] Thème post-apocalyptique complet
+- [x] Hook useBreakpoint pour responsive
+
+### Layout & Navigation ✅ COMPLÉTÉ
+- [x] ForumLayout avec navbar fixe (64px) + breadcrumb (40px)
+- [x] ForumNavbar responsive (menu hamburger < lg)
+- [x] Breadcrumb avec fil d'ariane
+- [x] User menu dropdown (profil, paramètres, déconnexion)
+
+### Composants Cards ✅ COMPLÉTÉ
+- [x] CategoryCard (avec stats sections/topics)
+- [x] SectionCard (avec badges privée/verrouillée)
+- [x] TopicCard (avec badges épinglé/verrouillé)
+- [x] PostCard (avec avatar, actions)
+
+### Services API ✅ COMPLÉTÉ
+- [x] api.js (gestion JWT automatique)
+- [x] categoriesService
+- [x] sectionsService
+- [x] topicsService
+- [x] postsService
+
 ### Pages
-- [ ] Liste catégories
-- [ ] Sections d'une catégorie
-- [ ] Topics d'une section
-- [ ] Posts d'un topic
+- [x] CategoriesPage (liste catégories + stats globales)
+- [ ] SectionsPage (sections d'une catégorie)
+- [ ] TopicsPage (topics d'une section)
+- [ ] TopicDetailPage (posts d'un topic)
 
 ### Formulaires
 - [ ] Nouveau topic
@@ -95,19 +137,11 @@ Préparation table users pour le forum
 - [ ] Éditeur markdown
 - [ ] Sélecteur de character
 
-### Composants
-- [ ] CategoryCard
-- [ ] SectionCard
-- [ ] TopicCard
-- [ ] PostCard
-- [ ] ForumLayout
-
-### Services API
-- [ ] categoriesService
-- [ ] sectionsService
-- [ ] topicsService
-- [ ] postsService
-- [ ] permissionsService
+### À venir
+- [ ] Gestion permissions côté frontend
+- [ ] Pagination
+- [ ] Recherche
+- [ ] Notifications
 
 ---
 
