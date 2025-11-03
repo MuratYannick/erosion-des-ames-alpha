@@ -13,5 +13,6 @@ router.get('/health', (req, res) => {
 // Routes API
 router.use('/auth', require('./auth'));
 router.use('/forum', require('./forum'));
+router.use('/permissions', require('./permissions'));
 
 module.exports = router;

@@ -158,7 +158,16 @@ async function getPermissionRules(resourceType, resourceId, permissionType) {
  * @returns {boolean|null} - true si autorisé, false si refusé, null si ne match pas
  */
 function evaluateRule(rule, user, character, resource = null) {
-  // Étape 1: Vérifier le rôle
+  // Étape 1: Vérifier author_override='or' en premier (avant le rôle)
+  if (resource && rule.author_override === 'or') {
+    const isAuthor = checkIsAuthor(user, character, resource);
+    if (isAuthor) {
+      return !rule.is_deny; // Auteur autorisé, respecter is_deny
+    }
+    // Pas l'auteur, continuer l'évaluation normale
+  }
+
+  // Étape 2: Vérifier le rôle
   if (rule.allowed_roles !== null && rule.allowed_roles.length > 0) {
     if (!user || !rule.allowed_roles.includes(user.role)) {
       return null; // Rôle non autorisé, passer à la règle suivante
@@ -171,23 +180,13 @@ function evaluateRule(rule, user, character, resource = null) {
     return null;
   }
 
-  // Étape 2: Vérifier author_override
-  if (resource && rule.author_override !== 'none') {
+  // Étape 3: Vérifier author_override='and'
+  if (resource && rule.author_override === 'and') {
     const isAuthor = checkIsAuthor(user, character, resource);
-
-    if (rule.author_override === 'or') {
-      // Si l'utilisateur est l'auteur, autoriser immédiatement
-      if (isAuthor) {
-        return !rule.is_deny; // Respecter is_deny même pour l'auteur
-      }
-      // Sinon, continuer l'évaluation normale
-    } else if (rule.author_override === 'and') {
-      // L'utilisateur DOIT être l'auteur ET remplir les conditions
-      if (!isAuthor) {
-        return null; // Pas l'auteur, règle non applicable
-      }
-      // Est l'auteur, continuer l'évaluation des conditions
+    if (!isAuthor) {
+      return null; // Pas l'auteur, règle non applicable
     }
+    // Est l'auteur, continuer l'évaluation des conditions
   }
 
   // Étape 3: Vérifier conditions utilisateur (si rôle applicable)
@@ -223,12 +222,12 @@ function evaluateRule(rule, user, character, resource = null) {
     if (rule.require_character_is_leader && !character.is_leader) return null;
 
     // Vérifier faction
-    if (rule.required_faction_ids !== null && rule.required_faction_ids.length > 0) {
+    if (rule.required_faction_ids && Array.isArray(rule.required_faction_ids) && rule.required_faction_ids.length > 0) {
       if (!rule.required_faction_ids.includes(character.faction_id)) return null;
     }
 
     // Vérifier clan
-    if (rule.required_clan_ids !== null && rule.required_clan_ids.length > 0) {
+    if (rule.required_clan_ids && Array.isArray(rule.required_clan_ids) && rule.required_clan_ids.length > 0) {
       if (!rule.required_clan_ids.includes(character.clan_id)) return null;
     }
   }

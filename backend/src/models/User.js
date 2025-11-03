@@ -59,6 +59,10 @@ const User = sequelize.define('User', {
   terms_accepted_at: {
     type: DataTypes.DATE,
     allowNull: true
+  },
+  refresh_token: {
+    type: DataTypes.TEXT,
+    allowNull: true
   }
 }, {
   tableName: 'users',

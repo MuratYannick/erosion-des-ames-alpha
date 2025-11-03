@@ -15,7 +15,7 @@ function requireForumPermission(permissionType, options = {}) {
 
       // Récupérer le personnage si fourni
       let character = null;
-      const characterId = req.body.author_character_id || req.query.character_id || req.params.character_id;
+      const characterId = req.body?.author_character_id || req.query?.character_id || req.params?.character_id;
 
       if (characterId) {
         character = await Character.findByPk(characterId);
@@ -75,15 +75,15 @@ async function determineResource(req, options) {
   // Si resourceType n'est pas fourni, essayer de le déduire
   if (!resourceType) {
     // Vérifier dans les params
-    if (req.params.category_id || req.body.category_id) {
+    if (req.params.category_id || req.body?.category_id) {
       resourceType = 'category';
-      resourceId = req.params.category_id || req.body.category_id;
-    } else if (req.params.section_id || req.body.section_id) {
+      resourceId = req.params.category_id || req.body?.category_id;
+    } else if (req.params.section_id || req.body?.section_id) {
       resourceType = 'section';
-      resourceId = req.params.section_id || req.body.section_id;
-    } else if (req.params.topic_id || req.body.topic_id) {
+      resourceId = req.params.section_id || req.body?.section_id;
+    } else if (req.params.topic_id || req.body?.topic_id) {
       resourceType = 'topic';
-      resourceId = req.params.topic_id || req.body.topic_id;
+      resourceId = req.params.topic_id || req.body?.topic_id;
     } else if (req.params.id) {
       // Essayer de déduire du path
       if (req.path.includes('/categories')) {
@@ -100,7 +100,7 @@ async function determineResource(req, options) {
   } else {
     // resourceType fourni, trouver l'ID
     const idField = `${resourceType}_id`;
-    resourceId = req.params[idField] || req.body[idField] || req.params.id;
+    resourceId = req.params[idField] || req.body?.[idField] || req.params.id;
   }
 
   // Charger la ressource complète si nécessaire (pour author_override)
@@ -135,11 +135,15 @@ module.exports = {
   // Create permissions
   canCreateSection: () => requireForumPermission('create_section'),
   canCreateTopic: () => requireForumPermission('create_topic', { resourceType: 'section' }),
+  // Posts are created in topics - check topic's edit permission (posts inherit from topic)
+  canCreatePost: () => requireForumPermission('edit', { resourceType: 'topic' }),
 
   // Edit permissions
   canEditCategory: () => requireForumPermission('edit', { resourceType: 'category' }),
   canEditSection: () => requireForumPermission('edit', { resourceType: 'section' }),
   canEditTopic: () => requireForumPermission('edit', { resourceType: 'topic' }),
+  // Posts inherit edit permission from their topic
+  canEditPost: () => requireForumPermission('edit', { resourceType: 'topic' }),
 
   // Move permissions
   canMoveSection: () => requireForumPermission('move_section'),

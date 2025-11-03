@@ -6,6 +6,42 @@ const { Category, Section } = require('../../src/models');
 // Mock des modèles
 jest.mock('../../src/models');
 
+// Mock des middlewares d'authentification et de permissions
+jest.mock('../../src/middleware/authenticate', () => ({
+  authenticateToken: jest.fn((req, res, next) => {
+    req.user = {
+      id: 1,
+      username: 'testuser',
+      role: 'admin',
+      email_verified: true,
+      terms_accepted: true,
+      forum_rules_accepted: true
+    };
+    next();
+  }),
+  requireAdmin: jest.fn((req, res, next) => next())
+}));
+
+jest.mock('../../src/middleware/forumPermissions', () => ({
+  canViewCategory: jest.fn(() => (req, res, next) => next()),
+  canViewSection: jest.fn(() => (req, res, next) => next()),
+  canViewTopic: jest.fn(() => (req, res, next) => next()),
+  canCreateSection: jest.fn(() => (req, res, next) => next()),
+  canCreateTopic: jest.fn(() => (req, res, next) => next()),
+  canCreatePost: jest.fn(() => (req, res, next) => next()),
+  canEditCategory: jest.fn(() => (req, res, next) => next()),
+  canEditSection: jest.fn(() => (req, res, next) => next()),
+  canEditTopic: jest.fn(() => (req, res, next) => next()),
+  canEditPost: jest.fn(() => (req, res, next) => next()),
+  canMoveSection: jest.fn(() => (req, res, next) => next()),
+  canMoveTopic: jest.fn(() => (req, res, next) => next()),
+  canMovePost: jest.fn(() => (req, res, next) => next()),
+  canPinSection: jest.fn(() => (req, res, next) => next()),
+  canPinTopic: jest.fn(() => (req, res, next) => next()),
+  canLockSection: jest.fn(() => (req, res, next) => next()),
+  canLockTopic: jest.fn(() => (req, res, next) => next())
+}));
+
 describe('Categories API Integration Tests', () => {
   let app;
 

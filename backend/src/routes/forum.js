@@ -11,50 +11,54 @@ const sectionsController = require('../controllers/forum/sectionsController');
 const topicsController = require('../controllers/forum/topicsController');
 const postsController = require('../controllers/forum/postsController');
 
-// Middleware (à implémenter)
-// const { authenticateToken, requireAdmin } = require('../middleware/auth');
+// Middleware
+const { authenticateToken, requireAdmin } = require('../middleware/authenticate');
+const {
+  canViewCategory,
+  canViewSection,
+  canViewTopic,
+  canCreateSection,
+  canCreateTopic,
+  canCreatePost,
+  canEditCategory,
+  canEditSection,
+  canEditTopic,
+  canEditPost,
+  canMoveSection,
+  canMoveTopic,
+  canMovePost,
+  canPinSection,
+  canPinTopic,
+  canLockSection,
+  canLockTopic
+} = require('../middleware/forumPermissions');
 
 // ==========================================
 // Routes Ethnies
 // ==========================================
 router.get('/ethnies', ethniesController.getAllEthnies);
 router.get('/ethnies/:id', ethniesController.getEthnieById);
-// router.post('/ethnies', authenticateToken, requireAdmin, ethniesController.createEthnie);
-// router.put('/ethnies/:id', authenticateToken, requireAdmin, ethniesController.updateEthnie);
-// router.delete('/ethnies/:id', authenticateToken, requireAdmin, ethniesController.deleteEthnie);
-
-// Routes temporaires sans auth pour les tests
-router.post('/ethnies', ethniesController.createEthnie);
-router.put('/ethnies/:id', ethniesController.updateEthnie);
-router.delete('/ethnies/:id', ethniesController.deleteEthnie);
+router.post('/ethnies', authenticateToken, requireAdmin, ethniesController.createEthnie);
+router.put('/ethnies/:id', authenticateToken, requireAdmin, ethniesController.updateEthnie);
+router.delete('/ethnies/:id', authenticateToken, requireAdmin, ethniesController.deleteEthnie);
 
 // ==========================================
 // Routes Factions
 // ==========================================
 router.get('/factions', factionsController.getAllFactions);
 router.get('/factions/:id', factionsController.getFactionById);
-// router.post('/factions', authenticateToken, requireAdmin, factionsController.createFaction);
-// router.put('/factions/:id', authenticateToken, requireAdmin, factionsController.updateFaction);
-// router.delete('/factions/:id', authenticateToken, requireAdmin, factionsController.deleteFaction);
-
-// Routes temporaires sans auth pour les tests
-router.post('/factions', factionsController.createFaction);
-router.put('/factions/:id', factionsController.updateFaction);
-router.delete('/factions/:id', factionsController.deleteFaction);
+router.post('/factions', authenticateToken, requireAdmin, factionsController.createFaction);
+router.put('/factions/:id', authenticateToken, requireAdmin, factionsController.updateFaction);
+router.delete('/factions/:id', authenticateToken, requireAdmin, factionsController.deleteFaction);
 
 // ==========================================
 // Routes Clans
 // ==========================================
 router.get('/clans', clansController.getAllClans);
 router.get('/clans/:id', clansController.getClanById);
-// router.post('/clans', authenticateToken, requireAdmin, clansController.createClan);
-// router.put('/clans/:id', authenticateToken, requireAdmin, clansController.updateClan);
-// router.delete('/clans/:id', authenticateToken, requireAdmin, clansController.deleteClan);
-
-// Routes temporaires sans auth pour les tests
-router.post('/clans', clansController.createClan);
-router.put('/clans/:id', clansController.updateClan);
-router.delete('/clans/:id', clansController.deleteClan);
+router.post('/clans', authenticateToken, requireAdmin, clansController.createClan);
+router.put('/clans/:id', authenticateToken, requireAdmin, clansController.updateClan);
+router.delete('/clans/:id', authenticateToken, requireAdmin, clansController.deleteClan);
 
 // ==========================================
 // Routes Personnages
@@ -69,39 +73,40 @@ router.delete('/characters/:id', charactersController.deleteCharacter);
 // Routes Catégories
 // ==========================================
 router.get('/categories', categoriesController.getAllCategories);
-router.get('/categories/:id', categoriesController.getCategoryById);
-router.get('/categories/slug/:slug', categoriesController.getCategoryBySlug);
-router.post('/categories', categoriesController.createCategory);
-router.put('/categories/:id', categoriesController.updateCategory);
-router.delete('/categories/:id', categoriesController.deleteCategory);
+router.get('/categories/:id', canViewCategory(), categoriesController.getCategoryById);
+router.get('/categories/slug/:slug', canViewCategory(), categoriesController.getCategoryBySlug);
+router.post('/categories', authenticateToken, requireAdmin, categoriesController.createCategory);
+router.put('/categories/:id', canEditCategory(), categoriesController.updateCategory);
+router.delete('/categories/:id', canEditCategory(), categoriesController.deleteCategory);
 
 // ==========================================
 // Routes Sections
 // ==========================================
 router.get('/sections', sectionsController.getAllSections);
-router.get('/sections/:id', sectionsController.getSectionById);
-router.get('/sections/slug/:slug', sectionsController.getSectionBySlug);
-router.post('/sections', sectionsController.createSection);
-router.put('/sections/:id', sectionsController.updateSection);
-router.delete('/sections/:id', sectionsController.deleteSection);
+router.get('/sections/:id', canViewSection(), sectionsController.getSectionById);
+router.get('/sections/slug/:slug', canViewSection(), sectionsController.getSectionBySlug);
+router.post('/sections', canCreateSection(), sectionsController.createSection);
+router.put('/sections/:id', canEditSection(), sectionsController.updateSection);
+router.delete('/sections/:id', canEditSection(), sectionsController.deleteSection);
 
 // ==========================================
 // Routes Topics
 // ==========================================
 router.get('/topics', topicsController.getAllTopics);
-router.get('/topics/:id', topicsController.getTopicById);
-router.get('/topics/slug/:slug', topicsController.getTopicBySlug);
-router.post('/topics', topicsController.createTopic);
-router.put('/topics/:id', topicsController.updateTopic);
-router.delete('/topics/:id', topicsController.deleteTopic);
+router.get('/topics/:id', canViewTopic(), topicsController.getTopicById);
+router.get('/topics/slug/:slug', canViewTopic(), topicsController.getTopicBySlug);
+router.post('/topics', canCreateTopic(), topicsController.createTopic);
+router.put('/topics/:id', canEditTopic(), topicsController.updateTopic);
+router.delete('/topics/:id', canEditTopic(), topicsController.deleteTopic);
 
 // ==========================================
 // Routes Posts
 // ==========================================
+// Posts inherit permissions from their topic
 router.get('/posts', postsController.getAllPosts);
 router.get('/posts/:id', postsController.getPostById);
-router.post('/posts', postsController.createPost);
-router.put('/posts/:id', postsController.updatePost);
-router.delete('/posts/:id', postsController.deletePost);
+router.post('/posts', canCreatePost(), postsController.createPost);
+router.put('/posts/:id', canEditPost(), postsController.updatePost);
+router.delete('/posts/:id', canEditPost(), postsController.deletePost);
 
 module.exports = router;
