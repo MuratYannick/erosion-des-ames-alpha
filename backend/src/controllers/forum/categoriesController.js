@@ -1,0 +1,255 @@
+const { Category, Section } = require('../../models');
+
+/**
+ * Récupérer toutes les catégories avec leurs sections
+ */
+exports.getAllCategories = async (req, res) => {
+  try {
+    const { include_sections } = req.query;
+
+    const includeOptions = [];
+
+    if (include_sections === 'true') {
+      includeOptions.push({
+        model: Section,
+        as: 'sections',
+        where: { deleted_at: null, parent_section_id: null },
+        required: false,
+        attributes: ['id', 'name', 'slug', 'description', 'display_order', 'is_pinned']
+      });
+    }
+
+    const categories = await Category.findAll({
+      where: { deleted_at: null },
+      include: includeOptions,
+      order: [
+        ['display_order', 'ASC'],
+        ['id', 'ASC']
+      ]
+    });
+
+    res.json({
+      success: true,
+      data: categories
+    });
+  } catch (error) {
+    console.error('Erreur lors de la récupération des catégories:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la récupération des catégories',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Récupérer une catégorie par ID
+ */
+exports.getCategoryById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const category = await Category.findOne({
+      where: { id, deleted_at: null },
+      include: [
+        {
+          model: Section,
+          as: 'sections',
+          where: { deleted_at: null, parent_section_id: null },
+          required: false,
+          attributes: ['id', 'name', 'slug', 'description', 'display_order', 'is_pinned', 'is_locked']
+        }
+      ]
+    });
+
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: 'Catégorie non trouvée'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: category
+    });
+  } catch (error) {
+    console.error('Erreur lors de la récupération de la catégorie:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la récupération de la catégorie',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Récupérer une catégorie par slug
+ */
+exports.getCategoryBySlug = async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const category = await Category.findOne({
+      where: { slug, deleted_at: null },
+      include: [
+        {
+          model: Section,
+          as: 'sections',
+          where: { deleted_at: null, parent_section_id: null },
+          required: false,
+          attributes: ['id', 'name', 'slug', 'description', 'display_order', 'is_pinned', 'is_locked']
+        }
+      ]
+    });
+
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: 'Catégorie non trouvée'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: category
+    });
+  } catch (error) {
+    console.error('Erreur lors de la récupération de la catégorie:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la récupération de la catégorie',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Créer une nouvelle catégorie (admin seulement)
+ */
+exports.createCategory = async (req, res) => {
+  try {
+    const { name, slug, description, display_order } = req.body;
+
+    // Validation
+    if (!name || !slug) {
+      return res.status(400).json({
+        success: false,
+        message: 'Le nom et le slug sont requis'
+      });
+    }
+
+    const category = await Category.create({
+      name,
+      slug,
+      description,
+      display_order: display_order || 0
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Catégorie créée avec succès',
+      data: category
+    });
+  } catch (error) {
+    console.error('Erreur lors de la création de la catégorie:', error);
+
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(400).json({
+        success: false,
+        message: 'Une catégorie avec ce slug existe déjà'
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la création de la catégorie',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Mettre à jour une catégorie (admin seulement)
+ */
+exports.updateCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, slug, description, display_order } = req.body;
+
+    const category = await Category.findOne({
+      where: { id, deleted_at: null }
+    });
+
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: 'Catégorie non trouvée'
+      });
+    }
+
+    await category.update({
+      name: name || category.name,
+      slug: slug || category.slug,
+      description: description !== undefined ? description : category.description,
+      display_order: display_order !== undefined ? display_order : category.display_order
+    });
+
+    res.json({
+      success: true,
+      message: 'Catégorie mise à jour avec succès',
+      data: category
+    });
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour de la catégorie:', error);
+
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(400).json({
+        success: false,
+        message: 'Une catégorie avec ce slug existe déjà'
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la mise à jour de la catégorie',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Supprimer une catégorie (soft delete, admin seulement)
+ */
+exports.deleteCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const category = await Category.findOne({
+      where: { id, deleted_at: null }
+    });
+
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: 'Catégorie non trouvée'
+      });
+    }
+
+    await category.update({
+      deleted_at: new Date()
+    });
+
+    res.json({
+      success: true,
+      message: 'Catégorie supprimée avec succès'
+    });
+  } catch (error) {
+    console.error('Erreur lors de la suppression de la catégorie:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la suppression de la catégorie',
+      error: error.message
+    });
+  }
+};

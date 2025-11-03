@@ -4,7 +4,17 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     const now = new Date();
-    let characterId = 1;
+
+    // Récupérer les IDs des clans par leur nom
+    const [clans] = await queryInterface.sequelize.query(
+      `SELECT id, name FROM clans`
+    );
+
+    // Créer un mapping nom -> id pour faciliter les références
+    const clanIdByName = {};
+    clans.forEach(clan => {
+      clanIdByName[clan.name] = clan.id;
+    });
 
     const characters = [];
 
@@ -14,13 +24,13 @@ module.exports = {
 
     // Clan 1: Les Prophètes de l'Harmonie (Leader - non jouable)
     characters.push({
-      id: characterId++,
       name: 'Zarak le Visionnaire',
       user_id: null,
       ethnie_id: 1,
       faction_id: 1,
-      clan_id: 1,
+      clan_id: clanIdByName['Les Prophètes de l\'Harmonie'],
       is_dead: false,
+      is_leader: true,
       description: 'Grand Prophète des Éclaireurs, herboriste et guérisseur autoproclamé chamane. Il dirige la faction avec une foi inébranlable en la mutation comme voie divine.',
       created_at: now,
       updated_at: now,
@@ -38,13 +48,13 @@ module.exports = {
 
     prophetsMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 1,
         faction_id: 1,
-        clan_id: 1,
+        clan_id: clanIdByName['Les Prophètes de l\'Harmonie'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -54,13 +64,13 @@ module.exports = {
 
     // Clan 2: La Caste des Symbiotes (Jouable)
     characters.push({
-      id: characterId++,
       name: 'Thalion Racine-Verte',
       user_id: null,
       ethnie_id: 1,
       faction_id: 1,
-      clan_id: 2,
+      clan_id: clanIdByName['La Caste des Symbiotes'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Symbiotes, capable de communiquer intuitivement avec la flore mutée. Responsable de l\'approvisionnement en ressources de l\'avant-poste.',
       created_at: now,
       updated_at: now,
@@ -76,13 +86,13 @@ module.exports = {
 
     symbiotesMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 1,
         faction_id: 1,
-        clan_id: 2,
+        clan_id: clanIdByName['La Caste des Symbiotes'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -92,13 +102,13 @@ module.exports = {
 
     // Clan 3: La Caste des Sensitifs (Jouable)
     characters.push({
-      id: characterId++,
       name: 'Kaela Œil-Perçant',
       user_id: null,
       ethnie_id: 1,
       faction_id: 1,
-      clan_id: 3,
+      clan_id: clanIdByName['La Caste des Sensitifs'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Sensitifs, ses sens hyper-développés lui permettent de détecter les dangers à des kilomètres. Guide principale des expéditions.',
       created_at: now,
       updated_at: now,
@@ -114,13 +124,13 @@ module.exports = {
 
     sensitifsMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 1,
         faction_id: 1,
-        clan_id: 3,
+        clan_id: clanIdByName['La Caste des Sensitifs'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -130,13 +140,13 @@ module.exports = {
 
     // Clan 4: La Caste des Forgerons de Chair (Jouable)
     characters.push({
-      id: characterId++,
       name: 'Malakar Main-Sanglante',
       user_id: null,
       ethnie_id: 1,
       faction_id: 1,
-      clan_id: 4,
+      clan_id: clanIdByName['La Caste des Forgerons de Chair'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Forgerons de Chair, maître guérisseur et empoisonneur. Sa connaissance des organismes mutés est sans égale.',
       created_at: now,
       updated_at: now,
@@ -152,13 +162,13 @@ module.exports = {
 
     forgeronsMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 1,
         faction_id: 1,
-        clan_id: 4,
+        clan_id: clanIdByName['La Caste des Forgerons de Chair'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -168,13 +178,13 @@ module.exports = {
 
     // Clan 5: La Caste des Sentinelles du Chaos (Jouable)
     characters.push({
-      id: characterId++,
       name: 'Grashak Poing-de-Fer',
       user_id: null,
       ethnie_id: 1,
       faction_id: 1,
-      clan_id: 5,
+      clan_id: clanIdByName['La Caste des Sentinelles du Chaos'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Sentinelles du Chaos, guerrier redoutable dont la force physique a été exacerbée par la mutation. Stratège militaire de la faction.',
       created_at: now,
       updated_at: now,
@@ -190,13 +200,13 @@ module.exports = {
 
     sentinellesMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 1,
         faction_id: 1,
-        clan_id: 5,
+        clan_id: clanIdByName['La Caste des Sentinelles du Chaos'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -206,13 +216,13 @@ module.exports = {
 
     // Clan 6: La Caste des Scrutateurs (Jouable)
     characters.push({
-      id: characterId++,
       name: 'Elara Cherche-Vérité',
       user_id: null,
       ethnie_id: 1,
       faction_id: 1,
-      clan_id: 6,
+      clan_id: clanIdByName['La Caste des Scrutateurs'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Scrutateurs, obsédée par la compréhension de la chute de l\'ancien monde. Archive et analyse tous les artefacts récupérés.',
       created_at: now,
       updated_at: now,
@@ -228,13 +238,13 @@ module.exports = {
 
     scrutateursMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 1,
         faction_id: 1,
-        clan_id: 6,
+        clan_id: clanIdByName['La Caste des Scrutateurs'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -253,13 +263,13 @@ module.exports = {
 
     eclaireursSansClan.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 1,
         faction_id: 1,
         clan_id: null,
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -273,13 +283,13 @@ module.exports = {
 
     // Clan 7: Les Élus d'Avant (Leader - non jouable)
     characters.push({
-      id: characterId++,
       name: 'Commandeur Aldric Valcrest',
       user_id: null,
       ethnie_id: 2,
       faction_id: 2,
-      clan_id: 7,
+      clan_id: clanIdByName['Les Élus d\'Avant'],
       is_dead: false,
+      is_leader: true,
       description: 'Chef suprême des Veilleurs, ancien militaire devenu gardien de l\'héritage humain. Dirigeant autoritaire mais juste, garant de la pureté de la faction.',
       created_at: now,
       updated_at: now,
@@ -297,13 +307,13 @@ module.exports = {
 
     elusMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 2,
         faction_id: 2,
-        clan_id: 7,
+        clan_id: clanIdByName['Les Élus d\'Avant'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -313,13 +323,13 @@ module.exports = {
 
     // Clan 8: Le Clan des Sentinelles (Jouable)
     characters.push({
-      id: characterId++,
       name: 'Capitaine Gavin Ironside',
       user_id: null,
       ethnie_id: 2,
       faction_id: 2,
-      clan_id: 8,
+      clan_id: clanIdByName['Le Clan des Sentinelles'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Sentinelles, vétéran aguerri responsable de la défense de la Citadelle. Maintient l\'ordre avec discipline et fermeté.',
       created_at: now,
       updated_at: now,
@@ -335,13 +345,13 @@ module.exports = {
 
     sentinellesVeilleursMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 2,
         faction_id: 2,
-        clan_id: 8,
+        clan_id: clanIdByName['Le Clan des Sentinelles'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -351,13 +361,13 @@ module.exports = {
 
     // Clan 9: Le Clan des Pourvoyeurs (Jouable)
     characters.push({
-      id: characterId++,
       name: 'Intendant Marcus Redfield',
       user_id: null,
       ethnie_id: 2,
       faction_id: 2,
-      clan_id: 9,
+      clan_id: clanIdByName['Le Clan des Pourvoyeurs'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Pourvoyeurs, génie de la logistique et de la gestion des ressources. Assure la survie matérielle de tous les clans.',
       created_at: now,
       updated_at: now,
@@ -373,13 +383,13 @@ module.exports = {
 
     pourvoyeursMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 2,
         faction_id: 2,
-        clan_id: 9,
+        clan_id: clanIdByName['Le Clan des Pourvoyeurs'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -389,13 +399,13 @@ module.exports = {
 
     // Clan 10: Le Clan des Archivistes (Jouable)
     characters.push({
-      id: characterId++,
       name: 'Bibliothécaire Evelyn Greymoor',
       user_id: null,
       ethnie_id: 2,
       faction_id: 2,
-      clan_id: 10,
+      clan_id: clanIdByName['Le Clan des Archivistes'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Archivistes, gardienne du savoir ancestral. Sa mémoire encyclopédique préserve l\'histoire de l\'humanité.',
       created_at: now,
       updated_at: now,
@@ -411,13 +421,13 @@ module.exports = {
 
     archivistesMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 2,
         faction_id: 2,
-        clan_id: 10,
+        clan_id: clanIdByName['Le Clan des Archivistes'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -427,13 +437,13 @@ module.exports = {
 
     // Clan 11: Le Clan des Purificateurs (Jouable)
     characters.push({
-      id: characterId++,
       name: 'Docteur Amelia Whitehall',
       user_id: null,
       ethnie_id: 2,
       faction_id: 2,
-      clan_id: 11,
+      clan_id: clanIdByName['Le Clan des Purificateurs'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Purificateurs, médecin en chef obsédée par la préservation de la pureté génétique. Développe des traitements contre la contamination.',
       created_at: now,
       updated_at: now,
@@ -449,13 +459,13 @@ module.exports = {
 
     purificateursMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 2,
         faction_id: 2,
-        clan_id: 11,
+        clan_id: clanIdByName['Le Clan des Purificateurs'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -465,13 +475,13 @@ module.exports = {
 
     // Clan 12: Le Clan des Explorateurs (Jouable)
     characters.push({
-      id: characterId++,
       name: 'Éclaireur-Chef Logan Steele',
       user_id: null,
       ethnie_id: 2,
       faction_id: 2,
-      clan_id: 12,
+      clan_id: clanIdByName['Le Clan des Explorateurs'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Explorateurs, cartographe expérimenté. A survécu à plus d\'expéditions dangereuses que quiconque dans la faction.',
       created_at: now,
       updated_at: now,
@@ -487,13 +497,13 @@ module.exports = {
 
     explorateursMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 2,
         faction_id: 2,
-        clan_id: 12,
+        clan_id: clanIdByName['Le Clan des Explorateurs'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -512,13 +522,13 @@ module.exports = {
 
     veilleursSansClan.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 2,
         faction_id: 2,
         clan_id: null,
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -532,13 +542,13 @@ module.exports = {
 
     // Clan 13: Les Veilleurs des Ruines
     characters.push({
-      id: characterId++,
       name: 'Archéologue Magnus Grayson',
       user_id: null,
       ethnie_id: 2,
       faction_id: null,
-      clan_id: 13,
+      clan_id: clanIdByName['Les Veilleurs des Ruines'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Veilleurs des Ruines, historien obsédé par la vérité sur le cataclysme. Refuse tout parti pris idéologique.',
       created_at: now,
       updated_at: now,
@@ -556,13 +566,13 @@ module.exports = {
 
     veilleursRuinesMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: member.ethnie,
         faction_id: null,
-        clan_id: 13,
+        clan_id: clanIdByName['Les Veilleurs des Ruines'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -572,13 +582,13 @@ module.exports = {
 
     // Clan 14: Le Peuple des Ombres
     characters.push({
-      id: characterId++,
       name: 'Ombrage le Silencieux',
       user_id: null,
       ethnie_id: 1,
       faction_id: null,
-      clan_id: 14,
+      clan_id: clanIdByName['Le Peuple des Ombres'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader du Peuple des Ombres, maître de la discrétion. On dit qu\'il peut disparaître à volonté.',
       created_at: now,
       updated_at: now,
@@ -596,13 +606,13 @@ module.exports = {
 
     peupleOmbresMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 1,
         faction_id: null,
-        clan_id: 14,
+        clan_id: clanIdByName['Le Peuple des Ombres'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -612,13 +622,13 @@ module.exports = {
 
     // Clan 15: Les Vagabonds du Vent
     characters.push({
-      id: characterId++,
       name: 'Merchant Ezra Windwalker',
       user_id: null,
       ethnie_id: 2,
       faction_id: null,
-      clan_id: 15,
+      clan_id: clanIdByName['Les Vagabonds du Vent'],
       is_dead: false,
+      is_leader: true,
       description: 'Chef de la caravane principale, négociateur habile connaissant toutes les routes commerciales.',
       created_at: now,
       updated_at: now,
@@ -636,13 +646,13 @@ module.exports = {
 
     vagabondsMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: member.ethnie,
         faction_id: null,
-        clan_id: 15,
+        clan_id: clanIdByName['Les Vagabonds du Vent'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -652,13 +662,13 @@ module.exports = {
 
     // Clan 16: Les Artisans du Réemploi
     characters.push({
-      id: characterId++,
       name: 'Maître Forgeron Gareth Steelhand',
       user_id: null,
       ethnie_id: 2,
       faction_id: null,
-      clan_id: 16,
+      clan_id: clanIdByName['Les Artisans du Réemploi'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Artisans, capable de réparer ou créer n\'importe quoi à partir de débris. Pragmatique absolu.',
       created_at: now,
       updated_at: now,
@@ -676,13 +686,13 @@ module.exports = {
 
     artisansMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: member.ethnie,
         faction_id: null,
-        clan_id: 16,
+        clan_id: clanIdByName['Les Artisans du Réemploi'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -692,13 +702,13 @@ module.exports = {
 
     // Clan 17: Les Frères de la Terre Brûlée
     characters.push({
-      id: characterId++,
       name: 'Commandant Graves Ashborn',
       user_id: null,
       ethnie_id: 2,
       faction_id: null,
-      clan_id: 17,
+      clan_id: clanIdByName['Les Frères de la Terre Brûlée'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Frères, ancien soldat d\'élite des Veilleurs. Cynique et désabusé, mais redoutablement efficace.',
       created_at: now,
       updated_at: now,
@@ -716,13 +726,13 @@ module.exports = {
 
     freresMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 2,
         faction_id: null,
-        clan_id: 17,
+        clan_id: clanIdByName['Les Frères de la Terre Brûlée'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -732,13 +742,13 @@ module.exports = {
 
     // Clan 18: Le Sanctuaire du Silence
     characters.push({
-      id: characterId++,
       name: 'Sage Miriam Peaceheart',
       user_id: null,
       ethnie_id: 2,
       faction_id: null,
-      clan_id: 18,
+      clan_id: clanIdByName['Le Sanctuaire du Silence'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader du Sanctuaire, guide spirituelle prônant la non-violence. Offre refuge à tous ceux qui cherchent la paix.',
       created_at: now,
       updated_at: now,
@@ -756,13 +766,13 @@ module.exports = {
 
     sanctuaireMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: member.ethnie,
         faction_id: null,
-        clan_id: 18,
+        clan_id: clanIdByName['Le Sanctuaire du Silence'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -772,13 +782,13 @@ module.exports = {
 
     // Clan 19: Les Collecteurs de Chuchotis
     characters.push({
-      id: characterId++,
       name: 'Maître Informateur Silas Whisperwind',
       user_id: null,
       ethnie_id: 2,
       faction_id: null,
-      clan_id: 19,
+      clan_id: clanIdByName['Les Collecteurs de Chuchotis'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Collecteurs, courtier en informations le plus respecté des terres désolées. Sait tout sur tout le monde.',
       created_at: now,
       updated_at: now,
@@ -796,13 +806,13 @@ module.exports = {
 
     collecteursMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: member.ethnie,
         faction_id: null,
-        clan_id: 19,
+        clan_id: clanIdByName['Les Collecteurs de Chuchotis'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -812,13 +822,13 @@ module.exports = {
 
     // Clan 20: Les Semeurs d'Espoir
     characters.push({
-      id: characterId++,
       name: 'Visionnaire Eden Greenhart',
       user_id: null,
       ethnie_id: 2,
       faction_id: null,
-      clan_id: 20,
+      clan_id: clanIdByName['Les Semeurs d\'Espoir'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Semeurs, botaniste idéaliste rêvant d\'un monde réconcilié. Plante des graines d\'espoir partout où il passe.',
       created_at: now,
       updated_at: now,
@@ -836,13 +846,13 @@ module.exports = {
 
     semeursMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: member.ethnie,
         faction_id: null,
-        clan_id: 20,
+        clan_id: clanIdByName['Les Semeurs d\'Espoir'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -852,13 +862,13 @@ module.exports = {
 
     // Clan 21: Les Loups Solitaires
     characters.push({
-      id: characterId++,
       name: 'Chef de Meute Kraven Bloodclaw',
       user_id: null,
       ethnie_id: 1,
       faction_id: null,
-      clan_id: 21,
+      clan_id: clanIdByName['Les Loups Solitaires'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Loups, bandit brutal ne respectant que la force. Pille tout ce qu\'il peut sans remords.',
       created_at: now,
       updated_at: now,
@@ -876,13 +886,13 @@ module.exports = {
 
     loupsMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: member.ethnie,
         faction_id: null,
-        clan_id: 21,
+        clan_id: clanIdByName['Les Loups Solitaires'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -892,13 +902,13 @@ module.exports = {
 
     // Clan 22: Les Dévoreurs d'Âmes
     characters.push({
-      id: characterId++,
       name: 'Grand Dévoreur Malkor le Fou',
       user_id: null,
       ethnie_id: 1,
       faction_id: null,
-      clan_id: 22,
+      clan_id: clanIdByName['Les Dévoreurs d\'Âmes'],
       is_dead: false,
+      is_leader: true,
       description: 'Leader des Dévoreurs, ancien Prophète banni devenu cannibale fanatique. Sa folie est contagieuse et terrifiante.',
       created_at: now,
       updated_at: now,
@@ -916,13 +926,13 @@ module.exports = {
 
     devoureursMembers.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 1,
         faction_id: null,
-        clan_id: 22,
+        clan_id: clanIdByName['Les Dévoreurs d\'Âmes'],
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -945,13 +955,13 @@ module.exports = {
 
     eveillesSolitaires.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 1,
         faction_id: null,
         clan_id: null,
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,
@@ -970,13 +980,13 @@ module.exports = {
 
     inalteresSolitaires.forEach(member => {
       characters.push({
-        id: characterId++,
         name: member.name,
         user_id: null,
         ethnie_id: 2,
         faction_id: null,
         clan_id: null,
         is_dead: false,
+        is_leader: false,
         description: member.desc,
         created_at: now,
         updated_at: now,

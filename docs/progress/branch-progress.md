@@ -41,22 +41,34 @@ Préparation table users pour le forum
 
 ---
 
-## Phase 2: Backend API 📋 EN COURS
+## Phase 2: Backend API ✅ COMPLÉTÉE
 
 ### Routes CRUD
-- [ ] Ethnies, Factions, Clans
-- [ ] Personnages
-- [ ] Catégories, Sections
-- [ ] Topics, Posts
+- [x] Ethnies, Factions, Clans
+- [x] Personnages
+- [x] Catégories, Sections
+- [x] Topics, Posts
+
+### Authentification JWT
+- [x] Service JWT (access + refresh tokens)
+- [x] Middleware authenticateToken
+- [x] Routes auth (register, login, refresh, logout, me)
+- [x] Migration refresh_token dans User
+- [x] Activation middlewares auth dans routes
 
 ### Middleware
-- [ ] Permissions (faction/clan)
-- [ ] Sélection character pour RP
-- [ ] Validation des données
+- [x] Permissions (view, create, edit, move, pin, lock)
+- [x] Permission par ressource (category, section, topic, post)
+- [x] Gestion roles (admin, moderator, game_master, player)
+- [x] Validation acceptation CGU/règlement
+- [x] API CRUD gestion permissions (admin/moderator)
 
 ### Tests
-- [ ] Tests unitaires
-- [ ] Tests d'intégration
+- [x] Tests unitaires (166 tests passent)
+- [x] Tests controllers (ethnies, factions, clans, characters, categories, sections, topics, posts, permissions)
+- [x] Tests services (permissionEvaluator)
+- [x] Tests middleware (forumPermissions, permissionAuth, authenticate)
+- [x] Tests d'intégration (categoriesAPI, postsAPI avec mocks JWT/permissions)
 
 ---
 
@@ -146,6 +158,6 @@ npm run db:reset:dev            # Reset dev complet
 
 ---
 
-**Dernière mise à jour**: 2025-10-31
-**Statut**: ✅ Phase 1 complétée
-**Prochaine étape**: Développer API backend (Phase 2)
+**Dernière mise à jour**: 2025-11-03
+**Statut**: ✅ Phase 2 complétée
+**Prochaine étape**: Tests d'intégration JWT ou Frontend Forum (Phase 3)

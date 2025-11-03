@@ -5,10 +5,26 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const now = new Date();
 
+    // Dynamic lookups for foreign keys
+    const [topics] = await queryInterface.sequelize.query(
+      `SELECT id, slug FROM topics WHERE slug IN ('bienvenue-sur-erosion-des-ames', 'reglement-du-forum', 'cgu', 'hey-toi-qui-es-tu')`
+    );
+
+    const topicIdBySlug = {};
+    topics.forEach(topic => {
+      topicIdBySlug[topic.slug] = topic.id;
+    });
+
+    const [users] = await queryInterface.sequelize.query(
+      `SELECT id, user_name FROM users WHERE user_name = 'l\\'équipe de développement'`
+    );
+
+    const devUserId = users[0].id;
+
+
     await queryInterface.bulkInsert('posts', [
       // Post 1: Message de bienvenue dans le topic "Bienvenue sur Érosion des Âmes !"
       {
-        id: 1,
         content: `Bienvenue sur **Érosion des Âmes** !
 
 Chers survivants,
@@ -32,8 +48,8 @@ N'hésitez pas à poser vos questions dans les sections appropriées. L'équipe 
 Que votre survie soit longue et prospère dans ces terres désolées !
 
 *L'Équipe de Développement d'Érosion des Âmes*`,
-        topic_id: 1, // Topic "Bienvenue sur Érosion des Âmes !"
-        author_user_id: 1, // Admin
+        topic_id: topicIdBySlug['bienvenue-sur-erosion-des-ames'], // Topic "Bienvenue sur Érosion des Âmes !"
+        author_user_id: devUserId, // Admin
         author_character_id: null,
         author_name: 'Équipe de Développement',
         is_locked: false,
@@ -44,7 +60,6 @@ Que votre survie soit longue et prospère dans ces terres désolées !
 
       // Post 2: Règlement du Forum
       {
-        id: 2,
         content: `# Règlement du Forum et du Jeu
 
 **Version 1.0 - [Date]**
@@ -150,8 +165,8 @@ Ce règlement peut être modifié à tout moment. Les changements seront annonc�
 **En jouant, vous acceptez ce règlement et vous engagez à le respecter.**
 
 *Pour toute question, n'hésitez pas à contacter l'équipe de modération.*`,
-        topic_id: 2, // Topic "Règlement du Forum"
-        author_user_id: 1,
+        topic_id: topicIdBySlug['reglement-du-forum'], // Topic "Règlement du Forum"
+        author_user_id: devUserId,
         author_character_id: null,
         author_name: 'Équipe de Développement',
         is_locked: true,
@@ -162,7 +177,6 @@ Ce règlement peut être modifié à tout moment. Les changements seront annonc�
 
       // Post 3: CGU
       {
-        id: 3,
         content: `# Conditions Générales d'Utilisation
 
 **Dernière mise à jour : [Date]**
@@ -231,8 +245,8 @@ Pour toute question concernant ces CGU, contactez l'équipe via [contact@erosion
 ---
 
 *En utilisant ce service, vous acceptez ces conditions.*`,
-        topic_id: 3, // Topic "CGU"
-        author_user_id: 1,
+        topic_id: topicIdBySlug['cgu'], // Topic "CGU"
+        author_user_id: devUserId,
         author_character_id: null,
         author_name: 'Équipe de Développement',
         is_locked: true,
@@ -243,7 +257,6 @@ Pour toute question concernant ces CGU, contactez l'équipe via [contact@erosion
 
       // Post 4: Topic "Hey toi!! Qui es-tu ?"
       {
-        id: 4,
         content: `# Bienvenue au Campement de Réfugiés !
 
 Salut toi, survivant !
@@ -265,8 +278,8 @@ La communauté est là pour t'accueillir et t'aider à t'intégrer.
 **Que la survie soit avec toi !**
 
 *L'Équipe d'Accueil*`,
-        topic_id: 4, // Topic "Hey toi!! Qui es-tu ?"
-        author_user_id: 1,
+        topic_id: topicIdBySlug['hey-toi-qui-es-tu'], // Topic "Hey toi!! Qui es-tu ?"
+        author_user_id: devUserId,
         author_character_id: null,
         author_name: 'Équipe de Développement',
         is_locked: false,
