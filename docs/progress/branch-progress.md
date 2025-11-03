@@ -30,6 +30,15 @@ Préparation table users pour le forum
 
 ---
 
+## Sous-Branches Actives
+
+### 🔄 feature/forum-frontend (créée 2025-11-03)
+**Parent**: feature/forum
+**Objectif**: Implémentation du frontend du forum (Phase 3)
+**Statut**: En cours
+
+---
+
 ## Phase 1: Base de Données ✅ COMPLÉTÉE
 
 - [x] Mise à jour table users
@@ -72,7 +81,7 @@ Préparation table users pour le forum
 
 ---
 
-## Phase 3: Frontend Forum 📋 À FAIRE
+## Phase 3: Frontend Forum 🔄 EN COURS (feature/forum-frontend)
 
 ### Pages
 - [ ] Liste catégories
@@ -85,6 +94,20 @@ Préparation table users pour le forum
 - [ ] Nouveau post
 - [ ] Éditeur markdown
 - [ ] Sélecteur de character
+
+### Composants
+- [ ] CategoryCard
+- [ ] SectionCard
+- [ ] TopicCard
+- [ ] PostCard
+- [ ] ForumLayout
+
+### Services API
+- [ ] categoriesService
+- [ ] sectionsService
+- [ ] topicsService
+- [ ] postsService
+- [ ] permissionsService
 
 ---
 
@@ -158,6 +181,27 @@ npm run db:reset:dev            # Reset dev complet
 
 ---
 
+## Prochaines Étapes (Phase 3)
+
+### Immédiat
+1. Création de la structure de dossiers frontend/src/features/forum
+2. Mise en place des services API pour communiquer avec le backend
+3. Création du composant ForumLayout
+4. Implémentation de la page liste des catégories
+
+### Court terme
+1. Implémentation complète des pages (categories, sections, topics, posts)
+2. Création des composants réutilisables (cards)
+3. Intégration de l'authentification JWT dans les appels API
+
+### Moyen terme
+1. Formulaires de création (topics, posts)
+2. Éditeur markdown
+3. Gestion des permissions côté frontend
+4. Sélecteur de personnage
+
+---
+
 **Dernière mise à jour**: 2025-11-03
-**Statut**: ✅ Phase 2 complétée
-**Prochaine étape**: Tests d'intégration JWT ou Frontend Forum (Phase 3)
+**Statut**: 🔄 Phase 3 en cours (feature/forum-frontend)
+**Phase actuelle**: Frontend Forum
