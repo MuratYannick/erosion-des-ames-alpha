@@ -59,17 +59,37 @@ const startServer = async () => {
     // Test de connexion à la base de données
     await testConnection();
 
-    // Synchronisation des modèles (à utiliser en développement uniquement)
-    if (process.env.NODE_ENV === 'development') {
-      await sequelize.sync({ alter: false });
-      console.log('✓ Modèles synchronisés avec la base de données');
-    }
+    // NOTE: sequelize.sync() désactivé - utiliser les migrations à la place
+    // La synchronisation automatique causait des ALTER TABLE non désirés
+    // Décommenter uniquement si nécessaire pour le développement initial
+    // if (process.env.NODE_ENV === 'development') {
+    //   await sequelize.sync({ alter: true });
+    //   console.log('✓ Modèles synchronisés avec la base de données');
+    // }
 
     // Démarrage du serveur Express
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
       console.log(`\n✓ Serveur démarré sur http://localhost:${PORT}`);
       console.log(`✓ Environnement: ${process.env.NODE_ENV || 'development'}\n`);
     });
+
+    // Gestion propre de l'arrêt du serveur
+    process.on('SIGTERM', () => {
+      console.log('\n✓ Signal SIGTERM reçu, arrêt du serveur...');
+      server.close(() => {
+        console.log('✓ Serveur fermé proprement');
+        process.exit(0);
+      });
+    });
+
+    process.on('SIGINT', () => {
+      console.log('\n✓ Signal SIGINT reçu, arrêt du serveur...');
+      server.close(() => {
+        console.log('✓ Serveur fermé proprement');
+        process.exit(0);
+      });
+    });
+
   } catch (error) {
     console.error('✗ Erreur lors du démarrage du serveur:', error);
     process.exit(1);
