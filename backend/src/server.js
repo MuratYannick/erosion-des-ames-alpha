@@ -73,6 +73,12 @@ const startServer = async () => {
       console.log(`✓ Environnement: ${process.env.NODE_ENV || 'development'}\n`);
     });
 
+    // Gestion des erreurs du serveur
+    server.on('error', (err) => {
+      console.error('✗ Erreur du serveur:', err);
+      process.exit(1);
+    });
+
     // Gestion propre de l'arrêt du serveur
     process.on('SIGTERM', () => {
       console.log('\n✓ Signal SIGTERM reçu, arrêt du serveur...');
