@@ -15,8 +15,9 @@ import { MessageSquare, Lock, Users, ChevronRight } from 'lucide-react';
  * @param {number} section.topicsCount - Nombre de topics
  * @param {number} section.subsectionsCount - Nombre de sous-sections
  * @param {Object} section.lastTopic - Dernier topic posté
+ * @param {string} categorySlug - Slug de la catégorie parente
  */
-const SectionCard = ({ section }) => {
+const SectionCard = ({ section, categorySlug }) => {
   const {
     slug,
     name,
@@ -30,7 +31,7 @@ const SectionCard = ({ section }) => {
 
   return (
     <Link
-      to={`/forum/section/${slug}`}
+      to={`/forum/${categorySlug}/${slug}`}
       className="block bg-neutral-800 border border-neutral-700 hover:border-ochre-600 rounded-lg p-4 sm:p-5 transition-all duration-200 hover:shadow-lg group"
     >
       <div className="flex gap-3 sm:gap-4">

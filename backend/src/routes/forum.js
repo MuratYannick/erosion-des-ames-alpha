@@ -74,7 +74,10 @@ router.delete('/characters/:id', charactersController.deleteCharacter);
 // ==========================================
 router.get('/categories', categoriesController.getAllCategories);
 router.get('/categories/:id', canViewCategory(), categoriesController.getCategoryById);
-router.get('/categories/slug/:slug', canViewCategory(), categoriesController.getCategoryBySlug);
+// Route slug publique pour navigation (permissions vérifiées dans le controller)
+router.get('/categories/slug/:slug', categoriesController.getCategoryBySlug);
+// Route pour récupérer les sections d'une catégorie
+router.get('/categories/:id/sections', categoriesController.getSectionsByCategory);
 router.post('/categories', authenticateToken, requireAdmin, categoriesController.createCategory);
 router.put('/categories/:id', canEditCategory(), categoriesController.updateCategory);
 router.delete('/categories/:id', canEditCategory(), categoriesController.deleteCategory);
@@ -84,7 +87,10 @@ router.delete('/categories/:id', canEditCategory(), categoriesController.deleteC
 // ==========================================
 router.get('/sections', sectionsController.getAllSections);
 router.get('/sections/:id', canViewSection(), sectionsController.getSectionById);
-router.get('/sections/slug/:slug', canViewSection(), sectionsController.getSectionBySlug);
+// Route slug publique pour navigation (permissions vérifiées dans le controller)
+router.get('/sections/slug/:slug', sectionsController.getSectionBySlug);
+// Route pour récupérer les topics d'une section
+router.get('/sections/:id/topics', sectionsController.getTopicsBySection);
 router.post('/sections', canCreateSection(), sectionsController.createSection);
 router.put('/sections/:id', canEditSection(), sectionsController.updateSection);
 router.delete('/sections/:id', canEditSection(), sectionsController.deleteSection);
@@ -94,7 +100,8 @@ router.delete('/sections/:id', canEditSection(), sectionsController.deleteSectio
 // ==========================================
 router.get('/topics', topicsController.getAllTopics);
 router.get('/topics/:id', canViewTopic(), topicsController.getTopicById);
-router.get('/topics/slug/:slug', canViewTopic(), topicsController.getTopicBySlug);
+// Route slug publique pour navigation (permissions vérifiées dans le controller)
+router.get('/topics/slug/:slug', topicsController.getTopicBySlug);
 router.post('/topics', canCreateTopic(), topicsController.createTopic);
 router.put('/topics/:id', canEditTopic(), topicsController.updateTopic);
 router.delete('/topics/:id', canEditTopic(), topicsController.deleteTopic);

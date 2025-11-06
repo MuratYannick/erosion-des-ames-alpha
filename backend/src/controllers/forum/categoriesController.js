@@ -219,6 +219,53 @@ exports.updateCategory = async (req, res) => {
 };
 
 /**
+ * Récupérer les sections d'une catégorie
+ */
+exports.getSectionsByCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Vérifier que la catégorie existe
+    const category = await Category.findOne({
+      where: { id, deleted_at: null }
+    });
+
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: 'Catégorie non trouvée'
+      });
+    }
+
+    // Récupérer les sections de cette catégorie (seulement les sections principales, pas les sous-sections)
+    const sections = await Section.findAll({
+      where: {
+        category_id: id,
+        parent_section_id: null,
+        deleted_at: null
+      },
+      order: [
+        ['is_pinned', 'DESC'],
+        ['display_order', 'ASC'],
+        ['id', 'ASC']
+      ]
+    });
+
+    res.json({
+      success: true,
+      data: sections
+    });
+  } catch (error) {
+    console.error('Erreur lors de la récupération des sections:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la récupération des sections',
+      error: error.message
+    });
+  }
+};
+
+/**
  * Supprimer une catégorie (soft delete, admin seulement)
  */
 exports.deleteCategory = async (req, res) => {

@@ -7,6 +7,12 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 
+// Pages du forum
+import CategoriesPage from './pages/forum/CategoriesPage'
+import SectionsPage from './pages/forum/SectionsPage'
+import TopicsPage from './pages/forum/TopicsPage'
+import TopicDetailPage from './pages/forum/TopicDetailPage'
+
 // Pages d'erreur
 import NotFound404 from './pages/errors/NotFound404'
 import Forbidden403 from './pages/errors/Forbidden403'
@@ -20,16 +26,25 @@ import GlobalErrorBoundary from './components/errors/GlobalErrorBoundary'
 
 function App() {
   return (
-    <GlobalErrorBoundary>
-      <Router>
+    <Router>
+      <GlobalErrorBoundary>
         <Routes>
+          {/* Portail */}
           <Route path="/" element={<Portal />} />
           <Route path="/intro" element={<Intro />} />
           <Route path="/univers" element={<Univers />} />
           <Route path="/reglement" element={<Reglement />} />
           <Route path="/home" element={<Home />} />
+
+          {/* Authentification */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          {/* Forum - Hiérarchie des routes */}
+          <Route path="/forum" element={<CategoriesPage />} />
+          <Route path="/forum/:categorySlug" element={<SectionsPage />} />
+          <Route path="/forum/:categorySlug/:sectionSlug" element={<TopicsPage />} />
+          <Route path="/forum/:categorySlug/:sectionSlug/:topicSlug" element={<TopicDetailPage />} />
 
           {/* Pages d'erreur */}
           <Route path="/error/401" element={<Unauthorized401 />} />
@@ -42,8 +57,8 @@ function App() {
           {/* Route catch-all pour 404 */}
           <Route path="*" element={<NotFound404 />} />
         </Routes>
-      </Router>
-    </GlobalErrorBoundary>
+      </GlobalErrorBoundary>
+    </Router>
   )
 }
 

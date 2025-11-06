@@ -1,4 +1,4 @@
-const { Section, Category, Faction, Clan } = require('../../models');
+const { Section, Category, Faction, Clan, Topic } = require('../../models');
 
 /**
  * Récupérer toutes les sections
@@ -477,6 +477,51 @@ exports.updateSection = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Erreur lors de la mise à jour de la section',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Récupérer les topics d'une section
+ */
+exports.getTopicsBySection = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Vérifier que la section existe
+    const section = await Section.findOne({
+      where: { id, deleted_at: null }
+    });
+
+    if (!section) {
+      return res.status(404).json({
+        success: false,
+        message: 'Section non trouvée'
+      });
+    }
+
+    // Récupérer les topics de cette section
+    const topics = await Topic.findAll({
+      where: {
+        section_id: id,
+        deleted_at: null
+      },
+      order: [
+        ['is_pinned', 'DESC'],
+        ['created_at', 'DESC']
+      ]
+    });
+
+    res.json({
+      success: true,
+      data: topics
+    });
+  } catch (error) {
+    console.error('Erreur lors de la récupération des topics:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la récupération des topics',
       error: error.message
     });
   }
