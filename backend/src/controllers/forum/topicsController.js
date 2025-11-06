@@ -358,6 +358,64 @@ exports.updateTopic = async (req, res) => {
 };
 
 /**
+ * Récupérer les posts d'un topic
+ */
+exports.getPostsByTopic = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Vérifier que le topic existe
+    const topic = await Topic.findOne({
+      where: { id, deleted_at: null }
+    });
+
+    if (!topic) {
+      return res.status(404).json({
+        success: false,
+        message: 'Topic non trouvé'
+      });
+    }
+
+    // Récupérer les posts de ce topic
+    const posts = await Post.findAll({
+      where: {
+        topic_id: id,
+        deleted_at: null
+      },
+      include: [
+        {
+          model: User,
+          as: 'authorUser',
+          attributes: ['id', 'user_name', 'role'],
+          required: false
+        },
+        {
+          model: Character,
+          as: 'authorCharacter',
+          attributes: ['id', 'name'],
+          required: false
+        }
+      ],
+      order: [
+        ['created_at', 'ASC']
+      ]
+    });
+
+    res.json({
+      success: true,
+      data: posts
+    });
+  } catch (error) {
+    console.error('Erreur lors de la récupération des posts:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la récupération des posts',
+      error: error.message
+    });
+  }
+};
+
+/**
  * Supprimer un topic (soft delete)
  */
 exports.deleteTopic = async (req, res) => {

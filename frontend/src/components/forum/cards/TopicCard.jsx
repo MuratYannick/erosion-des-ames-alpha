@@ -18,8 +18,10 @@ import { fr } from 'date-fns/locale';
  * @param {string} topic.author_name - Nom de l'auteur
  * @param {string} topic.created_at - Date de création
  * @param {Object} topic.lastPost - Dernier post
+ * @param {string} categorySlug - Slug de la catégorie parente
+ * @param {string} sectionSlug - Slug de la section parente
  */
-const TopicCard = ({ topic }) => {
+const TopicCard = ({ topic, categorySlug, sectionSlug }) => {
   const {
     slug,
     title,
@@ -39,7 +41,7 @@ const TopicCard = ({ topic }) => {
 
   return (
     <Link
-      to={`/forum/topic/${slug}`}
+      to={`/forum/${categorySlug}/${sectionSlug}/${slug}`}
       className={`block border rounded-lg p-4 transition-all duration-200 hover:shadow-lg group ${
         is_pinned
           ? 'bg-ochre-950 border-ochre-700 hover:border-ochre-600'

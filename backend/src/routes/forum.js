@@ -102,6 +102,8 @@ router.get('/topics', topicsController.getAllTopics);
 router.get('/topics/:id', canViewTopic(), topicsController.getTopicById);
 // Route slug publique pour navigation (permissions vérifiées dans le controller)
 router.get('/topics/slug/:slug', topicsController.getTopicBySlug);
+// Route pour récupérer les posts d'un topic
+router.get('/topics/:id/posts', topicsController.getPostsByTopic);
 router.post('/topics', canCreateTopic(), topicsController.createTopic);
 router.put('/topics/:id', canEditTopic(), topicsController.updateTopic);
 router.delete('/topics/:id', canEditTopic(), topicsController.deleteTopic);
