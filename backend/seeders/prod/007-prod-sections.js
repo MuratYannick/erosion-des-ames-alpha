@@ -373,10 +373,25 @@ module.exports = {
         created_at: now,
         updated_at: now,
         deleted_at: null
-      },
+      }
+    ], {});
 
+    // Query sections again to get IDs for clan parent sections (Quartiers des Clans)
+    const [updatedSections] = await queryInterface.sequelize.query(
+      `SELECT id, slug FROM sections`
+    );
+
+    // Update sectionIdBySlug with new sections
+    updatedSections.forEach(section => {
+      sectionIdBySlug[section.slug] = section.id;
+    });
+
+    // ==========================================
+    // SOUS-SECTIONS: CLANS JOUABLES ÉCLAIREURS ET VEILLEURS
+    // ==========================================
+    await queryInterface.bulkInsert('sections', [
       // ==========================================
-      // SOUS-SECTIONS: CLANS JOUABLES ÉCLAIREURS
+      // CLANS JOUABLES ÉCLAIREURS
       // ==========================================
       // Clan 2: La Caste des Symbiotes
       {
@@ -725,10 +740,25 @@ module.exports = {
         created_at: now,
         updated_at: now,
         deleted_at: null
-      },
+      }
+    ], {});
 
+    // Query sections again to get IDs for all clan sections
+    const [finalSections] = await queryInterface.sequelize.query(
+      `SELECT id, slug FROM sections`
+    );
+
+    // Update sectionIdBySlug with all clan sections
+    finalSections.forEach(section => {
+      sectionIdBySlug[section.slug] = section.id;
+    });
+
+    // ==========================================
+    // SOUS-SECTIONS: DÉTAILS DES CLANS (4 sous-sections par clan)
+    // ==========================================
+    await queryInterface.bulkInsert('sections', [
       // ==========================================
-      // SOUS-SECTIONS: CLANS NEUTRES (4 sous-sections par clan)
+      // SOUS-SECTIONS: CLANS NEUTRES
       // ==========================================
       // Clan 13: Les Veilleurs des Ruines
       {
