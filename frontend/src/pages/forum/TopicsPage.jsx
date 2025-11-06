@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader2, AlertCircle } from 'lucide-react';
 import ForumLayout from '../../components/forum/layout/ForumLayout';
-import { TopicCard } from '../../components/forum/cards';
+import { TopicCard, SectionCard } from '../../components/forum/cards';
 import { getSectionBySlug } from '../../services/forum/sectionsService';
 import { getTopicsBySection } from '../../services/forum/topicsService';
 
@@ -125,6 +125,22 @@ const TopicsPage = () => {
           </div>
         </div>
 
+        {/* Liste des sous-sections (si existantes) */}
+        {section.childSections && section.childSections.length > 0 && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-alternative-1 text-ochre-400 mb-3">
+              Sous-sections
+            </h2>
+            {section.childSections.map((childSection) => (
+              <SectionCard
+                key={childSection.id}
+                section={childSection}
+                categorySlug={categorySlug}
+              />
+            ))}
+          </div>
+        )}
+
         {/* Liste des topics */}
         {topics.length === 0 ? (
           <div className="bg-city-800 border-2 border-city-700 rounded-lg p-8 text-center">
@@ -134,6 +150,11 @@ const TopicsPage = () => {
           </div>
         ) : (
           <div className="space-y-4">
+            {section.childSections && section.childSections.length > 0 && (
+              <h2 className="text-xl font-alternative-1 text-ochre-400 mb-3 mt-8">
+                Topics
+              </h2>
+            )}
             {topics.map((topic) => (
               <TopicCard
                 key={topic.id}
