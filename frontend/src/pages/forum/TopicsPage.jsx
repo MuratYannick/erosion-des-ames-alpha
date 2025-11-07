@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Loader2, AlertCircle } from 'lucide-react';
 import ForumLayout from '../../components/forum/layout/ForumLayout';
 import { TopicCard, SectionCard } from '../../components/forum/cards';
+import { NewSectionButton } from '../../components/forum/buttons';
 import { getSectionBySlug } from '../../services/forum/sectionsService';
 import { getTopicsBySection } from '../../services/forum/topicsService';
 
@@ -101,9 +102,15 @@ const TopicsPage = () => {
       <div className="space-y-6">
         {/* En-tête de la section */}
         <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-6">
-          <h1 className="text-3xl md:text-4xl font-titre-Jeu text-ochre-500 mb-3">
-            {section.name}
-          </h1>
+          <div className="flex justify-between items-start gap-4 mb-3">
+            <h1 className="text-3xl md:text-4xl font-titre-Jeu text-ochre-500">
+              {section.name}
+            </h1>
+            <NewSectionButton
+              category={section.category}
+              section={section}
+            />
+          </div>
           {section.description && (
             <p className="text-city-300 font-texte-corps text-base md:text-lg">
               {section.description}

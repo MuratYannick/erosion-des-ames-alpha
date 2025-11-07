@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Loader2, AlertCircle } from 'lucide-react';
 import ForumLayout from '../../components/forum/layout/ForumLayout';
 import { SectionCard } from '../../components/forum/cards';
+import { NewSectionButton } from '../../components/forum/buttons';
 import { getCategoryBySlug } from '../../services/forum/categoriesService';
 import { getSectionsByCategory } from '../../services/forum/sectionsService';
 
@@ -100,9 +101,12 @@ const SectionsPage = () => {
       <div className="space-y-6">
         {/* En-tête de la catégorie */}
         <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-6">
-          <h1 className="text-3xl md:text-4xl font-titre-Jeu text-ochre-500 mb-3">
-            {category.name}
-          </h1>
+          <div className="flex justify-between items-start gap-4 mb-3">
+            <h1 className="text-3xl md:text-4xl font-titre-Jeu text-ochre-500">
+              {category.name}
+            </h1>
+            <NewSectionButton category={category} />
+          </div>
           {category.description && (
             <p className="text-city-300 font-texte-corps text-base md:text-lg">
               {category.description}

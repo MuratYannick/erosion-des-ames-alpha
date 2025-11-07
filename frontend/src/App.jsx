@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
 import Portal from './pages/portal/Portal'
 import Intro from './pages/portal/Intro'
 import Univers from './pages/portal/Univers'
@@ -28,8 +29,9 @@ import GlobalErrorBoundary from './components/errors/GlobalErrorBoundary'
 function App() {
   return (
     <Router>
-      <GlobalErrorBoundary>
-        <Routes>
+      <AuthProvider>
+        <GlobalErrorBoundary>
+          <Routes>
           {/* Portail */}
           <Route path="/" element={<Portal />} />
           <Route path="/intro" element={<Intro />} />
@@ -58,8 +60,9 @@ function App() {
 
           {/* Route catch-all pour 404 */}
           <Route path="*" element={<NotFound404 />} />
-        </Routes>
-      </GlobalErrorBoundary>
+          </Routes>
+        </GlobalErrorBoundary>
+      </AuthProvider>
     </Router>
   )
 }
