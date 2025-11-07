@@ -12,7 +12,8 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
  * @returns {Promise<Object>} Réponse JSON
  */
 const apiRequest = async (endpoint, options = {}) => {
-  const token = localStorage.getItem('token');
+  // Chercher le token dans sessionStorage d'abord, puis localStorage
+  const token = sessionStorage.getItem('token') || localStorage.getItem('token');
 
   const defaultHeaders = {
     'Content-Type': 'application/json',
@@ -72,7 +73,8 @@ const apiRequest = async (endpoint, options = {}) => {
     }
 
     const data = await response.json();
-    return data;
+    // Retourner un objet axios-like avec data
+    return { data };
   } catch (error) {
     console.error(`API Error [${endpoint}]:`, error);
 
@@ -81,8 +83,40 @@ const apiRequest = async (endpoint, options = {}) => {
       window.location.href = '/error/network';
     }
 
-    throw error;
+    // Retourner une erreur axios-like
+    if (error.response) {
+      throw error;
+    }
+
+    // Pour les autres erreurs, créer un objet erreur axios-like
+    const axiosError = new Error(error.message);
+    axiosError.response = {
+      data: { message: error.message },
+      status: 500
+    };
+    throw axiosError;
   }
 };
 
-export default apiRequest;
+// Export avec méthodes HTTP (style axios)
+const api = {
+  get: (endpoint, options = {}) => apiRequest(endpoint, { method: 'GET', ...options }),
+  post: (endpoint, data, options = {}) => apiRequest(endpoint, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    ...options
+  }),
+  put: (endpoint, data, options = {}) => apiRequest(endpoint, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+    ...options
+  }),
+  patch: (endpoint, data, options = {}) => apiRequest(endpoint, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+    ...options
+  }),
+  delete: (endpoint, options = {}) => apiRequest(endpoint, { method: 'DELETE', ...options }),
+};
+
+export default api;
