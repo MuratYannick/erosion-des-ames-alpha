@@ -40,6 +40,13 @@ Préparation table users pour le forum
 **Commits**:
 - `2b9e872` - docs: initialisation branche
 - `abc8a3c` - feat: architecture complète frontend forum
+- `4f29921` - fix: correction navigation et routes API catégories/sections
+- `d596f79` - fix: correction navigation topics et route API posts
+- `93e8344` - fix: désactivation sequelize.sync et ajout gestion signaux
+- `ff37ad9` - fix: désactivation complète du logging Sequelize
+- `80b6ae7` - fix: ajout gestionnaire d'erreur pour app.listen
+- `cdaf3f9` - fix: affichage des sous-sections dans TopicsPage
+- `919f92c` - fix: correction hiérarchie parent_section_id dans seeder
 
 **Réalisations**:
 - ✅ Structure complète (components/, pages/, services/, hooks/, styles/)
@@ -50,7 +57,11 @@ Préparation table users pour le forum
 - ✅ 4 composants cards (Category, Section, Topic, Post)
 - ✅ Services API complets (categories, sections, topics, posts)
 - ✅ Hook useBreakpoint pour responsive
-- ✅ Page CategoriesPage fonctionnelle
+- ✅ 4 pages complètes (Categories, Sections, Topics, TopicDetail)
+- ✅ Navigation hiérarchique fonctionnelle (Categories → Sections → Topics → Posts)
+- ✅ Affichage des sous-sections à chaque niveau
+- ✅ Routes backend complètes avec controllers
+- ✅ Correction seeder: hiérarchie parent_section_id
 - ✅ Dépendances: lucide-react, date-fns
 - ✅ Documentation complète (README.md)
 
@@ -125,11 +136,11 @@ Préparation table users pour le forum
 - [x] topicsService
 - [x] postsService
 
-### Pages
+### Pages ✅ COMPLÉTÉ
 - [x] CategoriesPage (liste catégories + stats globales)
-- [ ] SectionsPage (sections d'une catégorie)
-- [ ] TopicsPage (topics d'une section)
-- [ ] TopicDetailPage (posts d'un topic)
+- [x] SectionsPage (sections d'une catégorie + navigation hiérarchique)
+- [x] TopicsPage (topics d'une section + sous-sections)
+- [x] TopicDetailPage (posts d'un topic)
 
 ### Formulaires
 - [ ] Nouveau topic
@@ -236,6 +247,6 @@ npm run db:reset:dev            # Reset dev complet
 
 ---
 
-**Dernière mise à jour**: 2025-11-03
+**Dernière mise à jour**: 2025-11-06
 **Statut**: 🔄 Phase 3 en cours (feature/forum-frontend)
-**Phase actuelle**: Frontend Forum
+**Phase actuelle**: Frontend Forum - Pages de base complétées
