@@ -71,19 +71,17 @@ async function register(req, res) {
     res.status(201).json({
       success: true,
       message: 'Compte créé avec succès',
-      data: {
-        user: {
-          id: user.id,
-          username: user.user_name,
-          email: user.email,
-          role: user.role,
-          email_verified: user.email_verified,
-          terms_accepted: user.terms_accepted,
-          forum_rules_accepted: user.forum_rules_accepted
-        },
-        accessToken,
-        refreshToken
-      }
+      user: {
+        id: user.id,
+        username: user.user_name,
+        email: user.email,
+        role: user.role,
+        email_verified: user.email_verified,
+        terms_accepted: user.terms_accepted,
+        forum_rules_accepted: user.forum_rules_accepted
+      },
+      token: accessToken,
+      refreshToken
     });
   } catch (error) {
     console.error('Erreur lors de l\'inscription:', error);
@@ -119,25 +117,25 @@ async function register(req, res) {
  */
 async function login(req, res) {
   try {
-    const { email, password } = req.body;
+    const { user_name, password } = req.body;
 
     // Validation des champs requis
-    if (!email || !password) {
+    if (!user_name || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Email et mot de passe requis'
+        message: 'Nom d\'utilisateur et mot de passe requis'
       });
     }
 
-    // Trouver l'utilisateur
+    // Trouver l'utilisateur par nom d'utilisateur
     const user = await User.findOne({
-      where: { email }
+      where: { user_name }
     });
 
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Email ou mot de passe incorrect'
+        message: 'Nom d\'utilisateur ou mot de passe incorrect'
       });
     }
 
@@ -155,7 +153,7 @@ async function login(req, res) {
     if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
-        message: 'Email ou mot de passe incorrect'
+        message: 'Nom d\'utilisateur ou mot de passe incorrect'
       });
     }
 
@@ -168,19 +166,17 @@ async function login(req, res) {
     res.status(200).json({
       success: true,
       message: 'Connexion réussie',
-      data: {
-        user: {
-          id: user.id,
-          username: user.user_name,
-          email: user.email,
-          role: user.role,
-          email_verified: user.email_verified,
-          terms_accepted: user.terms_accepted,
-          forum_rules_accepted: user.forum_rules_accepted
-        },
-        accessToken,
-        refreshToken
-      }
+      user: {
+        id: user.id,
+        username: user.user_name,
+        email: user.email,
+        role: user.role,
+        email_verified: user.email_verified,
+        terms_accepted: user.terms_accepted,
+        forum_rules_accepted: user.forum_rules_accepted
+      },
+      token: accessToken,
+      refreshToken
     });
   } catch (error) {
     console.error('Erreur lors de la connexion:', error);

@@ -46,6 +46,8 @@ function Login() {
 
         // Rediriger vers la page d'accueil
         navigate('/home');
+      } else {
+        setError(response.data.message || 'Une erreur est survenue lors de la connexion');
       }
     } catch (err) {
       // Gérer toutes les erreurs HTTP via handleError

@@ -61,6 +61,8 @@ function Register() {
 
         // Rediriger vers la page d'accueil
         navigate('/home');
+      } else {
+        setError(response.data.message || 'Une erreur est survenue lors de l\'inscription');
       }
     } catch (err) {
       // Gérer toutes les erreurs HTTP via handleError
