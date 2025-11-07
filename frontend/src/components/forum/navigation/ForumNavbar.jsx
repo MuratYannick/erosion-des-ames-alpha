@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, LogOut, User, Settings, ArrowLeft } from 'lucide-react';
-import { useIsMobile } from '../../hooks/useBreakpoint';
+import { useIsMobile } from '../../../hooks/useBreakpoint';
 
 /**
  * ForumNavbar - Barre de navigation principale du forum

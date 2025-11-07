@@ -12,6 +12,7 @@ import CategoriesPage from './pages/forum/CategoriesPage'
 import SectionsPage from './pages/forum/SectionsPage'
 import TopicsPage from './pages/forum/TopicsPage'
 import TopicDetailPage from './pages/forum/TopicDetailPage'
+import NewSectionPage from './pages/forum/NewSectionPage'
 
 // Pages d'erreur
 import NotFound404 from './pages/errors/NotFound404'
@@ -42,6 +43,7 @@ function App() {
 
           {/* Forum - Hiérarchie des routes */}
           <Route path="/forum" element={<CategoriesPage />} />
+          <Route path="/forum/sections/new" element={<NewSectionPage />} />
           <Route path="/forum/:categorySlug" element={<SectionsPage />} />
           <Route path="/forum/:categorySlug/:sectionSlug" element={<TopicsPage />} />
           <Route path="/forum/:categorySlug/:sectionSlug/:topicSlug" element={<TopicDetailPage />} />

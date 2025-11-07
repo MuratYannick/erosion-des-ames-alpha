@@ -49,8 +49,8 @@ function Register() {
       );
 
       // Sauvegarder le token et les données utilisateur
-      storage.setToken(response.token);
-      storage.setUser(response.user);
+      storage.setToken(response.data.accessToken);
+      storage.setUser(response.data.user);
 
       // Rediriger vers la page d'accueil
       navigate('/');

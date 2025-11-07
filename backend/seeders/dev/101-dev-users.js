@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 module.exports = {
   async up(queryInterface, Sequelize) {
     // Hasher le même mot de passe pour tous les comptes de test
-    const testPassword = await bcrypt.hash('TestDev2024!', 10);
+    const testPassword = await bcrypt.hash('password123', 10);
 
     const now = new Date();
     const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);

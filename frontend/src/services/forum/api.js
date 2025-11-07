@@ -33,22 +33,54 @@ const apiRequest = async (endpoint, options = {}) => {
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
-    // Si 401, token expiré
-    if (response.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
-      throw new Error('Session expirée');
+    // Gestion des codes d'erreur HTTP avec redirection vers pages d'erreur personnalisées
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({ error: 'Erreur inconnue' }));
+
+      switch (response.status) {
+        case 401:
+          // Non authentifié - rediriger vers login
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/login';
+          throw new Error('Session expirée');
+
+        case 403:
+          // Interdit - rediriger vers page 403
+          window.location.href = '/error/403';
+          throw new Error(data.error || 'Accès interdit');
+
+        case 404:
+          // Non trouvé - rediriger vers page 404
+          window.location.href = '/error/404';
+          throw new Error(data.error || 'Ressource introuvable');
+
+        case 500:
+          // Erreur serveur - rediriger vers page 500
+          window.location.href = '/error/500';
+          throw new Error(data.error || 'Erreur serveur');
+
+        case 503:
+          // Service indisponible - rediriger vers page 503
+          window.location.href = '/error/503';
+          throw new Error(data.error || 'Service indisponible');
+
+        default:
+          // Autres erreurs - afficher le message d'erreur
+          throw new Error(data.error || `Erreur ${response.status}`);
+      }
     }
 
     const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || 'Erreur API');
-    }
-
     return data;
   } catch (error) {
     console.error(`API Error [${endpoint}]:`, error);
+
+    // Si c'est une erreur réseau (pas de réponse du serveur)
+    if (error.message === 'Failed to fetch' || !navigator.onLine) {
+      window.location.href = '/error/network';
+    }
+
     throw error;
   }
 };

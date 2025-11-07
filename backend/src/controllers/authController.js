@@ -53,7 +53,7 @@ async function register(req, res) {
 
     // Créer l'utilisateur
     const user = await User.create({
-      username,
+      user_name: username,
       email,
       password_hash,
       role: 'player', // Rôle par défaut
@@ -74,7 +74,7 @@ async function register(req, res) {
       data: {
         user: {
           id: user.id,
-          username: user.username,
+          username: user.user_name,
           email: user.email,
           role: user.role,
           email_verified: user.email_verified,
@@ -171,7 +171,7 @@ async function login(req, res) {
       data: {
         user: {
           id: user.id,
-          username: user.username,
+          username: user.user_name,
           email: user.email,
           role: user.role,
           email_verified: user.email_verified,
@@ -339,7 +339,7 @@ async function me(req, res) {
       success: true,
       data: {
         id: req.user.id,
-        username: req.user.username,
+        username: req.user.user_name,
         email: req.user.email,
         role: req.user.role,
         email_verified: req.user.email_verified,
