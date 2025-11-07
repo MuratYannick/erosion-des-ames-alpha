@@ -1,22 +1,25 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { authService } from '../services/api';
-import { storage } from '../utils/localStorage';
+import { useAuth } from '../contexts/AuthContext';
+import api from '../services/forum/api';
 import { handleError } from '../utils/errorHandler';
 
 function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: '',
+    rememberMe: false
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: type === 'checkbox' ? checked : value,
     });
     setError('');
   };
@@ -27,14 +30,23 @@ function Login() {
     setError('');
 
     try {
-      const response = await authService.login(formData.email, formData.password);
+      const response = await api.post('/auth/login', {
+        user_name: formData.username,
+        password: formData.password
+      });
 
-      // Sauvegarder le token et les données utilisateur
-      storage.setToken(response.data.accessToken);
-      storage.setUser(response.data.user);
+      if (response.data.success) {
+        // Utiliser le contexte d'authentification
+        login(
+          response.data.user,
+          response.data.token,
+          response.data.refreshToken,
+          formData.rememberMe
+        );
 
-      // Rediriger vers la page d'accueil
-      navigate('/');
+        // Rediriger vers la page d'accueil
+        navigate('/home');
+      }
     } catch (err) {
       // Gérer toutes les erreurs HTTP via handleError
       // Les erreurs 4xx/5xx/network seront redirigées vers les pages d'erreur appropriées
@@ -43,7 +55,7 @@ function Login() {
 
       // Si l'erreur n'a pas été redirigée (erreur 400), afficher le message dans le formulaire
       if (!wasRedirected) {
-        setError(err.message || 'Une erreur est survenue lors de la connexion');
+        setError(err.response?.data?.message || 'Une erreur est survenue lors de la connexion');
       }
     } finally {
       setLoading(false);
@@ -77,19 +89,19 @@ function Login() {
 
             <div className="space-y-4">
               <div>
-                <label htmlFor="email" className="block text-sm font-texte-corps text-city-300 mb-2">
-                  Email
+                <label htmlFor="username" className="block text-sm font-texte-corps text-city-300 mb-2">
+                  Nom d'utilisateur
                 </label>
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="username"
+                  name="username"
+                  type="text"
+                  autoComplete="username"
                   required
-                  value={formData.email}
+                  value={formData.username}
                   onChange={handleChange}
                   className="block w-full px-4 py-3 bg-city-900 border-2 border-city-700 rounded text-city-200 placeholder-city-600 font-texte-corps focus:outline-none focus:ring-2 focus:ring-ochre-500 focus:border-ochre-500 transition-colors"
-                  placeholder="votre@email.com"
+                  placeholder="votre_nom_utilisateur"
                 />
               </div>
 
@@ -108,6 +120,20 @@ function Login() {
                   className="block w-full px-4 py-3 bg-city-900 border-2 border-city-700 rounded text-city-200 placeholder-city-600 font-texte-corps focus:outline-none focus:ring-2 focus:ring-ochre-500 focus:border-ochre-500 transition-colors"
                   placeholder="••••••••"
                 />
+              </div>
+
+              <div className="flex items-center">
+                <input
+                  id="rememberMe"
+                  name="rememberMe"
+                  type="checkbox"
+                  checked={formData.rememberMe}
+                  onChange={handleChange}
+                  className="h-4 w-4 bg-city-900 border-2 border-city-700 rounded text-ochre-600 focus:ring-2 focus:ring-ochre-500 cursor-pointer"
+                />
+                <label htmlFor="rememberMe" className="ml-2 block text-sm font-texte-corps text-city-300 cursor-pointer">
+                  Se souvenir de moi
+                </label>
               </div>
             </div>
 

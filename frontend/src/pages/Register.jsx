@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { authService } from '../services/api';
-import { storage } from '../utils/localStorage';
+import { useAuth } from '../contexts/AuthContext';
+import api from '../services/forum/api';
 import { handleError } from '../utils/errorHandler';
 
 function Register() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -42,18 +43,25 @@ function Register() {
     }
 
     try {
-      const response = await authService.register(
-        formData.username,
-        formData.email,
-        formData.password
-      );
+      const response = await api.post('/auth/register', {
+        user_name: formData.username,
+        email: formData.email,
+        password: formData.password
+      });
 
-      // Sauvegarder le token et les données utilisateur
-      storage.setToken(response.data.accessToken);
-      storage.setUser(response.data.user);
+      if (response.data.success) {
+        // Connecter automatiquement l'utilisateur après inscription
+        // Par défaut, ne pas activer "se souvenir de moi" après inscription
+        login(
+          response.data.user,
+          response.data.token,
+          response.data.refreshToken,
+          false
+        );
 
-      // Rediriger vers la page d'accueil
-      navigate('/');
+        // Rediriger vers la page d'accueil
+        navigate('/home');
+      }
     } catch (err) {
       // Gérer toutes les erreurs HTTP via handleError
       // Les erreurs 4xx/5xx/network seront redirigées vers les pages d'erreur appropriées
@@ -62,7 +70,7 @@ function Register() {
 
       // Si l'erreur n'a pas été redirigée (erreur 400), afficher le message dans le formulaire
       if (!wasRedirected) {
-        setError(err.message || 'Une erreur est survenue lors de l\'inscription');
+        setError(err.response?.data?.message || 'Une erreur est survenue lors de l\'inscription');
       }
     } finally {
       setLoading(false);
