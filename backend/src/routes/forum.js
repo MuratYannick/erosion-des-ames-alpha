@@ -97,6 +97,8 @@ router.delete('/sections/:id', optionalAuth, canEditSection(), sectionsControlle
 // Toggle actions
 router.patch('/sections/:id/pin', optionalAuth, canPinSection(), sectionsController.togglePin);
 router.patch('/sections/:id/lock', optionalAuth, canLockSection(), sectionsController.toggleLock);
+// Move action
+router.patch('/sections/:id/move', optionalAuth, canMoveSection(), sectionsController.moveSection);
 
 // ==========================================
 // Routes Topics

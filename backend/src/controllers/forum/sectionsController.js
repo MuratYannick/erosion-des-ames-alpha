@@ -656,6 +656,124 @@ exports.toggleLock = async (req, res) => {
 };
 
 /**
+ * Déplacer une section vers une nouvelle destination
+ */
+exports.moveSection = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { destination_type, destination_id } = req.body;
+
+    // Validation des paramètres
+    if (!destination_type || (destination_type !== 'category' && destination_type !== 'section')) {
+      return res.status(400).json({
+        success: false,
+        message: 'Le type de destination doit être "category" ou "section"'
+      });
+    }
+
+    // Récupérer la section à déplacer
+    const section = await Section.findOne({
+      where: { id, deleted_at: null }
+    });
+
+    if (!section) {
+      return res.status(404).json({
+        success: false,
+        message: 'Section non trouvée'
+      });
+    }
+
+    // Vérifier qu'on ne déplace pas vers soi-même
+    if (destination_type === 'section' && parseInt(destination_id) === parseInt(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Impossible de déplacer une section vers elle-même'
+      });
+    }
+
+    // Vérifier qu'on ne crée pas de boucle (déplacer vers un de ses enfants)
+    if (destination_type === 'section' && destination_id) {
+      const destinationSection = await Section.findOne({
+        where: { id: destination_id, deleted_at: null }
+      });
+
+      if (!destinationSection) {
+        return res.status(404).json({
+          success: false,
+          message: 'Section de destination non trouvée'
+        });
+      }
+
+      // Vérifier récursivement que la destination n'est pas un enfant de la section à déplacer
+      let currentSection = destinationSection;
+      while (currentSection.parent_section_id) {
+        if (parseInt(currentSection.parent_section_id) === parseInt(id)) {
+          return res.status(400).json({
+            success: false,
+            message: 'Impossible de déplacer une section vers l\'une de ses sous-sections'
+          });
+        }
+        currentSection = await Section.findOne({
+          where: { id: currentSection.parent_section_id, deleted_at: null }
+        });
+        if (!currentSection) break;
+      }
+    }
+
+    // Vérifier que la destination existe
+    if (destination_type === 'category') {
+      const category = await Category.findOne({
+        where: { id: destination_id, deleted_at: null }
+      });
+      if (!category) {
+        return res.status(404).json({
+          success: false,
+          message: 'Catégorie de destination non trouvée'
+        });
+      }
+    }
+
+    // Effectuer le déplacement
+    const updateData = {};
+    if (destination_type === 'category') {
+      updateData.category_id = destination_id;
+      updateData.parent_section_id = null;
+    } else {
+      // Récupérer la category_id de la section destination
+      const destinationSection = await Section.findOne({
+        where: { id: destination_id, deleted_at: null }
+      });
+      updateData.category_id = destinationSection.category_id;
+      updateData.parent_section_id = destination_id;
+    }
+
+    await section.update(updateData);
+
+    // Recharger la section avec ses relations
+    const updatedSection = await Section.findOne({
+      where: { id },
+      include: [
+        { model: Category, as: 'category' },
+        { model: Section, as: 'parentSection' }
+      ]
+    });
+
+    res.json({
+      success: true,
+      message: 'Section déplacée avec succès',
+      data: updatedSection
+    });
+  } catch (error) {
+    console.error('Erreur lors du déplacement de la section:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors du déplacement de la section',
+      error: error.message
+    });
+  }
+};
+
+/**
  * Récupérer les topics d'une section
  */
 exports.getTopicsBySection = async (req, res) => {

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageSquare, Lock, Users, ChevronRight, Pin } from 'lucide-react';
 import EditSectionButton from '../buttons/EditSectionButton';
+import MoveSectionButton from '../buttons/MoveSectionButton';
 import { togglePinSection, toggleLockSection } from '../../../services/forum/sectionsService';
 
 /**
@@ -79,8 +80,9 @@ const SectionCard = ({ section, categorySlug, onUpdate }) => {
 
   return (
     <div className="relative bg-neutral-800 border border-neutral-700 hover:border-ochre-600 rounded-lg p-4 sm:p-5 transition-all duration-200 hover:shadow-lg group">
-      {/* Bouton éditer (en haut à droite) */}
-      <div className="absolute top-3 right-3 z-10" onClick={(e) => e.stopPropagation()}>
+      {/* Boutons d'action (en haut à droite) */}
+      <div className="absolute top-3 right-3 z-10 flex gap-2" onClick={(e) => e.stopPropagation()}>
+        <MoveSectionButton sectionId={id} permissions={permissions} />
         <EditSectionButton sectionId={id} permissions={permissions} />
       </div>
 

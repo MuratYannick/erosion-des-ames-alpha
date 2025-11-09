@@ -94,6 +94,20 @@ export const toggleLockSection = async (id) => {
   return api.patch(`/forum/sections/${id}/lock`);
 };
 
+/**
+ * Déplacer une section vers une nouvelle destination
+ * @param {number} id - ID de la section à déplacer
+ * @param {string} destinationType - Type de destination ('category' ou 'section')
+ * @param {number} destinationId - ID de la destination
+ * @returns {Promise<Object>}
+ */
+export const moveSectionTo = async (id, destinationType, destinationId) => {
+  return api.patch(`/forum/sections/${id}/move`, {
+    destination_type: destinationType,
+    destination_id: destinationId
+  });
+};
+
 export default {
   getAllSections,
   getSectionById,
@@ -105,4 +119,5 @@ export default {
   deleteSection,
   togglePinSection,
   toggleLockSection,
+  moveSectionTo,
 };

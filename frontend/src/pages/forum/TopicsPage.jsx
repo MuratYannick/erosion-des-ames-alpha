@@ -5,6 +5,7 @@ import ForumLayout from '../../components/forum/layout/ForumLayout';
 import { TopicCard, SectionCard } from '../../components/forum/cards';
 import { NewSectionButton } from '../../components/forum/buttons';
 import EditSectionButton from '../../components/forum/buttons/EditSectionButton';
+import MoveSectionButton from '../../components/forum/buttons/MoveSectionButton';
 import { getSectionBySlug } from '../../services/forum/sectionsService';
 import { getTopicsBySection } from '../../services/forum/topicsService';
 import { handleError } from '../../utils/errorHandler';
@@ -144,6 +145,10 @@ const TopicsPage = () => {
               {section.name}
             </h1>
             <div className="flex items-center gap-3">
+              <MoveSectionButton
+                sectionId={section.id}
+                permissions={section.permissions}
+              />
               <EditSectionButton
                 sectionId={section.id}
                 permissions={section.permissions}
