@@ -220,7 +220,7 @@ const MoveSectionPage = () => {
               Confirmer le déplacement
             </h3>
             <p className="text-city-300 font-texte-corps mb-6">
-              Êtes-vous sûr de vouloir déplacer cette section ? Cette action modifiera sa position dans l'arborescence du forum.
+              Êtes-vous sûr de vouloir déplacer cette section ? Cette action modifiera sa position et celle de tous ses enfants dans l'arborescence du forum.
             </p>
             <div className="flex gap-3">
               <button

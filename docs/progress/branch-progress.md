@@ -47,7 +47,8 @@ Préparation table users pour le forum
 - `80b6ae7` - fix: ajout gestionnaire d'erreur pour app.listen
 - `cdaf3f9` - fix: affichage des sous-sections dans TopicsPage
 - `919f92c` - fix: correction hiérarchie parent_section_id dans seeder
-- (à venir) - feat: ajout gestion sections avec permissions (édition, toggle lock/pin)
+- `b6331aa` - feat: ajout gestion sections avec permissions et toggles interactifs
+- (à venir) - feat: système complet de déplacement de sections avec arborescence interactive
 
 **Réalisations**:
 - ✅ Structure complète (components/, pages/, services/, hooks/, styles/)
@@ -152,6 +153,16 @@ Préparation table users pour le forum
 - [x] Icônes interactives dans SectionCard (lock/pin cliquables)
 - [x] Gestion permissions conditionnelles dans formulaires (canLock, canPin)
 - [x] États séparés lock et pin (possibilité de cumuler les deux)
+- [x] MoveSectionPage (page déplacement section avec arborescence)
+- [x] MoveSectionForm (formulaire sélection destination en 2 étapes)
+- [x] DestinationTreeNode (composant arborescence interactif)
+- [x] MoveSectionButton (bouton déplacement conditionnel)
+- [x] Route backend PATCH /sections/:id/move avec validation complète
+- [x] Service frontend moveSectionTo
+- [x] Validation backend (boucles, descendants, permissions)
+- [x] UX arborescence (expand/collapse, filtrage catégorie, états visuels)
+- [x] Modale de confirmation avec avertissement enfants
+- [x] Documentation PERMISSIONS.md (double signification move_section/move_topic/move_post)
 
 ### Formulaires
 - [x] Nouvelle section (NewSectionPage + SectionForm)
@@ -268,4 +279,4 @@ npm run db:reset:dev            # Reset dev complet
 
 **Dernière mise à jour**: 2025-11-09
 **Statut**: 🔄 Phase 3 en cours (feature/forum-frontend)
-**Phase actuelle**: Frontend Forum - Gestion sections avec permissions complétée
+**Phase actuelle**: Frontend Forum - Système de déplacement de sections complété

@@ -28,6 +28,29 @@ async function addPermissionsToSection(section, user = null, character = null) {
 }
 
 /**
+ * Fonction helper pour ajouter les permissions de l'utilisateur à une catégorie
+ * @param {Object} category - Catégorie
+ * @param {Object} user - Utilisateur connecté (peut être null)
+ * @param {Object} character - Personnage utilisé (optionnel)
+ * @returns {Object} - Catégorie avec permissions ajoutées
+ */
+async function addPermissionsToCategory(category, user = null, character = null) {
+  const categoryData = category.toJSON ? category.toJSON() : category;
+
+  // Évaluer les permissions pour cette catégorie
+  const permissions = {
+    canView: await checkPermission(user, character, 'category', categoryData.id, 'view'),
+    canEdit: await checkPermission(user, character, 'category', categoryData.id, 'edit'),
+    canCreateSection: await checkPermission(user, character, 'category', categoryData.id, 'create_section'),
+    canMoveSection: await checkPermission(user, character, 'category', categoryData.id, 'move_section')
+  };
+
+  categoryData.permissions = permissions;
+
+  return categoryData;
+}
+
+/**
  * Récupérer toutes les catégories avec leurs sections
  */
 exports.getAllCategories = async (req, res) => {
@@ -55,9 +78,14 @@ exports.getAllCategories = async (req, res) => {
       ]
     });
 
+    // Ajouter les permissions pour chaque catégorie
+    const categoriesWithPermissions = await Promise.all(
+      categories.map(category => addPermissionsToCategory(category, req.user, req.character))
+    );
+
     res.json({
       success: true,
-      data: categories
+      data: categoriesWithPermissions
     });
   } catch (error) {
     console.error('Erreur lors de la récupération des catégories:', error);

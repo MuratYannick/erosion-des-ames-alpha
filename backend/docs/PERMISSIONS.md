@@ -602,6 +602,84 @@ Lors de la création/modification d'une règle :
 
 ## Limitations et notes
 
+### Permissions de déplacement (move_section, move_topic, move_post)
+
+Les permissions de déplacement ont une **double signification** importante à comprendre :
+
+#### move_section sur une Catégorie ou Section
+
+La permission `move_section` sur une ressource (catégorie ou section) signifie **simultanément** :
+
+1. **DEPUIS** : L'utilisateur peut **déplacer** les sections qui sont **enfants directs** de cette ressource
+2. **VERS** : Cette ressource peut **être la cible** d'un déplacement (recevoir des sections)
+
+**Exemple** :
+```javascript
+// Règle sur la section ID=5
+{
+  resource_type: 'section',
+  resource_id: 5,
+  allowed_roles: ['moderator'],
+  // Le moderator peut :
+  // - Déplacer les sections enfants de la section 5
+  // - Utiliser la section 5 comme destination pour y déplacer d'autres sections
+}
+```
+
+**Dans le code** :
+```javascript
+// Vérifier si on peut déplacer une section VERS la section 5
+const canMoveToSection5 = await checkPermission(user, character, 'section', 5, 'move_section');
+
+// Vérifier si on peut déplacer une section VERS la catégorie 2
+const canMoveToCategory2 = await checkPermission(user, character, 'category', 2, 'move_section');
+```
+
+#### move_topic sur une Section
+
+La permission `move_topic` sur une section signifie **simultanément** :
+
+1. **DEPUIS** : L'utilisateur peut **déplacer** les topics qui sont **enfants directs** de cette section
+2. **VERS** : Cette section peut **être la cible** d'un déplacement (recevoir des topics)
+
+**Exemple** :
+```javascript
+// Règle sur la section ID=10
+{
+  resource_type: 'section',
+  resource_id: 10,
+  allowed_roles: ['moderator'],
+  // Le moderator peut :
+  // - Déplacer les topics de la section 10 vers une autre section
+  // - Utiliser la section 10 comme destination pour y déplacer des topics
+}
+```
+
+#### move_post sur un Topic
+
+La permission `move_post` sur un topic signifie **simultanément** :
+
+1. **DEPUIS** : L'utilisateur peut **déplacer** les posts qui sont **enfants** de ce topic
+2. **VERS** : Ce topic peut **être la cible** d'un déplacement (recevoir des posts)
+
+**Exemple** :
+```javascript
+// Règle sur le topic ID=42
+{
+  resource_type: 'topic',
+  resource_id: 42,
+  allowed_roles: ['moderator'],
+  // Le moderator peut :
+  // - Déplacer les posts du topic 42 vers un autre topic
+  // - Utiliser le topic 42 comme destination pour y déplacer des posts
+}
+```
+
+**Cas d'usage pratique** :
+- Déplacer un topic hors-sujet d'une section RP vers une section HRP
+- Déplacer un post d'un topic vers un autre pour réorganiser les discussions
+- Déplacer une section entière d'une catégorie à une autre lors d'une réorganisation
+
 ### Limitations actuelles
 
 1. **Authentification non implémentée** : Les middlewares de permissions sont actuellement commentés dans les routes en attendant l'implémentation du middleware d'authentification.
