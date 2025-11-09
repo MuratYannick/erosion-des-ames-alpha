@@ -1,4 +1,4 @@
-import apiRequest from './api';
+import api from './api';
 
 /**
  * Service pour la gestion des posts du forum
@@ -9,7 +9,7 @@ import apiRequest from './api';
  * @returns {Promise<Array>}
  */
 export const getAllPosts = async () => {
-  return apiRequest('/forum/posts');
+  return api.get('/forum/posts');
 };
 
 /**
@@ -18,7 +18,7 @@ export const getAllPosts = async () => {
  * @returns {Promise<Object>}
  */
 export const getPostById = async (id) => {
-  return apiRequest(`/forum/posts/${id}`);
+  return api.get(`/forum/posts/${id}`);
 };
 
 /**
@@ -27,7 +27,7 @@ export const getPostById = async (id) => {
  * @returns {Promise<Array>}
  */
 export const getPostsByTopic = async (topicId) => {
-  return apiRequest(`/forum/topics/${topicId}/posts`);
+  return api.get(`/forum/topics/${topicId}/posts`);
 };
 
 /**
@@ -36,10 +36,7 @@ export const getPostsByTopic = async (topicId) => {
  * @returns {Promise<Object>}
  */
 export const createPost = async (data) => {
-  return apiRequest('/forum/posts', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
+  return api.post('/forum/posts', data);
 };
 
 /**
@@ -49,10 +46,7 @@ export const createPost = async (data) => {
  * @returns {Promise<Object>}
  */
 export const updatePost = async (id, data) => {
-  return apiRequest(`/forum/posts/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  });
+  return api.put(`/forum/posts/${id}`, data);
 };
 
 /**
@@ -61,9 +55,7 @@ export const updatePost = async (id, data) => {
  * @returns {Promise<Object>}
  */
 export const deletePost = async (id) => {
-  return apiRequest(`/forum/posts/${id}`, {
-    method: 'DELETE',
-  });
+  return api.delete(`/forum/posts/${id}`);
 };
 
 /**
@@ -73,10 +65,7 @@ export const deletePost = async (id) => {
  * @returns {Promise<Object>}
  */
 export const lockPost = async (id, isLocked) => {
-  return apiRequest(`/forum/posts/${id}/lock`, {
-    method: 'PATCH',
-    body: JSON.stringify({ is_locked: isLocked }),
-  });
+  return api.patch(`/forum/posts/${id}/lock`, { is_locked: isLocked });
 };
 
 export default {

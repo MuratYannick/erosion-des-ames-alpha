@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Loader2, AlertCircle } from 'lucide-react';
 import ForumLayout from '../../components/forum/layout/ForumLayout';
 import { PostCard } from '../../components/forum/cards';
 import { getTopicBySlug } from '../../services/forum/topicsService';
 import { getPostsByTopic } from '../../services/forum/postsService';
+import { handleError } from '../../utils/errorHandler';
 
 /**
  * TopicDetailPage - Page affichant les posts d'un topic
@@ -12,6 +13,7 @@ import { getPostsByTopic } from '../../services/forum/postsService';
  */
 const TopicDetailPage = () => {
   const { categorySlug, sectionSlug, topicSlug } = useParams();
+  const navigate = useNavigate();
   const [topic, setTopic] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,31 +27,70 @@ const TopicDetailPage = () => {
 
         // Récupérer le topic
         const topicResponse = await getTopicBySlug(topicSlug);
-        const topicData = topicResponse.data || topicResponse;
+        // api.get retourne { data: { success: true, data: {...} } }
+        const topicData = topicResponse.data?.data || topicResponse.data;
+
+        if (!topicData || !topicData.id) {
+          setError('Topic non trouvé');
+          setLoading(false);
+          return;
+        }
+
         setTopic(topicData);
 
         // Récupérer les posts de ce topic
         const postsResponse = await getPostsByTopic(topicData.id);
-        const postsData = postsResponse.data || postsResponse;
+        // api.get retourne { data: { success: true, data: [...] } }
+        const postsData = postsResponse.data?.data || postsResponse.data || [];
         setPosts(Array.isArray(postsData) ? postsData : []);
       } catch (err) {
         console.error('Erreur lors du chargement:', err);
-        setError(err.message || 'Impossible de charger le topic');
+        // Utiliser handleError pour les erreurs système
+        const wasRedirected = handleError(err, navigate);
+
+        // Si l'erreur n'a pas été redirigée, afficher un message local
+        if (!wasRedirected) {
+          setError(err.message || 'Impossible de charger le topic');
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [topicSlug]);
+  }, [topicSlug, navigate]);
 
-  // Breadcrumb
-  const breadcrumbItems = topic ? [
-    { label: 'Forum', path: '/forum' },
-    { label: topic.section?.category?.name || 'Catégorie', path: `/forum/${categorySlug}` },
-    { label: topic.section?.name || 'Section', path: `/forum/${categorySlug}/${sectionSlug}` },
-    { label: topic.title }
-  ] : [];
+  // Breadcrumb (Forum est déjà ajouté par le composant Breadcrumb)
+  const breadcrumbItems = topic ? (() => {
+    const items = [];
+
+    // Catégorie
+    items.push({
+      label: topic.section?.category?.name || categorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+      path: `/forum/${categorySlug}`
+    });
+
+    // Hiérarchie complète des sections parentes (de la racine à la section parente directe)
+    if (topic.section?.parentHierarchy && Array.isArray(topic.section.parentHierarchy)) {
+      topic.section.parentHierarchy.forEach(parentSection => {
+        items.push({
+          label: parentSection.name,
+          path: `/forum/${categorySlug}/${parentSection.slug}`
+        });
+      });
+    }
+
+    // Section
+    items.push({
+      label: topic.section?.name || sectionSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+      path: `/forum/${categorySlug}/${sectionSlug}`
+    });
+
+    // Topic actuel
+    items.push({ label: topic.title });
+
+    return items;
+  })() : [];
 
   // État de chargement
   if (loading) {

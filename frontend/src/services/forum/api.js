@@ -34,42 +34,17 @@ const apiRequest = async (endpoint, options = {}) => {
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
-    // Gestion des codes d'erreur HTTP avec redirection vers pages d'erreur personnalisées
+    // Gestion des codes d'erreur HTTP
     if (!response.ok) {
       const data = await response.json().catch(() => ({ error: 'Erreur inconnue' }));
 
-      switch (response.status) {
-        case 401:
-          // Non authentifié - rediriger vers login
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          window.location.href = '/login';
-          throw new Error('Session expirée');
-
-        case 403:
-          // Interdit - rediriger vers page 403
-          window.location.href = '/error/403';
-          throw new Error(data.error || 'Accès interdit');
-
-        case 404:
-          // Non trouvé - rediriger vers page 404
-          window.location.href = '/error/404';
-          throw new Error(data.error || 'Ressource introuvable');
-
-        case 500:
-          // Erreur serveur - rediriger vers page 500
-          window.location.href = '/error/500';
-          throw new Error(data.error || 'Erreur serveur');
-
-        case 503:
-          // Service indisponible - rediriger vers page 503
-          window.location.href = '/error/503';
-          throw new Error(data.error || 'Service indisponible');
-
-        default:
-          // Autres erreurs - afficher le message d'erreur
-          throw new Error(data.error || `Erreur ${response.status}`);
-      }
+      // Créer un objet erreur axios-like
+      const axiosError = new Error(data.message || data.error || `Erreur ${response.status}`);
+      axiosError.response = {
+        data,
+        status: response.status
+      };
+      throw axiosError;
     }
 
     const data = await response.json();
@@ -79,11 +54,16 @@ const apiRequest = async (endpoint, options = {}) => {
     console.error(`API Error [${endpoint}]:`, error);
 
     // Si c'est une erreur réseau (pas de réponse du serveur)
-    if (error.message === 'Failed to fetch' || !navigator.onLine) {
-      window.location.href = '/error/network';
+    if (error.message === 'Failed to fetch' || error.message === 'NetworkError' || !navigator.onLine) {
+      const networkError = new Error('Failed to fetch');
+      networkError.response = {
+        data: { message: 'Failed to fetch' },
+        status: 0
+      };
+      throw networkError;
     }
 
-    // Retourner une erreur axios-like
+    // Si l'erreur a déjà une response, la propager
     if (error.response) {
       throw error;
     }

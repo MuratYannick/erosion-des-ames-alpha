@@ -74,8 +74,11 @@ async function determineResource(req, options) {
 
   // Si resourceType n'est pas fourni, essayer de le déduire
   if (!resourceType) {
-    // Vérifier dans les params
-    if (req.params.category_id || req.body?.category_id) {
+    // Pour la création de section, vérifier parent_section_id ou category_id
+    if (req.body?.parent_section_id) {
+      resourceType = 'section';
+      resourceId = req.body.parent_section_id;
+    } else if (req.params.category_id || req.body?.category_id) {
       resourceType = 'category';
       resourceId = req.params.category_id || req.body?.category_id;
     } else if (req.params.section_id || req.body?.section_id) {

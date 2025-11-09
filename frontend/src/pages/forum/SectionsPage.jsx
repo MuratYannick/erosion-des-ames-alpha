@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Loader2, AlertCircle } from 'lucide-react';
 import ForumLayout from '../../components/forum/layout/ForumLayout';
 import { SectionCard } from '../../components/forum/cards';
 import { NewSectionButton } from '../../components/forum/buttons';
 import { getCategoryBySlug } from '../../services/forum/categoriesService';
 import { getSectionsByCategory } from '../../services/forum/sectionsService';
+import { handleError } from '../../utils/errorHandler';
 
 /**
  * SectionsPage - Page affichant les sections d'une catégorie
@@ -13,6 +14,7 @@ import { getSectionsByCategory } from '../../services/forum/sectionsService';
  */
 const SectionsPage = () => {
   const { categorySlug } = useParams();
+  const navigate = useNavigate();
   const [category, setCategory] = useState(null);
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,27 +28,41 @@ const SectionsPage = () => {
 
         // Récupérer la catégorie
         const categoryResponse = await getCategoryBySlug(categorySlug);
-        const categoryData = categoryResponse.data || categoryResponse;
+        // api.get retourne { data: { success: true, data: {...} } }
+        const categoryData = categoryResponse.data?.data || categoryResponse.data;
+
+        if (!categoryData || !categoryData.id) {
+          setError('Catégorie non trouvée');
+          setLoading(false);
+          return;
+        }
+
         setCategory(categoryData);
 
         // Récupérer les sections de cette catégorie
         const sectionsResponse = await getSectionsByCategory(categoryData.id);
-        const sectionsData = sectionsResponse.data || sectionsResponse;
+        // api.get retourne { data: { success: true, data: [...] } }
+        const sectionsData = sectionsResponse.data?.data || sectionsResponse.data || [];
         setSections(Array.isArray(sectionsData) ? sectionsData : []);
       } catch (err) {
         console.error('Erreur lors du chargement:', err);
-        setError(err.message || 'Impossible de charger les sections');
+        // Utiliser handleError pour les erreurs système
+        const wasRedirected = handleError(err, navigate);
+
+        // Si l'erreur n'a pas été redirigée, afficher un message local
+        if (!wasRedirected) {
+          setError(err.message || 'Impossible de charger les sections');
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [categorySlug]);
+  }, [categorySlug, navigate]);
 
-  // Breadcrumb
+  // Breadcrumb (Forum est déjà ajouté par le composant Breadcrumb)
   const breadcrumbItems = category ? [
-    { label: 'Forum', path: '/forum' },
     { label: category.name }
   ] : [];
 

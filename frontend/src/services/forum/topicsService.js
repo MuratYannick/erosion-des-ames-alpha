@@ -1,4 +1,4 @@
-import apiRequest from './api';
+import api from './api';
 
 /**
  * Service pour la gestion des topics du forum
@@ -9,7 +9,7 @@ import apiRequest from './api';
  * @returns {Promise<Array>}
  */
 export const getAllTopics = async () => {
-  return apiRequest('/forum/topics');
+  return api.get('/forum/topics');
 };
 
 /**
@@ -18,7 +18,7 @@ export const getAllTopics = async () => {
  * @returns {Promise<Object>}
  */
 export const getTopicById = async (id) => {
-  return apiRequest(`/forum/topics/${id}`);
+  return api.get(`/forum/topics/${id}`);
 };
 
 /**
@@ -27,7 +27,7 @@ export const getTopicById = async (id) => {
  * @returns {Promise<Object>}
  */
 export const getTopicBySlug = async (slug) => {
-  return apiRequest(`/forum/topics/slug/${slug}`);
+  return api.get(`/forum/topics/slug/${slug}`);
 };
 
 /**
@@ -36,7 +36,7 @@ export const getTopicBySlug = async (slug) => {
  * @returns {Promise<Array>}
  */
 export const getTopicsBySection = async (sectionId) => {
-  return apiRequest(`/forum/sections/${sectionId}/topics`);
+  return api.get(`/forum/sections/${sectionId}/topics`);
 };
 
 /**
@@ -45,10 +45,7 @@ export const getTopicsBySection = async (sectionId) => {
  * @returns {Promise<Object>}
  */
 export const createTopic = async (data) => {
-  return apiRequest('/forum/topics', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
+  return api.post('/forum/topics', data);
 };
 
 /**
@@ -58,10 +55,7 @@ export const createTopic = async (data) => {
  * @returns {Promise<Object>}
  */
 export const updateTopic = async (id, data) => {
-  return apiRequest(`/forum/topics/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  });
+  return api.put(`/forum/topics/${id}`, data);
 };
 
 /**
@@ -70,9 +64,7 @@ export const updateTopic = async (id, data) => {
  * @returns {Promise<Object>}
  */
 export const deleteTopic = async (id) => {
-  return apiRequest(`/forum/topics/${id}`, {
-    method: 'DELETE',
-  });
+  return api.delete(`/forum/topics/${id}`);
 };
 
 /**
@@ -82,10 +74,7 @@ export const deleteTopic = async (id) => {
  * @returns {Promise<Object>}
  */
 export const pinTopic = async (id, isPinned) => {
-  return apiRequest(`/forum/topics/${id}/pin`, {
-    method: 'PATCH',
-    body: JSON.stringify({ is_pinned: isPinned }),
-  });
+  return api.patch(`/forum/topics/${id}/pin`, { is_pinned: isPinned });
 };
 
 /**
@@ -95,10 +84,7 @@ export const pinTopic = async (id, isPinned) => {
  * @returns {Promise<Object>}
  */
 export const lockTopic = async (id, isLocked) => {
-  return apiRequest(`/forum/topics/${id}/lock`, {
-    method: 'PATCH',
-    body: JSON.stringify({ is_locked: isLocked }),
-  });
+  return api.patch(`/forum/topics/${id}/lock`, { is_locked: isLocked });
 };
 
 export default {

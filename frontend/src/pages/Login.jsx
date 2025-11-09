@@ -44,8 +44,8 @@ function Login() {
           formData.rememberMe
         );
 
-        // Rediriger vers la page d'accueil
-        navigate('/home');
+        // Rediriger vers la page d'accueil du portail
+        navigate('/');
       } else {
         setError(response.data.message || 'Une erreur est survenue lors de la connexion');
       }

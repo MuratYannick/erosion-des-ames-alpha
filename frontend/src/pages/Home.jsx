@@ -1,26 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { storage } from '../utils/localStorage';
+import { useAuth } from '../contexts/AuthContext';
 
 function Home() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const { user, logout, loading } = useAuth();
 
+  // Rediriger vers login si non authentifié (après le chargement initial)
   useEffect(() => {
-    const userData = storage.getUser();
-    const token = storage.getToken();
-
-    if (!userData || !token) {
+    if (!loading && !user) {
       navigate('/login');
-    } else {
-      setUser(userData);
     }
-  }, [navigate]);
+  }, [loading, user, navigate]);
 
   const handleLogout = () => {
-    storage.clear();
+    logout();
     navigate('/login');
   };
+
+  // Afficher un loader pendant la vérification de l'authentification
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-xl">Chargement...</div>
+      </div>
+    );
+  }
 
   if (!user) {
     return null;
@@ -56,12 +61,15 @@ function Home() {
             <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
               <h3 className="text-lg font-semibold mb-2">Profil</h3>
               <p className="text-gray-400">Email : {user.email}</p>
+              <p className="text-gray-400">Rôle : {user.role}</p>
               <p className="text-gray-400">ID : {user.id}</p>
             </div>
 
             <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
-              <h3 className="text-lg font-semibold mb-2">Statistiques</h3>
-              <p className="text-gray-400">À venir...</p>
+              <h3 className="text-lg font-semibold mb-2">Navigation</h3>
+              <Link to="/forum" className="text-blue-400 hover:text-blue-300 block">
+                Accéder au forum
+              </Link>
             </div>
 
             <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">

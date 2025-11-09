@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Loader2, AlertCircle } from 'lucide-react';
 import ForumLayout from '../../components/forum/layout/ForumLayout';
 import { getAllCategories } from '../../services/forum/categoriesService';
+import { handleError } from '../../utils/errorHandler';
 
 // Mapping des slugs de catégories vers les noms d'images
 const CATEGORY_IMAGES = {
@@ -32,12 +33,20 @@ const CategoriesPage = () => {
       setLoading(true);
       setError(null);
       const response = await getAllCategories();
-      // Le backend retourne { success: true, data: [...] }
-      const data = response.data || response;
-      setCategories(Array.isArray(data) ? data : []);
+      // api.get retourne { data: { success: true, data: [...] } }
+      // Les catégories sont donc à response.data.data
+      const categoriesData = response.data?.data || response.data || [];
+      setCategories(Array.isArray(categoriesData) ? categoriesData : []);
     } catch (err) {
       console.error('Erreur lors du chargement des catégories:', err);
-      setError('Impossible de charger les catégories. Veuillez réessayer.');
+      // Utiliser handleError pour les erreurs système (401, 403, 404, 500, 503, network)
+      // Retourne true si l'erreur a été redirigée vers une page d'erreur
+      const wasRedirected = handleError(err, navigate);
+
+      // Si l'erreur n'a pas été redirigée, afficher un message local
+      if (!wasRedirected) {
+        setError('Impossible de charger les catégories. Veuillez réessayer.');
+      }
     } finally {
       setLoading(false);
     }

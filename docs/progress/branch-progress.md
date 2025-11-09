@@ -47,6 +47,7 @@ Préparation table users pour le forum
 - `80b6ae7` - fix: ajout gestionnaire d'erreur pour app.listen
 - `cdaf3f9` - fix: affichage des sous-sections dans TopicsPage
 - `919f92c` - fix: correction hiérarchie parent_section_id dans seeder
+- (à venir) - feat: ajout gestion sections avec permissions (édition, toggle lock/pin)
 
 **Réalisations**:
 - ✅ Structure complète (components/, pages/, services/, hooks/, styles/)
@@ -142,14 +143,32 @@ Préparation table users pour le forum
 - [x] TopicsPage (topics d'une section + sous-sections)
 - [x] TopicDetailPage (posts d'un topic)
 
+### Gestion des Sections ✅ COMPLÉTÉ
+- [x] EditSectionPage (page édition section)
+- [x] SectionForm (formulaire création/édition)
+- [x] EditSectionButton (bouton édition conditionnel)
+- [x] Routes backend toggle pin/lock (PATCH /sections/:id/pin, /sections/:id/lock)
+- [x] Services frontend togglePinSection/toggleLockSection
+- [x] Icônes interactives dans SectionCard (lock/pin cliquables)
+- [x] Gestion permissions conditionnelles dans formulaires (canLock, canPin)
+- [x] États séparés lock et pin (possibilité de cumuler les deux)
+
 ### Formulaires
+- [x] Nouvelle section (NewSectionPage + SectionForm)
+- [x] Édition section (EditSectionPage + SectionForm)
 - [ ] Nouveau topic
 - [ ] Nouveau post
 - [ ] Éditeur markdown
 - [ ] Sélecteur de character
 
+### Permissions Frontend ✅ PARTIELLEMENT COMPLÉTÉ
+- [x] Vérification permissions dans SectionForm (canLock, canPin)
+- [x] Vérification permissions dans SectionCard (icônes cliquables)
+- [x] Boutons création/édition conditionnels (permissions)
+- [ ] Permissions pour topics
+- [ ] Permissions pour posts
+
 ### À venir
-- [ ] Gestion permissions côté frontend
 - [ ] Pagination
 - [ ] Recherche
 - [ ] Notifications
@@ -247,6 +266,6 @@ npm run db:reset:dev            # Reset dev complet
 
 ---
 
-**Dernière mise à jour**: 2025-11-06
+**Dernière mise à jour**: 2025-11-09
 **Statut**: 🔄 Phase 3 en cours (feature/forum-frontend)
-**Phase actuelle**: Frontend Forum - Pages de base complétées
+**Phase actuelle**: Frontend Forum - Gestion sections avec permissions complétée

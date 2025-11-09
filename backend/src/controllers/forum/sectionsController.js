@@ -1,4 +1,76 @@
 const { Section, Category, Faction, Clan, Topic } = require('../../models');
+const { checkPermission } = require('../../services/permissionEvaluator');
+
+/**
+ * Fonction helper pour ajouter les permissions de l'utilisateur à une section
+ * @param {Object} section - Section
+ * @param {Object} user - Utilisateur connecté (peut être null)
+ * @param {Object} character - Personnage utilisé (optionnel)
+ * @returns {Object} - Section avec permissions ajoutées
+ */
+async function addPermissionsToSection(section, user = null, character = null) {
+  const sectionData = section.toJSON ? section.toJSON() : section;
+
+  // Évaluer les permissions pour cette section
+  const permissions = {
+    canView: await checkPermission(user, character, 'section', sectionData.id, 'view'),
+    canEdit: await checkPermission(user, character, 'section', sectionData.id, 'edit'),
+    canCreateSection: await checkPermission(user, character, 'section', sectionData.id, 'create_section'),
+    canCreateTopic: await checkPermission(user, character, 'section', sectionData.id, 'create_topic'),
+    canPin: await checkPermission(user, character, 'section', sectionData.id, 'pin'),
+    canLock: await checkPermission(user, character, 'section', sectionData.id, 'lock'),
+    canMoveSection: await checkPermission(user, character, 'section', sectionData.id, 'move_section')
+  };
+
+  sectionData.permissions = permissions;
+
+  // Si la section a des childSections, ajouter les permissions à chacune
+  if (sectionData.childSections && Array.isArray(sectionData.childSections)) {
+    sectionData.childSections = await Promise.all(
+      sectionData.childSections.map(child => addPermissionsToSection(child, user, character))
+    );
+  }
+
+  return sectionData;
+}
+
+/**
+ * Fonction helper pour charger récursivement la hiérarchie complète des sections parentes
+ * @param {Object} section - Section avec parentSection chargé
+ * @returns {Array} - Tableau des sections parentes ordonnées de la racine à la section parente directe
+ */
+async function loadParentHierarchy(section) {
+  const hierarchy = [];
+  let currentParent = section.parentSection;
+
+  while (currentParent) {
+    const parentWithData = await Section.findOne({
+      where: { id: currentParent.id, deleted_at: null },
+      include: [
+        {
+          model: Section,
+          as: 'parentSection',
+          attributes: ['id', 'name', 'slug'],
+          required: false
+        }
+      ],
+      attributes: ['id', 'name', 'slug', 'parent_section_id']
+    });
+
+    if (!parentWithData) break;
+
+    // Ajouter au début du tableau pour avoir l'ordre racine -> feuille
+    hierarchy.unshift({
+      id: parentWithData.id,
+      name: parentWithData.name,
+      slug: parentWithData.slug
+    });
+
+    currentParent = parentWithData.parentSection;
+  }
+
+  return hierarchy;
+}
 
 /**
  * Récupérer toutes les sections
@@ -50,9 +122,14 @@ exports.getAllSections = async (req, res) => {
       ]
     });
 
+    // Ajouter les permissions pour chaque section
+    const sectionsWithPermissions = await Promise.all(
+      sections.map(section => addPermissionsToSection(section, req.user, req.character))
+    );
+
     res.json({
       success: true,
-      data: sections
+      data: sectionsWithPermissions
     });
   } catch (error) {
     console.error('Erreur lors de la récupération des sections:', error);
@@ -114,9 +191,19 @@ exports.getSectionById = async (req, res) => {
       });
     }
 
+    // Charger la hiérarchie complète des sections parentes
+    const parentHierarchy = await loadParentHierarchy(section);
+
+    // Convertir en objet JSON pour pouvoir ajouter des propriétés
+    let sectionData = section.toJSON();
+    sectionData.parentHierarchy = parentHierarchy;
+
+    // Ajouter les permissions
+    sectionData = await addPermissionsToSection(sectionData, req.user, req.character);
+
     res.json({
       success: true,
-      data: section
+      data: sectionData
     });
   } catch (error) {
     console.error('Erreur lors de la récupération de la section:', error);
@@ -178,9 +265,19 @@ exports.getSectionBySlug = async (req, res) => {
       });
     }
 
+    // Charger la hiérarchie complète des sections parentes
+    const parentHierarchy = await loadParentHierarchy(section);
+
+    // Convertir en objet JSON pour pouvoir ajouter des propriétés
+    let sectionData = section.toJSON();
+    sectionData.parentHierarchy = parentHierarchy;
+
+    // Ajouter les permissions
+    sectionData = await addPermissionsToSection(sectionData, req.user, req.character);
+
     res.json({
       success: true,
-      data: section
+      data: sectionData
     });
   } catch (error) {
     console.error('Erreur lors de la récupération de la section:', error);
@@ -477,6 +574,82 @@ exports.updateSection = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Erreur lors de la mise à jour de la section',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Toggle l'épinglage d'une section
+ */
+exports.togglePin = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const section = await Section.findOne({
+      where: { id, deleted_at: null }
+    });
+
+    if (!section) {
+      return res.status(404).json({
+        success: false,
+        message: 'Section non trouvée'
+      });
+    }
+
+    // Inverser l'état d'épinglage
+    await section.update({
+      is_pinned: !section.is_pinned
+    });
+
+    res.json({
+      success: true,
+      message: section.is_pinned ? 'Section épinglée' : 'Section désépinglée',
+      data: { is_pinned: section.is_pinned }
+    });
+  } catch (error) {
+    console.error('Erreur lors du toggle pin:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la modification de l\'épinglage',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Toggle le verrouillage d'une section
+ */
+exports.toggleLock = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const section = await Section.findOne({
+      where: { id, deleted_at: null }
+    });
+
+    if (!section) {
+      return res.status(404).json({
+        success: false,
+        message: 'Section non trouvée'
+      });
+    }
+
+    // Inverser l'état de verrouillage
+    await section.update({
+      is_locked: !section.is_locked
+    });
+
+    res.json({
+      success: true,
+      message: section.is_locked ? 'Section verrouillée' : 'Section déverrouillée',
+      data: { is_locked: section.is_locked }
+    });
+  } catch (error) {
+    console.error('Erreur lors du toggle lock:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la modification du verrouillage',
       error: error.message
     });
   }

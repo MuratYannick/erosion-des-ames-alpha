@@ -12,7 +12,7 @@ const topicsController = require('../controllers/forum/topicsController');
 const postsController = require('../controllers/forum/postsController');
 
 // Middleware
-const { authenticateToken, requireAdmin } = require('../middleware/authenticate');
+const { authenticateToken, optionalAuth, requireAdmin } = require('../middleware/authenticate');
 const {
   canViewCategory,
   canViewSection,
@@ -77,7 +77,7 @@ router.get('/categories/:id', canViewCategory(), categoriesController.getCategor
 // Route slug publique pour navigation (permissions vérifiées dans le controller)
 router.get('/categories/slug/:slug', categoriesController.getCategoryBySlug);
 // Route pour récupérer les sections d'une catégorie
-router.get('/categories/:id/sections', categoriesController.getSectionsByCategory);
+router.get('/categories/:id/sections', optionalAuth, categoriesController.getSectionsByCategory);
 router.post('/categories', authenticateToken, requireAdmin, categoriesController.createCategory);
 router.put('/categories/:id', canEditCategory(), categoriesController.updateCategory);
 router.delete('/categories/:id', canEditCategory(), categoriesController.deleteCategory);
@@ -85,15 +85,18 @@ router.delete('/categories/:id', canEditCategory(), categoriesController.deleteC
 // ==========================================
 // Routes Sections
 // ==========================================
-router.get('/sections', sectionsController.getAllSections);
-router.get('/sections/:id', canViewSection(), sectionsController.getSectionById);
+router.get('/sections', optionalAuth, sectionsController.getAllSections);
+router.get('/sections/:id', optionalAuth, canViewSection(), sectionsController.getSectionById);
 // Route slug publique pour navigation (permissions vérifiées dans le controller)
-router.get('/sections/slug/:slug', sectionsController.getSectionBySlug);
+router.get('/sections/slug/:slug', optionalAuth, sectionsController.getSectionBySlug);
 // Route pour récupérer les topics d'une section
-router.get('/sections/:id/topics', sectionsController.getTopicsBySection);
-router.post('/sections', canCreateSection(), sectionsController.createSection);
-router.put('/sections/:id', canEditSection(), sectionsController.updateSection);
-router.delete('/sections/:id', canEditSection(), sectionsController.deleteSection);
+router.get('/sections/:id/topics', optionalAuth, sectionsController.getTopicsBySection);
+router.post('/sections', optionalAuth, canCreateSection(), sectionsController.createSection);
+router.put('/sections/:id', optionalAuth, canEditSection(), sectionsController.updateSection);
+router.delete('/sections/:id', optionalAuth, canEditSection(), sectionsController.deleteSection);
+// Toggle actions
+router.patch('/sections/:id/pin', optionalAuth, canPinSection(), sectionsController.togglePin);
+router.patch('/sections/:id/lock', optionalAuth, canLockSection(), sectionsController.toggleLock);
 
 // ==========================================
 // Routes Topics

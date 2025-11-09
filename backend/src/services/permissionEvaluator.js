@@ -145,6 +145,19 @@ async function getPermissionRules(resourceType, resourceId, permissionType) {
     allRules.push(...rules.map(rule => rule.toJSON()));
   }
 
+  // Ajouter les règles globales (resource_id: 0) pour chaque type de ressource dans la chaîne
+  const uniqueTypes = [...new Set(inheritanceChain.map(r => r.type))];
+  for (const type of uniqueTypes) {
+    const globalRules = await Model.findAll({
+      where: {
+        resource_type: type,
+        resource_id: 0
+      }
+    });
+
+    allRules.push(...globalRules.map(rule => rule.toJSON()));
+  }
+
   // Trier par priorité (plus haute en premier)
   return allRules.sort((a, b) => b.priority - a.priority);
 }

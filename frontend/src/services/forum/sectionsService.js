@@ -1,4 +1,4 @@
-import apiRequest from './api';
+import api from './api';
 
 /**
  * Service pour la gestion des sections du forum
@@ -9,7 +9,7 @@ import apiRequest from './api';
  * @returns {Promise<Array>}
  */
 export const getAllSections = async () => {
-  return apiRequest('/forum/sections');
+  return api.get('/forum/sections');
 };
 
 /**
@@ -18,7 +18,7 @@ export const getAllSections = async () => {
  * @returns {Promise<Object>}
  */
 export const getSectionById = async (id) => {
-  return apiRequest(`/forum/sections/${id}`);
+  return api.get(`/forum/sections/${id}`);
 };
 
 /**
@@ -27,7 +27,7 @@ export const getSectionById = async (id) => {
  * @returns {Promise<Object>}
  */
 export const getSectionBySlug = async (slug) => {
-  return apiRequest(`/forum/sections/slug/${slug}`);
+  return api.get(`/forum/sections/slug/${slug}`);
 };
 
 /**
@@ -36,7 +36,7 @@ export const getSectionBySlug = async (slug) => {
  * @returns {Promise<Array>}
  */
 export const getSectionsByCategory = async (categoryId) => {
-  return apiRequest(`/forum/categories/${categoryId}/sections`);
+  return api.get(`/forum/categories/${categoryId}/sections`);
 };
 
 /**
@@ -45,7 +45,7 @@ export const getSectionsByCategory = async (categoryId) => {
  * @returns {Promise<Array>}
  */
 export const getSubsections = async (sectionId) => {
-  return apiRequest(`/forum/sections/${sectionId}/subsections`);
+  return api.get(`/forum/sections/${sectionId}/subsections`);
 };
 
 /**
@@ -54,10 +54,7 @@ export const getSubsections = async (sectionId) => {
  * @returns {Promise<Object>}
  */
 export const createSection = async (data) => {
-  return apiRequest('/forum/sections', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
+  return api.post('/forum/sections', data);
 };
 
 /**
@@ -67,10 +64,7 @@ export const createSection = async (data) => {
  * @returns {Promise<Object>}
  */
 export const updateSection = async (id, data) => {
-  return apiRequest(`/forum/sections/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  });
+  return api.put(`/forum/sections/${id}`, data);
 };
 
 /**
@@ -79,9 +73,25 @@ export const updateSection = async (id, data) => {
  * @returns {Promise<Object>}
  */
 export const deleteSection = async (id) => {
-  return apiRequest(`/forum/sections/${id}`, {
-    method: 'DELETE',
-  });
+  return api.delete(`/forum/sections/${id}`);
+};
+
+/**
+ * Toggle l'épinglage d'une section
+ * @param {number} id - ID de la section
+ * @returns {Promise<Object>}
+ */
+export const togglePinSection = async (id) => {
+  return api.patch(`/forum/sections/${id}/pin`);
+};
+
+/**
+ * Toggle le verrouillage d'une section
+ * @param {number} id - ID de la section
+ * @returns {Promise<Object>}
+ */
+export const toggleLockSection = async (id) => {
+  return api.patch(`/forum/sections/${id}/lock`);
 };
 
 export default {
@@ -93,4 +103,6 @@ export default {
   createSection,
   updateSection,
   deleteSection,
+  togglePinSection,
+  toggleLockSection,
 };

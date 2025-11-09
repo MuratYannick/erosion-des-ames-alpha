@@ -1,4 +1,31 @@
 const { Category, Section } = require('../../models');
+const { checkPermission } = require('../../services/permissionEvaluator');
+
+/**
+ * Fonction helper pour ajouter les permissions de l'utilisateur à une section
+ * @param {Object} section - Section
+ * @param {Object} user - Utilisateur connecté (peut être null)
+ * @param {Object} character - Personnage utilisé (optionnel)
+ * @returns {Object} - Section avec permissions ajoutées
+ */
+async function addPermissionsToSection(section, user = null, character = null) {
+  const sectionData = section.toJSON ? section.toJSON() : section;
+
+  // Évaluer les permissions pour cette section
+  const permissions = {
+    canView: await checkPermission(user, character, 'section', sectionData.id, 'view'),
+    canEdit: await checkPermission(user, character, 'section', sectionData.id, 'edit'),
+    canCreateSection: await checkPermission(user, character, 'section', sectionData.id, 'create_section'),
+    canCreateTopic: await checkPermission(user, character, 'section', sectionData.id, 'create_topic'),
+    canPin: await checkPermission(user, character, 'section', sectionData.id, 'pin'),
+    canLock: await checkPermission(user, character, 'section', sectionData.id, 'lock'),
+    canMoveSection: await checkPermission(user, character, 'section', sectionData.id, 'move_section')
+  };
+
+  sectionData.permissions = permissions;
+
+  return sectionData;
+}
 
 /**
  * Récupérer toutes les catégories avec leurs sections
@@ -251,9 +278,14 @@ exports.getSectionsByCategory = async (req, res) => {
       ]
     });
 
+    // Ajouter les permissions pour chaque section
+    const sectionsWithPermissions = await Promise.all(
+      sections.map(section => addPermissionsToSection(section, req.user, req.character))
+    );
+
     res.json({
       success: true,
-      data: sections
+      data: sectionsWithPermissions
     });
   } catch (error) {
     console.error('Erreur lors de la récupération des sections:', error);

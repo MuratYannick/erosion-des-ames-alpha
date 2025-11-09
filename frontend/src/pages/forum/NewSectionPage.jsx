@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import ForumLayout from '../../components/forum/layout/ForumLayout';
 import SectionForm from '../../components/forum/forms/SectionForm';
-import { createSection } from '../../services/forum/sectionsService';
+import { createSection, getSectionById } from '../../services/forum/sectionsService';
+import { getCategoryById } from '../../services/forum/categoriesService';
 
 /**
  * NewSectionPage - Page de création d'une nouvelle section
@@ -13,6 +14,9 @@ const NewSectionPage = () => {
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [breadcrumbItems, setBreadcrumbItems] = useState([
+    { label: 'Nouvelle section' }
+  ]);
 
   // Récupérer les paramètres d'URL pour pré-remplir le formulaire
   const initialData = {
@@ -20,11 +24,64 @@ const NewSectionPage = () => {
     parent_section_id: searchParams.get('parent_section_id') || ''
   };
 
-  // Breadcrumb
-  const breadcrumbItems = [
-    { label: 'Forum', path: '/forum' },
-    { label: 'Nouvelle section' }
-  ];
+  // Construire le breadcrumb en fonction de la hiérarchie
+  useEffect(() => {
+    const buildBreadcrumb = async () => {
+      const items = [];
+
+      try {
+        // Si on crée une sous-section
+        if (initialData.parent_section_id) {
+          const sectionRes = await getSectionById(initialData.parent_section_id);
+          const section = sectionRes.data?.data || sectionRes.data;
+
+          // Récupérer la catégorie parente
+          if (section.category_id) {
+            const categoryRes = await getCategoryById(section.category_id);
+            const category = categoryRes.data?.data || categoryRes.data;
+            items.push({
+              label: category.name,
+              path: `/forum/category/${category.slug}`
+            });
+          }
+
+          // Construire la chaîne des sections parentes
+          const buildSectionChain = async (sectionData) => {
+            if (sectionData.parent_section_id) {
+              const parentRes = await getSectionById(sectionData.parent_section_id);
+              const parent = parentRes.data?.data || parentRes.data;
+              await buildSectionChain(parent);
+            }
+
+            items.push({
+              label: sectionData.name,
+              path: `/forum/section/${sectionData.slug}`
+            });
+          };
+
+          await buildSectionChain(section);
+        }
+        // Si on crée une section dans une catégorie
+        else if (initialData.category_id) {
+          const categoryRes = await getCategoryById(initialData.category_id);
+          const category = categoryRes.data?.data || categoryRes.data;
+          items.push({
+            label: category.name,
+            path: `/forum/category/${category.slug}`
+          });
+        }
+      } catch (err) {
+        console.error('Erreur lors de la construction du breadcrumb:', err);
+      }
+
+      items.push({ label: 'Nouvelle section' });
+      setBreadcrumbItems(items);
+    };
+
+    if (initialData.category_id || initialData.parent_section_id) {
+      buildBreadcrumb();
+    }
+  }, [initialData.category_id, initialData.parent_section_id]);
 
   // Gérer la soumission
   const handleSubmit = async (formData) => {
@@ -34,13 +91,9 @@ const NewSectionPage = () => {
 
       const response = await createSection(formData);
 
-      // Rediriger vers la nouvelle section
+      // Rediriger vers la page précédente après création réussie
       if (response.success && response.data) {
-        // Construire l'URL de la section
-        // On devrait récupérer le categorySlug, mais pour simplifier on redirige vers le forum
-        navigate('/forum', {
-          state: { message: 'Section créée avec succès!' }
-        });
+        navigate(-1);
       }
     } catch (err) {
       console.error('Erreur lors de la création:', err);
@@ -94,16 +147,10 @@ const NewSectionPage = () => {
               <strong className="text-ochre-400">Slug:</strong> Identifiant unique pour l'URL, généré automatiquement (ex: "annonces-importantes")
             </li>
             <li>
-              <strong className="text-ochre-400">Catégorie:</strong> La catégorie parente à laquelle appartient cette section
+              <strong className="text-ochre-400">Faction/Clan:</strong> Permet de signifier que la section concerne une faction ou un clan spécifique
             </li>
             <li>
-              <strong className="text-ochre-400">Section parente:</strong> Pour créer une sous-section, sélectionnez la section parente
-            </li>
-            <li>
-              <strong className="text-ochre-400">Faction/Clan:</strong> Permet de restreindre l'accès à une faction ou un clan spécifique
-            </li>
-            <li>
-              <strong className="text-ochre-400">Section publique:</strong> Si décoché, seuls les membres de la faction/clan peuvent accéder
+              <strong className="text-ochre-400">Section publique:</strong> Si désactivé, seuls les membres de la faction/clan peuvent accéder
             </li>
             <li>
               <strong className="text-ochre-400">Épingler:</strong> Les sections épinglées apparaissent en haut de la liste

@@ -91,6 +91,7 @@ export const AuthProvider = ({ children }) => {
     if (refreshToken) {
       storage.setItem('refreshToken', refreshToken);
     }
+
     setUser(userData);
   };
 

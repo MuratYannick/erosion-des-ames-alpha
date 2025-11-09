@@ -36,8 +36,8 @@ function Register() {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError('Le mot de passe doit contenir au moins 6 caractères');
+    if (formData.password.length < 8) {
+      setError('Le mot de passe doit contenir au moins 8 caractères');
       setLoading(false);
       return;
     }
@@ -59,8 +59,8 @@ function Register() {
           false
         );
 
-        // Rediriger vers la page d'accueil
-        navigate('/home');
+        // Rediriger vers la page d'accueil du portail
+        navigate('/');
       } else {
         setError(response.data.message || 'Une erreur est survenue lors de l\'inscription');
       }
@@ -154,7 +154,7 @@ function Register() {
                   placeholder="••••••••"
                 />
                 <p className="mt-1 text-xs font-texte-corps text-city-500">
-                  Minimum 6 caractères
+                  Minimum 8 caractères
                 </p>
               </div>
 

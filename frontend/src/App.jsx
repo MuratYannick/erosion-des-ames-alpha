@@ -4,7 +4,6 @@ import Portal from './pages/portal/Portal'
 import Intro from './pages/portal/Intro'
 import Univers from './pages/portal/Univers'
 import Reglement from './pages/portal/Reglement'
-import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 
@@ -14,6 +13,7 @@ import SectionsPage from './pages/forum/SectionsPage'
 import TopicsPage from './pages/forum/TopicsPage'
 import TopicDetailPage from './pages/forum/TopicDetailPage'
 import NewSectionPage from './pages/forum/NewSectionPage'
+import EditSectionPage from './pages/forum/EditSectionPage'
 
 // Pages d'erreur
 import NotFound404 from './pages/errors/NotFound404'
@@ -37,7 +37,6 @@ function App() {
           <Route path="/intro" element={<Intro />} />
           <Route path="/univers" element={<Univers />} />
           <Route path="/reglement" element={<Reglement />} />
-          <Route path="/home" element={<Home />} />
 
           {/* Authentification */}
           <Route path="/login" element={<Login />} />
@@ -46,6 +45,7 @@ function App() {
           {/* Forum - Hiérarchie des routes */}
           <Route path="/forum" element={<CategoriesPage />} />
           <Route path="/forum/sections/new" element={<NewSectionPage />} />
+          <Route path="/forum/sections/:id/edit" element={<EditSectionPage />} />
           <Route path="/forum/:categorySlug" element={<SectionsPage />} />
           <Route path="/forum/:categorySlug/:sectionSlug" element={<TopicsPage />} />
           <Route path="/forum/:categorySlug/:sectionSlug/:topicSlug" element={<TopicDetailPage />} />

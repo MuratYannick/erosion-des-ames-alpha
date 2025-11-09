@@ -8,46 +8,40 @@ import api from './api';
  * Récupérer tous les clans
  */
 export const getAllClans = async () => {
-  const response = await api.get('/forum/clans');
-  return response.data;
+  return api.get('/forum/clans');
 };
 
 /**
  * Récupérer un clan par ID
  */
 export const getClanById = async (id) => {
-  const response = await api.get(`/forum/clans/${id}`);
-  return response.data;
+  return api.get(`/forum/clans/${id}`);
 };
 
 /**
  * Récupérer les clans d'une faction
  */
 export const getClansByFaction = async (factionId) => {
-  const response = await api.get(`/forum/factions/${factionId}/clans`);
-  return response.data;
+  return api.get(`/forum/factions/${factionId}/clans`);
 };
 
 /**
  * Créer un nouveau clan (admin seulement)
  */
 export const createClan = async (clanData) => {
-  const response = await api.post('/forum/clans', clanData);
-  return response.data;
+  return api.post('/forum/clans', clanData);
 };
 
 /**
  * Mettre à jour un clan (admin seulement)
  */
 export const updateClan = async (id, clanData) => {
-  const response = await api.put(`/forum/clans/${id}`, clanData);
-  return response.data;
+  return api.put(`/forum/clans/${id}`, clanData);
 };
 
 /**
  * Supprimer un clan (admin seulement)
  */
 export const deleteClan = async (id) => {
-  const response = await api.delete(`/forum/clans/${id}`);
-  return response.data;
+  return api.delete(`/forum/clans/${id}`);
 };

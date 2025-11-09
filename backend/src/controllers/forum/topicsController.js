@@ -1,4 +1,36 @@
-const { Topic, Section, User, Character, Faction, Clan, Post } = require('../../models');
+const { Topic, Section, User, Character, Faction, Clan, Post, Category } = require('../../models');
+
+/**
+ * Fonction helper pour charger récursivement la hiérarchie complète des sections parentes
+ * @param {Object} section - Section avec parentSection chargé
+ * @returns {Array} - Tableau des sections parentes ordonnées de la racine à la section parente directe
+ */
+async function loadSectionParentHierarchy(section) {
+  if (!section) return [];
+
+  const hierarchy = [];
+  let currentParentId = section.parent_section_id;
+
+  while (currentParentId) {
+    const parentSection = await Section.findOne({
+      where: { id: currentParentId, deleted_at: null },
+      attributes: ['id', 'name', 'slug', 'parent_section_id']
+    });
+
+    if (!parentSection) break;
+
+    // Ajouter au début du tableau pour avoir l'ordre racine -> feuille
+    hierarchy.unshift({
+      id: parentSection.id,
+      name: parentSection.name,
+      slug: parentSection.slug
+    });
+
+    currentParentId = parentSection.parent_section_id;
+  }
+
+  return hierarchy;
+}
 
 /**
  * Récupérer tous les topics
@@ -134,7 +166,14 @@ exports.getTopicBySlug = async (req, res) => {
         {
           model: Section,
           as: 'section',
-          attributes: ['id', 'name', 'slug', 'description']
+          attributes: ['id', 'name', 'slug', 'description', 'parent_section_id', 'category_id'],
+          include: [
+            {
+              model: Category,
+              as: 'category',
+              attributes: ['id', 'name', 'slug']
+            }
+          ]
         },
         {
           model: User,
@@ -173,9 +212,18 @@ exports.getTopicBySlug = async (req, res) => {
     // Incrémenter le compteur de vues
     await topic.increment('views_count');
 
+    // Charger la hiérarchie complète des sections parentes
+    const sectionParentHierarchy = await loadSectionParentHierarchy(topic.section);
+
+    // Convertir en objet JSON pour pouvoir ajouter des propriétés
+    const topicData = topic.toJSON();
+    if (topicData.section) {
+      topicData.section.parentHierarchy = sectionParentHierarchy;
+    }
+
     res.json({
       success: true,
-      data: topic
+      data: topicData
     });
   } catch (error) {
     console.error('Erreur lors de la récupération du topic:', error);

@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Loader2, AlertCircle } from 'lucide-react';
 import ForumLayout from '../../components/forum/layout/ForumLayout';
 import { TopicCard, SectionCard } from '../../components/forum/cards';
 import { NewSectionButton } from '../../components/forum/buttons';
+import EditSectionButton from '../../components/forum/buttons/EditSectionButton';
 import { getSectionBySlug } from '../../services/forum/sectionsService';
 import { getTopicsBySection } from '../../services/forum/topicsService';
+import { handleError } from '../../utils/errorHandler';
 
 /**
  * TopicsPage - Page affichant les topics d'une section
@@ -13,6 +15,7 @@ import { getTopicsBySection } from '../../services/forum/topicsService';
  */
 const TopicsPage = () => {
   const { categorySlug, sectionSlug } = useParams();
+  const navigate = useNavigate();
   const [section, setSection] = useState(null);
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,30 +29,64 @@ const TopicsPage = () => {
 
         // Récupérer la section
         const sectionResponse = await getSectionBySlug(sectionSlug);
-        const sectionData = sectionResponse.data || sectionResponse;
+        // api.get retourne { data: { success: true, data: {...} } }
+        const sectionData = sectionResponse.data?.data || sectionResponse.data;
+
+        if (!sectionData || !sectionData.id) {
+          setError('Section non trouvée');
+          setLoading(false);
+          return;
+        }
+
         setSection(sectionData);
 
         // Récupérer les topics de cette section
         const topicsResponse = await getTopicsBySection(sectionData.id);
-        const topicsData = topicsResponse.data || topicsResponse;
+        // api.get retourne { data: { success: true, data: [...] } }
+        const topicsData = topicsResponse.data?.data || topicsResponse.data || [];
         setTopics(Array.isArray(topicsData) ? topicsData : []);
       } catch (err) {
         console.error('Erreur lors du chargement:', err);
-        setError(err.message || 'Impossible de charger les topics');
+        // Utiliser handleError pour les erreurs système
+        const wasRedirected = handleError(err, navigate);
+
+        // Si l'erreur n'a pas été redirigée, afficher un message local
+        if (!wasRedirected) {
+          setError(err.message || 'Impossible de charger les topics');
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [sectionSlug]);
+  }, [sectionSlug, navigate]);
 
-  // Breadcrumb
-  const breadcrumbItems = section ? [
-    { label: 'Forum', path: '/forum' },
-    { label: section.category?.name || 'Catégorie', path: `/forum/${categorySlug}` },
-    { label: section.name }
-  ] : [];
+  // Breadcrumb (Forum est déjà ajouté par le composant Breadcrumb)
+  const breadcrumbItems = section ? (() => {
+    const items = [];
+
+    // Catégorie
+    items.push({
+      label: section.category?.name || categorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+      path: `/forum/${categorySlug}`
+    });
+
+    // Hiérarchie complète des sections parentes (de la racine à la section parente directe)
+    if (section.parentHierarchy && Array.isArray(section.parentHierarchy)) {
+      section.parentHierarchy.forEach(parentSection => {
+        items.push({
+          label: parentSection.name,
+          path: `/forum/${categorySlug}/${parentSection.slug}`
+        });
+      });
+    }
+
+    // Section actuelle
+    items.push({ label: section.name });
+
+    return items;
+  })() : [];
 
   // État de chargement
   if (loading) {
@@ -106,10 +143,16 @@ const TopicsPage = () => {
             <h1 className="text-3xl md:text-4xl font-titre-Jeu text-ochre-500">
               {section.name}
             </h1>
-            <NewSectionButton
-              category={section.category}
-              section={section}
-            />
+            <div className="flex items-center gap-3">
+              <EditSectionButton
+                sectionId={section.id}
+                permissions={section.permissions}
+              />
+              <NewSectionButton
+                category={section.category}
+                section={section}
+              />
+            </div>
           </div>
           {section.description && (
             <p className="text-city-300 font-texte-corps text-base md:text-lg">

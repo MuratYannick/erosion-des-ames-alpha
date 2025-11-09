@@ -1,3 +1,6 @@
+const { sequelize } = require('../config/database');
+const { DataTypes } = require('sequelize');
+
 const User = require('./User');
 const Ethnie = require('./Ethnie');
 const Faction = require('./Faction');
@@ -7,6 +10,17 @@ const Category = require('./Category');
 const Section = require('./Section');
 const Topic = require('./Topic');
 const Post = require('./Post');
+
+// Modèles de permissions - ce sont des fonctions factory qui doivent être appelées avec sequelize
+const ForumPermissionView = require('./ForumPermissionView')(sequelize, DataTypes);
+const ForumPermissionCreateSection = require('./ForumPermissionCreateSection')(sequelize, DataTypes);
+const ForumPermissionCreateTopic = require('./ForumPermissionCreateTopic')(sequelize, DataTypes);
+const ForumPermissionEdit = require('./ForumPermissionEdit')(sequelize, DataTypes);
+const ForumPermissionMoveSection = require('./ForumPermissionMoveSection')(sequelize, DataTypes);
+const ForumPermissionMoveTopic = require('./ForumPermissionMoveTopic')(sequelize, DataTypes);
+const ForumPermissionMovePost = require('./ForumPermissionMovePost')(sequelize, DataTypes);
+const ForumPermissionPin = require('./ForumPermissionPin')(sequelize, DataTypes);
+const ForumPermissionLock = require('./ForumPermissionLock')(sequelize, DataTypes);
 
 // ==========================================
 // ASSOCIATIONS / RELATIONS ENTRE MODÈLES
@@ -60,16 +74,6 @@ Clan.belongsTo(Faction, {
   as: 'faction'
 });
 
-// Faction ← Clan (N:1 via main_clan_id) - Clan principal
-Faction.belongsTo(Clan, {
-  foreignKey: 'main_clan_id',
-  as: 'mainClan'
-});
-Clan.hasOne(Faction, {
-  foreignKey: 'main_clan_id',
-  as: 'ledFaction'
-});
-
 // Faction → Characters (1:N)
 Faction.hasMany(Character, {
   foreignKey: 'faction_id',
@@ -103,16 +107,6 @@ Topic.belongsTo(Faction, {
 // ------------------------------------------
 // Relations Clan
 // ------------------------------------------
-
-// Clan ← Character (N:1 via leader_character_id) - Leader du clan
-Clan.belongsTo(Character, {
-  foreignKey: 'leader_character_id',
-  as: 'leader'
-});
-Character.hasOne(Clan, {
-  foreignKey: 'leader_character_id',
-  as: 'ledClan'
-});
 
 // Clan → Characters (1:N) - Membres du clan
 Clan.hasMany(Character, {
@@ -267,5 +261,15 @@ module.exports = {
   Category,
   Section,
   Topic,
-  Post
+  Post,
+  // Modèles de permissions
+  ForumPermissionView,
+  ForumPermissionCreateSection,
+  ForumPermissionCreateTopic,
+  ForumPermissionEdit,
+  ForumPermissionMoveSection,
+  ForumPermissionMoveTopic,
+  ForumPermissionMovePost,
+  ForumPermissionPin,
+  ForumPermissionLock
 };

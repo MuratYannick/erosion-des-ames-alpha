@@ -9,13 +9,13 @@ const SALT_ROUNDS = 10;
  */
 async function register(req, res) {
   try {
-    const { username, email, password } = req.body;
+    const { user_name, email, password } = req.body;
 
     // Validation des champs requis
-    if (!username || !email || !password) {
+    if (!user_name || !email || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Tous les champs sont requis (username, email, password)'
+        message: 'Tous les champs sont requis (user_name, email, password)'
       });
     }
 
@@ -53,7 +53,7 @@ async function register(req, res) {
 
     // Créer l'utilisateur
     const user = await User.create({
-      user_name: username,
+      user_name,
       email,
       password_hash,
       role: 'player', // Rôle par défaut

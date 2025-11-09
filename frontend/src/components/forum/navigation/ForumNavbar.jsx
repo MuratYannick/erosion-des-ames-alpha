@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, LogOut, User, Settings, ArrowLeft } from 'lucide-react';
-import { useIsMobile } from '../../../hooks/useBreakpoint';
+import { useAuth } from '../../../contexts/AuthContext';
 
 /**
  * ForumNavbar - Barre de navigation principale du forum
@@ -11,15 +11,8 @@ import { useIsMobile } from '../../../hooks/useBreakpoint';
 const ForumNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const isMobile = useIsMobile();
   const navigate = useNavigate();
-
-  // Simulation user (à remplacer par contexte auth)
-  const user = {
-    username: 'Joueur1',
-    role: 'player',
-    avatar: null,
-  };
+  const { user, logout } = useAuth();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -32,7 +25,7 @@ const ForumNavbar = () => {
   };
 
   const handleLogout = () => {
-    // TODO: Implémenter la déconnexion
+    logout();
     navigate('/portal');
   };
 
@@ -88,46 +81,69 @@ const ForumNavbar = () => {
 
         {/* Section Droite: User Menu + Menu Hamburger */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* User Menu (Desktop) */}
-          <div className="hidden sm:block relative">
-            <button
-              onClick={toggleUserMenu}
-              className="flex items-center gap-2 px-3 py-2 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-800 rounded-md transition-colors"
-              aria-label="Menu utilisateur"
-              aria-expanded={isUserMenuOpen}
-            >
-              <User size={20} />
-              <span className="hidden md:inline">{user.username}</span>
-            </button>
+          {/* User Menu (Desktop) - si connecté */}
+          {user ? (
+            <div className="hidden sm:block relative">
+              <button
+                onClick={toggleUserMenu}
+                className="flex items-center gap-2 px-3 py-2 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-800 rounded-md transition-colors"
+                aria-label="Menu utilisateur"
+                aria-expanded={isUserMenuOpen}
+              >
+                <User size={20} />
+                <span className="hidden md:inline">{user.username}</span>
+              </button>
 
-            {/* Dropdown User Menu */}
-            {isUserMenuOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-neutral-800 border border-neutral-700 rounded-lg shadow-xl py-2">
-                <Link
-                  to="/forum/profile"
-                  className="flex items-center gap-2 px-4 py-2 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-700 transition-colors"
-                >
-                  <User size={18} />
-                  Mon profil
-                </Link>
-                <Link
-                  to="/forum/settings"
-                  className="flex items-center gap-2 px-4 py-2 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-700 transition-colors"
-                >
-                  <Settings size={18} />
-                  Paramètres
-                </Link>
-                <hr className="my-2 border-neutral-700" />
-                <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center gap-2 px-4 py-2 text-blood-400 hover:text-blood-300 hover:bg-neutral-700 transition-colors"
-                >
-                  <LogOut size={18} />
-                  Déconnexion
-                </button>
-              </div>
-            )}
-          </div>
+              {/* Dropdown User Menu */}
+              {isUserMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-neutral-800 border border-neutral-700 rounded-lg shadow-xl py-2">
+                  <Link
+                    to="/forum/profile"
+                    onClick={() => setIsUserMenuOpen(false)}
+                    className="flex items-center gap-2 px-4 py-2 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-700 transition-colors"
+                  >
+                    <User size={18} />
+                    Mon profil
+                  </Link>
+                  <Link
+                    to="/forum/settings"
+                    onClick={() => setIsUserMenuOpen(false)}
+                    className="flex items-center gap-2 px-4 py-2 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-700 transition-colors"
+                  >
+                    <Settings size={18} />
+                    Paramètres
+                  </Link>
+                  <hr className="my-2 border-neutral-700" />
+                  <button
+                    onClick={() => {
+                      setIsUserMenuOpen(false);
+                      handleLogout();
+                    }}
+                    className="w-full flex items-center gap-2 px-4 py-2 text-blood-400 hover:text-blood-300 hover:bg-neutral-700 transition-colors"
+                  >
+                    <LogOut size={18} />
+                    Déconnexion
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            /* Boutons connexion/inscription si non connecté (Desktop) */
+            <div className="hidden sm:flex items-center gap-2">
+              <Link
+                to="/login"
+                className="px-4 py-2 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-800 rounded-md transition-colors"
+              >
+                Connexion
+              </Link>
+              <Link
+                to="/register"
+                className="px-4 py-2 bg-ochre-600 hover:bg-ochre-500 text-neutral-900 font-semibold rounded-md transition-colors"
+              >
+                Inscription
+              </Link>
+            </div>
+          )}
 
           {/* Bouton Menu Hamburger (Mobile/Tablet) */}
           <button
@@ -149,7 +165,7 @@ const ForumNavbar = () => {
             <Link
               to="/portal"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block px-4 py-3 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-800 rounded-md transition-colors flex items-center gap-2"
+              className="flex items-center gap-2 px-4 py-3 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-800 rounded-md transition-colors"
             >
               <ArrowLeft size={18} />
               Retour au Portail
@@ -175,32 +191,53 @@ const ForumNavbar = () => {
 
             {/* User Menu (Mobile) */}
             <div className="sm:hidden space-y-1">
-              <Link
-                to="/forum/profile"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-4 py-3 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-800 rounded-md transition-colors flex items-center gap-2"
-              >
-                <User size={18} />
-                Mon profil ({user.username})
-              </Link>
-              <Link
-                to="/forum/settings"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-4 py-3 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-800 rounded-md transition-colors flex items-center gap-2"
-              >
-                <Settings size={18} />
-                Paramètres
-              </Link>
-              <button
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  handleLogout();
-                }}
-                className="w-full text-left px-4 py-3 text-blood-400 hover:text-blood-300 hover:bg-neutral-800 rounded-md transition-colors flex items-center gap-2"
-              >
-                <LogOut size={18} />
-                Déconnexion
-              </button>
+              {user ? (
+                <>
+                  <Link
+                    to="/forum/profile"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-2 px-4 py-3 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-800 rounded-md transition-colors"
+                  >
+                    <User size={18} />
+                    Mon profil ({user.username})
+                  </Link>
+                  <Link
+                    to="/forum/settings"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-2 px-4 py-3 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-800 rounded-md transition-colors"
+                  >
+                    <Settings size={18} />
+                    Paramètres
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      handleLogout();
+                    }}
+                    className="w-full text-left px-4 py-3 text-blood-400 hover:text-blood-300 hover:bg-neutral-800 rounded-md transition-colors flex items-center gap-2"
+                  >
+                    <LogOut size={18} />
+                    Déconnexion
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="w-full px-4 py-3 text-neutral-300 hover:text-ochre-400 hover:bg-neutral-800 rounded-md transition-colors text-center inline-block"
+                  >
+                    Connexion
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="w-full px-4 py-3 bg-ochre-600 hover:bg-ochre-500 text-neutral-900 font-semibold rounded-md transition-colors text-center inline-block"
+                  >
+                    Inscription
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
         </div>

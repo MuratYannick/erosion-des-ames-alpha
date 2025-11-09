@@ -8,38 +8,33 @@ import api from './api';
  * Récupérer toutes les factions
  */
 export const getAllFactions = async () => {
-  const response = await api.get('/forum/factions');
-  return response.data;
+  return api.get('/forum/factions');
 };
 
 /**
  * Récupérer une faction par ID
  */
 export const getFactionById = async (id) => {
-  const response = await api.get(`/forum/factions/${id}`);
-  return response.data;
+  return api.get(`/forum/factions/${id}`);
 };
 
 /**
  * Créer une nouvelle faction (admin seulement)
  */
 export const createFaction = async (factionData) => {
-  const response = await api.post('/forum/factions', factionData);
-  return response.data;
+  return api.post('/forum/factions', factionData);
 };
 
 /**
  * Mettre à jour une faction (admin seulement)
  */
 export const updateFaction = async (id, factionData) => {
-  const response = await api.put(`/forum/factions/${id}`, factionData);
-  return response.data;
+  return api.put(`/forum/factions/${id}`, factionData);
 };
 
 /**
  * Supprimer une faction (admin seulement)
  */
 export const deleteFaction = async (id) => {
-  const response = await api.delete(`/forum/factions/${id}`);
-  return response.data;
+  return api.delete(`/forum/factions/${id}`);
 };

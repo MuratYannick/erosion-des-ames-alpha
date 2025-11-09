@@ -1,4 +1,4 @@
-import apiRequest from './api';
+import api from './api';
 
 /**
  * Service pour la gestion des catégories du forum
@@ -9,7 +9,7 @@ import apiRequest from './api';
  * @returns {Promise<Array>}
  */
 export const getAllCategories = async () => {
-  return apiRequest('/forum/categories');
+  return api.get('/forum/categories');
 };
 
 /**
@@ -18,7 +18,7 @@ export const getAllCategories = async () => {
  * @returns {Promise<Object>}
  */
 export const getCategoryById = async (id) => {
-  return apiRequest(`/forum/categories/${id}`);
+  return api.get(`/forum/categories/${id}`);
 };
 
 /**
@@ -27,7 +27,7 @@ export const getCategoryById = async (id) => {
  * @returns {Promise<Object>}
  */
 export const getCategoryBySlug = async (slug) => {
-  return apiRequest(`/forum/categories/slug/${slug}`);
+  return api.get(`/forum/categories/slug/${slug}`);
 };
 
 /**
@@ -36,10 +36,7 @@ export const getCategoryBySlug = async (slug) => {
  * @returns {Promise<Object>}
  */
 export const createCategory = async (data) => {
-  return apiRequest('/forum/categories', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
+  return api.post('/forum/categories', data);
 };
 
 /**
@@ -49,10 +46,7 @@ export const createCategory = async (data) => {
  * @returns {Promise<Object>}
  */
 export const updateCategory = async (id, data) => {
-  return apiRequest(`/forum/categories/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  });
+  return api.put(`/forum/categories/${id}`, data);
 };
 
 /**
@@ -61,9 +55,7 @@ export const updateCategory = async (id, data) => {
  * @returns {Promise<Object>}
  */
 export const deleteCategory = async (id) => {
-  return apiRequest(`/forum/categories/${id}`, {
-    method: 'DELETE',
-  });
+  return api.delete(`/forum/categories/${id}`);
 };
 
 export default {

@@ -1,16 +1,16 @@
-import { Link } from 'react-router-dom';
-import { storage } from '../../../utils/localStorage';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const UserMenu = ({ mobile = false }) => {
-  const token = storage.getToken();
-  const user = storage.getUser();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    storage.clear();
-    window.location.href = '/';
+    logout();
+    navigate('/');
   };
 
-  if (token && user) {
+  if (user) {
     // Utilisateur connecté
     return (
       <div className={mobile ? 'flex flex-col space-y-2' : 'flex items-center space-x-4'}>
