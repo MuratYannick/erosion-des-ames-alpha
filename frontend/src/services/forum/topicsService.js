@@ -87,6 +87,16 @@ export const lockTopic = async (id, isLocked) => {
   return api.patch(`/forum/topics/${id}/lock`, { is_locked: isLocked });
 };
 
+/**
+ * Déplacer un topic vers une autre section
+ * @param {number} id - ID du topic
+ * @param {number} newSectionId - ID de la section de destination
+ * @returns {Promise<Object>}
+ */
+export const moveTopic = async (id, newSectionId) => {
+  return api.patch(`/forum/topics/${id}/move`, { new_section_id: newSectionId });
+};
+
 export default {
   getAllTopics,
   getTopicById,
@@ -97,4 +107,5 @@ export default {
   deleteTopic,
   pinTopic,
   lockTopic,
+  moveTopic,
 };

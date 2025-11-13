@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Loader2, AlertCircle } from 'lucide-react';
 import ForumLayout from '../../components/forum/layout/ForumLayout';
+import ForumPageHeader from '../../components/forum/layout/ForumPageHeader';
 import { SectionCard } from '../../components/forum/cards';
-import { NewSectionButton } from '../../components/forum/buttons';
 import { getCategoryBySlug } from '../../services/forum/categoriesService';
 import { getSectionsByCategory } from '../../services/forum/sectionsService';
 import { handleError } from '../../utils/errorHandler';
+import { useAuth } from '../../contexts/AuthContext';
 
 /**
  * SectionsPage - Page affichant les sections d'une catégorie
@@ -15,6 +16,7 @@ import { handleError } from '../../utils/errorHandler';
 const SectionsPage = () => {
   const { categorySlug } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [category, setCategory] = useState(null);
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -116,19 +118,19 @@ const SectionsPage = () => {
     <ForumLayout breadcrumbItems={breadcrumbItems}>
       <div className="space-y-6">
         {/* En-tête de la catégorie */}
-        <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-6">
-          <div className="flex justify-between items-start gap-4 mb-3">
-            <h1 className="text-3xl md:text-4xl font-titre-Jeu text-ochre-500">
-              {category.name}
-            </h1>
-            <NewSectionButton category={category} />
-          </div>
-          {category.description && (
-            <p className="text-city-300 font-texte-corps text-base md:text-lg">
-              {category.description}
-            </p>
-          )}
-        </div>
+        <ForumPageHeader
+          title={category.name}
+          description={category.description}
+          stats={{
+            sections: sections.length,
+          }}
+          actions={{
+            // Action de création de section (primary)
+            onNew: () => navigate(`/forum/new-section?category=${category.id}`),
+            newLabel: 'Nouvelle section',
+            newPermission: user && (user.role === 'admin' || user.role === 'super_admin' || user.role === 'moderator'),
+          }}
+        />
 
         {/* Liste des sections */}
         {sections.length === 0 ? (

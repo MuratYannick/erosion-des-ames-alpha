@@ -2,7 +2,15 @@ const { checkPermission } = require('../services/permissionEvaluator');
 const { Category, Section, Topic, Post, Character } = require('../models');
 
 /**
+ * Vérifie si l'utilisateur est admin
+ */
+const isAdmin = (user) => {
+  return user && (user.role === 'admin' || user.role === 'super_admin');
+};
+
+/**
  * Middleware factory pour vérifier les permissions forum
+ * SIMPLIFIÉ: Les admins ont tous les droits
  * @param {string} permissionType - Type de permission à vérifier
  * @param {Object} options - Options supplémentaires
  * @returns {Function} Middleware Express
@@ -12,6 +20,11 @@ function requireForumPermission(permissionType, options = {}) {
     try {
       // Récupérer l'utilisateur depuis req (suppose qu'un auth middleware a été exécuté avant)
       const user = req.user || null;
+
+      // SIMPLIFIÉ: Si admin, passer directement
+      if (isAdmin(user)) {
+        return next();
+      }
 
       // Récupérer le personnage si fourni
       let character = null;
@@ -104,6 +117,25 @@ async function determineResource(req, options) {
     // resourceType fourni, trouver l'ID
     const idField = `${resourceType}_id`;
     resourceId = req.params[idField] || req.body?.[idField] || req.params.id;
+
+    // Cas spécial pour create_post : on veut vérifier create_topic sur la section parente du topic
+    if (options.useTopicParentSection && (req.params.topic_id || req.body?.topic_id)) {
+      const topicId = req.params.topic_id || req.body?.topic_id;
+      const topic = await Topic.findByPk(topicId);
+      if (topic && topic.section_id) {
+        resourceType = 'section';
+        resourceId = topic.section_id;
+      }
+    }
+
+    // Cas spécial pour edit/delete post : on a l'ID du post dans params.id, il faut remonter au topic
+    if (options.usePostParentTopic && req.params.id && req.path.includes('/posts/')) {
+      const Post = require('../models').Post;
+      const post = await Post.findByPk(req.params.id);
+      if (post && post.topic_id) {
+        resourceId = post.topic_id;
+      }
+    }
   }
 
   // Charger la ressource complète si nécessaire (pour author_override)
@@ -138,15 +170,15 @@ module.exports = {
   // Create permissions
   canCreateSection: () => requireForumPermission('create_section'),
   canCreateTopic: () => requireForumPermission('create_topic', { resourceType: 'section' }),
-  // Posts are created in topics - check topic's edit permission (posts inherit from topic)
-  canCreatePost: () => requireForumPermission('edit', { resourceType: 'topic' }),
+  // Posts héritent de create_topic de la section parente : si tu peux créer des topics dans une section, tu peux poster dans ses topics
+  canCreatePost: () => requireForumPermission('create_topic', { resourceType: 'section', useTopicParentSection: true }),
 
   // Edit permissions
   canEditCategory: () => requireForumPermission('edit', { resourceType: 'category' }),
   canEditSection: () => requireForumPermission('edit', { resourceType: 'section' }),
   canEditTopic: () => requireForumPermission('edit', { resourceType: 'topic' }),
   // Posts inherit edit permission from their topic
-  canEditPost: () => requireForumPermission('edit', { resourceType: 'topic' }),
+  canEditPost: () => requireForumPermission('edit', { resourceType: 'topic', usePostParentTopic: true }),
 
   // Move permissions
   canMoveSection: () => requireForumPermission('move_section'),

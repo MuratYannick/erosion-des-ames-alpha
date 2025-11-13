@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Loader2, AlertCircle, X, Plus } from 'lucide-react';
 import ForumLayout from '../../components/forum/layout/ForumLayout';
+import ForumPageHeader from '../../components/forum/layout/ForumPageHeader';
 import { TopicCard, SectionCard } from '../../components/forum/cards';
-import { NewSectionButton } from '../../components/forum/buttons';
-import EditSectionButton from '../../components/forum/buttons/EditSectionButton';
-import MoveSectionButton from '../../components/forum/buttons/MoveSectionButton';
-import { getSectionBySlug } from '../../services/forum/sectionsService';
-import { getTopicsBySection } from '../../services/forum/topicsService';
+import ActionButton from '../../components/forum/buttons/ActionButton';
+import TopicForm from '../../components/forum/forms/TopicForm';
+import { getSectionBySlug, updateSection, deleteSection, moveSection } from '../../services/forum/sectionsService';
+import { getTopicsBySection, createTopic } from '../../services/forum/topicsService';
 import { handleError } from '../../utils/errorHandler';
+import { useAuth } from '../../contexts/AuthContext';
 
 /**
  * TopicsPage - Page affichant les topics d'une section
@@ -17,10 +18,16 @@ import { handleError } from '../../utils/errorHandler';
 const TopicsPage = () => {
   const { categorySlug, sectionSlug } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [section, setSection] = useState(null);
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // État pour la modale de création de topic
+  const [showNewTopicModal, setShowNewTopicModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,6 +69,52 @@ const TopicsPage = () => {
 
     fetchData();
   }, [sectionSlug, navigate]);
+
+  // Ouvrir la modal de création de topic
+  const handleOpenNewTopic = () => {
+    setShowNewTopicModal(true);
+    setSubmitError(null);
+  };
+
+  // Fermer la modal de création de topic
+  const handleCloseNewTopic = () => {
+    if (isSubmitting) return;
+    setShowNewTopicModal(false);
+    setSubmitError(null);
+  };
+
+  // Soumettre le nouveau topic
+  const handleSubmitNewTopic = async (data) => {
+    try {
+      setIsSubmitting(true);
+      setSubmitError(null);
+
+      // Ajouter la section_id
+      const topicData = {
+        ...data,
+        section_id: section.id
+      };
+
+      const response = await createTopic(topicData);
+      const newTopic = response.data?.data || response.data;
+
+      // Naviguer vers le nouveau topic
+      if (newTopic?.slug) {
+        navigate(`/forum/${categorySlug}/${sectionSlug}/${newTopic.slug}`);
+      } else {
+        // Si pas de slug, recharger la liste des topics
+        const topicsResponse = await getTopicsBySection(section.id);
+        const topicsData = topicsResponse.data?.data || topicsResponse.data || [];
+        setTopics(Array.isArray(topicsData) ? topicsData : []);
+        setShowNewTopicModal(false);
+      }
+    } catch (err) {
+      console.error('Erreur lors de la création du topic:', err);
+      setSubmitError(err.response?.data?.message || 'Erreur lors de la création du topic');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   // Breadcrumb (Forum est déjà ajouté par le composant Breadcrumb)
   const breadcrumbItems = section ? (() => {
@@ -139,46 +192,50 @@ const TopicsPage = () => {
     <ForumLayout breadcrumbItems={breadcrumbItems}>
       <div className="space-y-6">
         {/* En-tête de la section */}
-        <div className="bg-city-800 border-2 border-ochre-600 rounded-lg p-6">
-          <div className="flex justify-between items-start gap-4 mb-3">
-            <h1 className="text-3xl md:text-4xl font-titre-Jeu text-ochre-500">
-              {section.name}
-            </h1>
-            <div className="flex items-center gap-3">
-              <MoveSectionButton
-                sectionId={section.id}
-                permissions={section.permissions}
-              />
-              <EditSectionButton
-                sectionId={section.id}
-                permissions={section.permissions}
-              />
-              <NewSectionButton
-                category={section.category}
-                section={section}
-              />
-            </div>
-          </div>
-          {section.description && (
-            <p className="text-city-300 font-texte-corps text-base md:text-lg">
-              {section.description}
-            </p>
-          )}
+        <ForumPageHeader
+          title={section.name}
+          description={section.description}
+          badges={{
+            isPinned: section.is_pinned,
+            isLocked: section.is_locked,
+            isPublic: section.is_public,
+          }}
+          stats={{
+            topics: topics.length,
+            sections: section.childSections?.length || 0,
+          }}
+          actions={{
+            // Action de création de topic (primary)
+            onNew: !section.is_locked ? handleOpenNewTopic : null,
+            newLabel: 'Nouveau topic',
+            newPermission: user !== null,
 
-          {/* Badges pour section privée/verrouillée */}
-          <div className="flex flex-wrap gap-2 mt-4">
-            {!section.is_public && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-blood-900 border border-blood-700 text-blood-300 rounded text-sm font-texte-corps">
-                Privée
-              </span>
-            )}
-            {section.is_locked && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-city-700 border border-city-600 text-city-300 rounded text-sm font-texte-corps">
-                Verrouillée
-              </span>
-            )}
+            // Action d'édition de section (primary) - TODO
+            onEdit: null, // handleOpenEditSection,
+            editPermission: user && (user.role === 'admin' || user.role === 'super_admin' || user.role === 'moderator' || section.permissions?.canEdit),
+
+            // Action de déplacement de section (danger) - TODO
+            onMove: null, // handleOpenMoveSection,
+            movePermission: user && (user.role === 'admin' || user.role === 'super_admin' || user.role === 'moderator' || section.permissions?.canMove),
+
+            // Action de suppression de section (danger) - TODO
+            onDelete: null, // handleDeleteSection,
+            deletePermission: user && (user.role === 'admin' || user.role === 'super_admin' || section.permissions?.canEdit),
+          }}
+        />
+
+        {/* TODO: Bouton pour créer une sous-section - À ajouter */}
+        {user && (user.role === 'admin' || user.role === 'super_admin' || user.role === 'moderator') && (
+          <div className="flex justify-end">
+            <ActionButton
+              icon={Plus}
+              label="Nouvelle sous-section"
+              onClick={() => navigate(`/forum/new-section?category=${section.category_id}&parent=${section.id}`)}
+              variant="primary"
+              size="large"
+            />
           </div>
-        </div>
+        )}
 
         {/* Liste des sous-sections (si existantes) */}
         {section.childSections && section.childSections.length > 0 && (
@@ -221,6 +278,32 @@ const TopicsPage = () => {
           </div>
         )}
       </div>
+
+      {/* Modale de création de topic */}
+      {showNewTopicModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-neutral-800 border border-neutral-700 rounded-lg p-6 max-w-3xl w-full my-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-titre text-ochre-400">Créer un nouveau topic</h2>
+              <button
+                onClick={handleCloseNewTopic}
+                disabled={isSubmitting}
+                className="p-2 text-city-400 hover:text-city-200 hover:bg-city-700 rounded transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <TopicForm
+              onSubmit={handleSubmitNewTopic}
+              onCancel={handleCloseNewTopic}
+              isLoading={isSubmitting}
+              error={submitError}
+              isEditing={false}
+            />
+          </div>
+        </div>
+      )}
     </ForumLayout>
   );
 };

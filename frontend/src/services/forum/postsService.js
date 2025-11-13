@@ -68,6 +68,16 @@ export const lockPost = async (id, isLocked) => {
   return api.patch(`/forum/posts/${id}/lock`, { is_locked: isLocked });
 };
 
+/**
+ * Déplacer un post vers un autre topic
+ * @param {number} id - ID du post
+ * @param {number} newTopicId - ID du topic de destination
+ * @returns {Promise<Object>}
+ */
+export const movePost = async (id, newTopicId) => {
+  return api.patch(`/forum/posts/${id}/move`, { new_topic_id: newTopicId });
+};
+
 export default {
   getAllPosts,
   getPostById,
@@ -76,4 +86,5 @@ export default {
   updatePost,
   deletePost,
   lockPost,
+  movePost,
 };

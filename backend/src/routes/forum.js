@@ -64,6 +64,7 @@ router.delete('/clans/:id', authenticateToken, requireAdmin, clansController.del
 // Routes Personnages
 // ==========================================
 router.get('/characters', charactersController.getAllCharacters);
+router.get('/characters/me', optionalAuth, charactersController.getMyCharacters);
 router.get('/characters/:id', charactersController.getCharacterById);
 router.post('/characters', charactersController.createCharacter);
 router.put('/characters/:id', charactersController.updateCharacter);
@@ -112,6 +113,7 @@ router.get('/topics/:id/posts', topicsController.getPostsByTopic);
 router.post('/topics', canCreateTopic(), topicsController.createTopic);
 router.put('/topics/:id', canEditTopic(), topicsController.updateTopic);
 router.delete('/topics/:id', canEditTopic(), topicsController.deleteTopic);
+router.patch('/topics/:id/move', canMoveTopic(), topicsController.moveTopic);
 
 // ==========================================
 // Routes Posts
@@ -119,8 +121,9 @@ router.delete('/topics/:id', canEditTopic(), topicsController.deleteTopic);
 // Posts inherit permissions from their topic
 router.get('/posts', postsController.getAllPosts);
 router.get('/posts/:id', postsController.getPostById);
-router.post('/posts', canCreatePost(), postsController.createPost);
-router.put('/posts/:id', canEditPost(), postsController.updatePost);
-router.delete('/posts/:id', canEditPost(), postsController.deletePost);
+router.post('/posts', optionalAuth, canCreatePost(), postsController.createPost);
+router.put('/posts/:id', optionalAuth, canEditPost(), postsController.updatePost);
+router.delete('/posts/:id', optionalAuth, canEditPost(), postsController.deletePost);
+router.patch('/posts/:id/move', optionalAuth, canMovePost(), postsController.movePost);
 
 module.exports = router;

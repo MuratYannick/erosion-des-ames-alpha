@@ -252,7 +252,8 @@ exports.createTopic = async (req, res) => {
       is_public,
       display_order,
       is_pinned,
-      is_locked
+      is_locked,
+      first_post_content // Contenu du premier post (obligatoire)
     } = req.body;
 
     // Validation
@@ -260,6 +261,14 @@ exports.createTopic = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'Le titre, le slug, la section et le nom d\'auteur sont requis'
+      });
+    }
+
+    // Le contenu du premier post est obligatoire
+    if (!first_post_content || first_post_content.trim() === '') {
+      return res.status(400).json({
+        success: false,
+        message: 'Le contenu du premier message est requis'
       });
     }
 
@@ -302,6 +311,7 @@ exports.createTopic = async (req, res) => {
       }
     }
 
+    // Créer le topic
     const topic = await Topic.create({
       title,
       slug,
@@ -316,6 +326,17 @@ exports.createTopic = async (req, res) => {
       is_pinned: is_pinned || false,
       is_locked: is_locked || false,
       views_count: 0
+    });
+
+    // Créer le premier post (obligatoire)
+    const Post = require('../models').Post;
+    await Post.create({
+      content: first_post_content,
+      topic_id: topic.id,
+      author_user_id,
+      author_character_id,
+      author_name,
+      is_locked: false
     });
 
     // Recharger avec les associations
@@ -343,7 +364,7 @@ exports.createTopic = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: 'Topic créé avec succès',
+      message: 'Topic et premier message créés avec succès',
       data: topic
     });
   } catch (error) {
@@ -494,6 +515,111 @@ exports.deleteTopic = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Erreur lors de la suppression du topic',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Déplacer un topic vers une autre section
+ */
+exports.moveTopic = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { new_section_id } = req.body;
+
+    if (!new_section_id) {
+      return res.status(400).json({
+        success: false,
+        message: 'L\'ID de la section de destination est requis'
+      });
+    }
+
+    // Récupérer le topic
+    const topic = await Topic.findOne({
+      where: { id, deleted_at: null }
+    });
+
+    if (!topic) {
+      return res.status(404).json({
+        success: false,
+        message: 'Topic non trouvé'
+      });
+    }
+
+    // Vérifier que la section actuelle est différente de la nouvelle
+    if (topic.section_id === new_section_id) {
+      return res.status(400).json({
+        success: false,
+        message: 'Le topic est déjà dans cette section'
+      });
+    }
+
+    // Vérifier que la section de destination existe
+    const newSection = await Section.findOne({
+      where: { id: new_section_id, deleted_at: null }
+    });
+
+    if (!newSection) {
+      return res.status(404).json({
+        success: false,
+        message: 'La section de destination n\'existe pas'
+      });
+    }
+
+    // Vérifier que la section de destination n'est pas verrouillée
+    if (newSection.is_locked) {
+      return res.status(403).json({
+        success: false,
+        message: 'La section de destination est verrouillée'
+      });
+    }
+
+    // Récupérer l'ancienne section pour mise à jour
+    const oldSection = await Section.findByPk(topic.section_id);
+
+    // Déplacer le topic
+    await topic.update({ section_id: new_section_id });
+
+    // Mettre à jour les dates de modification des sections
+    await newSection.update({ updated_at: new Date() });
+    if (oldSection) {
+      await oldSection.update({ updated_at: new Date() });
+    }
+
+    // Recharger avec les associations
+    await topic.reload({
+      include: [
+        {
+          model: Section,
+          as: 'section',
+          attributes: ['id', 'name', 'slug']
+        },
+        {
+          model: User,
+          as: 'authorUser',
+          attributes: ['id', 'user_name'],
+          required: false
+        },
+        {
+          model: Character,
+          as: 'authorCharacter',
+          attributes: ['id', 'name'],
+          required: false
+        }
+      ]
+    });
+
+    res.json({
+      success: true,
+      message: 'Topic déplacé avec succès',
+      data: topic
+    });
+  } catch (error) {
+    console.error('Erreur lors du déplacement du topic:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors du déplacement du topic',
       error: error.message
     });
   }

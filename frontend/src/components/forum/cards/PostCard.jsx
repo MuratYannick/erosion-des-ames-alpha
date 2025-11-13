@@ -1,24 +1,23 @@
-import { User, Edit2, Trash2, Lock } from 'lucide-react';
+import { User, Lock } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import EditPostButton from '../buttons/EditPostButton';
+import DeletePostButton from '../buttons/DeletePostButton';
+import MovePostButton from '../buttons/MovePostButton';
 
 /**
  * PostCard - Carte d'affichage d'un post
  * Design post-apocalyptique responsive
  *
- * @param {Object} post - Données du post
- * @param {number} post.id - ID
- * @param {string} post.content - Contenu markdown
- * @param {string} post.author_name - Nom de l'auteur
- * @param {string} post.created_at - Date de création
- * @param {string} post.updated_at - Date de modification
- * @param {boolean} post.is_locked - Post verrouillé
- * @param {boolean} post.canEdit - L'utilisateur peut éditer
- * @param {boolean} post.canDelete - L'utilisateur peut supprimer
- * @param {Function} onEdit - Callback édition
- * @param {Function} onDelete - Callback suppression
+ * @param {Object} props
+ * @param {Object} props.post - Données du post
+ * @param {boolean} props.isFirstPost - Indique si c'est le premier post (post d'origine du topic)
+ * @param {Function} props.onEdit - Callback appelé lors du clic sur éditer (postId)
+ * @param {Function} props.onDelete - Callback appelé lors de la suppression (postId)
+ * @param {Function} props.onMove - Callback appelé lors du clic sur déplacer (postId)
+ * @param {boolean} props.isDeleting - Indique si une suppression est en cours
  */
-const PostCard = ({ post, onEdit, onDelete }) => {
+const PostCard = ({ post, isFirstPost = false, onEdit, onDelete, onMove, isDeleting = false }) => {
   const {
     id,
     content,
@@ -26,8 +25,8 @@ const PostCard = ({ post, onEdit, onDelete }) => {
     created_at,
     updated_at,
     is_locked,
-    canEdit = false,
-    canDelete = false,
+    author_user_id,
+    author_character_id,
   } = post;
 
   const timeAgo = created_at
@@ -62,26 +61,11 @@ const PostCard = ({ post, onEdit, onDelete }) => {
         </div>
 
         {/* Actions */}
-        {(canEdit || canDelete) && !is_locked && (
+        {!is_locked && (
           <div className="flex items-center gap-2">
-            {canEdit && (
-              <button
-                onClick={() => onEdit(id)}
-                className="p-2 text-neutral-400 hover:text-ochre-400 hover:bg-neutral-700 rounded transition-colors"
-                aria-label="Éditer"
-              >
-                <Edit2 size={16} />
-              </button>
-            )}
-            {canDelete && (
-              <button
-                onClick={() => onDelete(id)}
-                className="p-2 text-neutral-400 hover:text-blood-400 hover:bg-neutral-700 rounded transition-colors"
-                aria-label="Supprimer"
-              >
-                <Trash2 size={16} />
-              </button>
-            )}
+            <EditPostButton post={post} onClick={() => onEdit(id)} />
+            <DeletePostButton post={post} onDelete={onDelete} isDeleting={isDeleting} />
+            <MovePostButton post={post} onClick={() => onMove(id)} />
           </div>
         )}
       </div>

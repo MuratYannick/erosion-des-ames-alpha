@@ -141,11 +141,31 @@ module.exports = {
       updated_at: now
     }]);
 
-    // CREATE_TOPIC - Admin + Moderator avec conditions
+    // CREATE_TOPIC - Admin sans conditions (priorité haute)
     await queryInterface.bulkInsert('forum_permissions_create_topic', [{
       resource_type: 'section',
       resource_id: 0,
-      allowed_roles: JSON.stringify(['admin', 'moderator']),
+      allowed_roles: JSON.stringify(['admin']),
+      require_terms_accepted: false,
+      require_forum_rules_accepted: false,
+      require_email_verified: false,
+      require_character: false,
+      require_character_alive: true,
+      require_character_is_leader: false,
+      required_faction_ids: null,
+      required_clan_ids: null,
+      author_override: 'none',
+      priority: 10, // Priorité plus haute que la règle moderator
+      is_deny: false,
+      created_at: now,
+      updated_at: now
+    }]);
+
+    // CREATE_TOPIC - Moderator avec conditions
+    await queryInterface.bulkInsert('forum_permissions_create_topic', [{
+      resource_type: 'section',
+      resource_id: 0,
+      allowed_roles: JSON.stringify(['moderator']),
       require_terms_accepted: true,
       require_forum_rules_accepted: true,
       require_email_verified: true,

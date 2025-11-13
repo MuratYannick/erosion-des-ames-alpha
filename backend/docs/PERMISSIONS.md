@@ -680,11 +680,32 @@ La permission `move_post` sur un topic signifie **simultanément** :
 - Déplacer un post d'un topic vers un autre pour réorganiser les discussions
 - Déplacer une section entière d'une catégorie à une autre lors d'une réorganisation
 
+### Permissions de création de posts
+
+Les posts ont un système de permissions particulier :
+
+**Créer un post** : Pour pouvoir créer un post (répondre) dans un topic, l'utilisateur doit avoir la permission `create_topic` sur la **section parente du topic**.
+
+**Logique** : Si tu peux créer des topics dans une section, tu peux aussi répondre aux topics qui sont enfants directs de cette section.
+
+**Exemple** :
+```javascript
+// Pour poster dans un topic qui appartient à la section ID=15
+// Le système vérifie : checkPermission(user, character, 'section', 15, 'create_topic')
+
+// Si l'utilisateur a create_topic sur la section 15, alors :
+// - Il peut créer de nouveaux topics dans la section 15
+// - Il peut répondre (créer des posts) dans tous les topics de la section 15
+```
+
+**Implémentation** :
+Le middleware `canCreatePost()` utilise l'option `useTopicParentSection` pour remonter du topic à sa section parente et vérifier la permission `create_topic` sur cette section.
+
 ### Limitations actuelles
 
 1. **Authentification non implémentée** : Les middlewares de permissions sont actuellement commentés dans les routes en attendant l'implémentation du middleware d'authentification.
 
-2. **Posts** : Les posts héritent des permissions de leur topic. Il n'y a pas de table de permissions spécifique pour les posts.
+2. **Posts - Tables de permissions** : Il n'y a pas de table de permissions spécifique `forum_permissions_create_post`. Les posts héritent de la permission `create_topic` de la section parente de leur topic.
 
 3. **Modification des catégories** : Par défaut, les catégories ne peuvent pas être modifiées (ressource statique gérée via admin).
 

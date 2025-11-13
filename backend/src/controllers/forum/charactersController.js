@@ -55,6 +55,58 @@ exports.getAllCharacters = async (req, res) => {
 };
 
 /**
+ * Récupérer les personnages de l'utilisateur connecté
+ */
+exports.getMyCharacters = async (req, res) => {
+  try {
+    // Vérifier que l'utilisateur est connecté
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentification requise'
+      });
+    }
+
+    const characters = await Character.findAll({
+      where: {
+        user_id: req.user.id,
+        deleted_at: null
+      },
+      include: [
+        {
+          model: Ethnie,
+          as: 'ethnie',
+          attributes: ['id', 'name']
+        },
+        {
+          model: Faction,
+          as: 'faction',
+          attributes: ['id', 'name']
+        },
+        {
+          model: Clan,
+          as: 'clan',
+          attributes: ['id', 'name']
+        }
+      ],
+      order: [['created_at', 'DESC']]
+    });
+
+    res.json({
+      success: true,
+      data: characters
+    });
+  } catch (error) {
+    console.error('Erreur lors de la récupération des personnages:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la récupération des personnages',
+      error: error.message
+    });
+  }
+};
+
+/**
  * Récupérer un personnage par ID
  */
 exports.getCharacterById = async (req, res) => {
