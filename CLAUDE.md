@@ -4,31 +4,56 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Erosion des Ames** is a multi-module web application with forum, game, and portal features. The project is in early scaffolding phase - directory structure is established but implementation has not begun.
+**Erosion des Ames** is a multi-module web application with forum, game, and portal features.
+
+## Tech Stack
+
+### Frontend
+- **Vite** + **React** avec React Router
+- **TailwindCSS v3** (pas v4 - incompatibilité avec React récent)
+
+### Backend
+- **Node.js** avec Express
+- **Sequelize** ORM
+- **MySQL** base de données
 
 ## Architecture
 
-The project follows a modular architecture with clear backend/frontend separation:
+Architecture modulaire avec séparation backend/frontend :
 
-- **backend/** - Backend services (core, forum, game, portal modules)
-- **frontend/** - Frontend applications (core, forum, game, portal modules)
-- **docs/** - Technical and user documentation
+- **backend/** - Services backend (core, forum, game, portal)
+- **frontend/** - Applications frontend (core, forum, game, portal)
+- **docs/** - Documentation technique et utilisateur
 
-Each feature (forum, game, portal) has its own backend and frontend module, with shared functionality in the `core` modules.
+Chaque feature (forum, game, portal) a son propre module backend et frontend, avec le code partagé dans les modules `core`.
 
-## Current Status
+## Documentation & Mémoire
 
-This is a greenfield project. Before implementing features:
-1. Determine and document the tech stack (backend language, frontend framework)
-2. Initialize package managers and build tools
-3. Fill in the architecture documentation in `docs/technical/`
-4. Set up build, test, and lint commands
+### Architecture (à consulter pour les décisions techniques)
+- Backend : `@docs/technical/backend/BACK_ARCHITECTURE.md`
+- Frontend : `@docs/technical/frontend/FRONT_ARCHITECTURE.md`
+- Vue d'ensemble docs : `@docs/technical/DOCS_ARCHITECTURE.md`
 
-## Documentation
+### Documentation technique
+Le répertoire `docs/` contient la documentation modulaire complète. Consulter les fichiers pertinents selon le contexte de travail.
 
-Architecture documentation placeholders exist in:
-- `docs/technical/backend/BACK_ARCHITECTURE.md`
-- `docs/technical/frontend/FRONT_ARCHITECTURE.md`
-- `docs/technical/DOCS_ARCHITECTURE.md`
+### Suivi de progression
+- `PROGRESS.md` - État d'avancement du projet
 
-Progress tracking: `PROGRESS.md`
+## Code Style
+
+- Conventions standard JavaScript/TypeScript
+- ESLint + Prettier pour le formatage
+- Composants React fonctionnels avec hooks
+- Nommage : camelCase (variables/fonctions), PascalCase (composants/classes)
+
+## Agents Spécialisés
+
+Des agents spécialisés sont disponibles dans `.claude/agents/` :
+- `backend.md` - Développement backend Node.js/Sequelize
+- `frontend.md` - Développement frontend React/Vite/Tailwind
+- `game-design.md` - Conception et logique de jeu
+- `documentation.md` - Rédaction de documentation
+- `tests.md` - Tests et assurance qualité
+- `security.md` - Audit et sécurité
+- `database.md` - Modélisation et requêtes SQL
