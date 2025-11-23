@@ -1,0 +1,29 @@
+{
+  "name": "erosion-des-ames",
+  "version": "1.0.0",
+  "description": "Application web multi-modules : forum, game, portal",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c blue,green \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "start:backend": "npm --prefix backend run start",
+    "build": "npm --prefix frontend run build",
+    "lint": "npm --prefix backend run lint && npm --prefix frontend run lint",
+    "lint:fix": "npm --prefix backend run lint:fix && npm --prefix frontend run lint:fix",
+    "format": "npm --prefix backend run format && npm --prefix frontend run format",
+    "test": "npm --prefix backend run test",
+    "db:test": "npm --prefix backend run db:test"
+  },
+  "keywords": [
+    "game",
+    "forum",
+    "portal",
+    "fullstack"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

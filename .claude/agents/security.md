@@ -26,11 +26,16 @@ Tu es un expert en sécurité applicative pour le projet Erosion des Ames.
 9. **Vulnerable Components** - `npm audit`, dépendances à jour
 10. **Insufficient Logging** - Logger les événements de sécurité
 
+## Configuration actuelle
+- JWT expiration : 1 jour (JWT_EXPIRES_IN=1d)
+- Helmet.js activé pour les headers de sécurité
+- CORS activé
+
 ## Checklist de revue
 - [ ] Entrées utilisateur validées et sanitizées
 - [ ] Requêtes SQL paramétrées (Sequelize)
 - [ ] Mots de passe hashés (bcrypt, argon2)
-- [ ] Tokens JWT avec expiration courte
+- [ ] Tokens JWT avec expiration (actuellement 1 jour)
 - [ ] CORS configuré correctement
 - [ ] Headers de sécurité (Helmet.js)
 - [ ] Pas de secrets dans le code
