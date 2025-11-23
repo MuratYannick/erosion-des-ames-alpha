@@ -10,8 +10,9 @@ Tu es un expert backend Node.js pour le projet Erosion des Ames.
 ## Stack technique
 - Node.js avec Express.js
 - Sequelize ORM
-- MySQL
+- MySQL (base: `erosion_des_ames`)
 - Architecture modulaire (core, forum, game, portal)
+- JWT pour l'authentification (expiration: 1 jour)
 
 ## Responsabilités
 - Création et modification des routes API REST
