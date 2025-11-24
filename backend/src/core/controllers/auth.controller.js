@@ -85,7 +85,7 @@ class AuthController {
 
   /**
    * GET /api/v1/auth/me
-   * Récupérer le profil de l'utilisateur connecté
+   * Recuperer le profil de l'utilisateur connecte
    */
   async getProfile(req, res) {
     try {
@@ -96,6 +96,87 @@ class AuthController {
       });
     } catch (error) {
       res.status(404).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+  /**
+   * POST /api/v1/auth/send-verification-email
+   * Renvoyer l'email de verification
+   */
+  async sendVerificationEmail(req, res) {
+    try {
+      const result = await authService.sendVerificationEmail(req.user.userId);
+      res.status(200).json({
+        success: true,
+        message: result.message,
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+  /**
+   * GET /api/v1/auth/verify-email/:token
+   * Verifier l'email avec le token
+   */
+  async verifyEmail(req, res) {
+    try {
+      const { token } = req.params;
+      const user = await authService.verifyEmail(token);
+      res.status(200).json({
+        success: true,
+        message: 'Email verifie avec succes',
+        data: { user },
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+  /**
+   * POST /api/v1/auth/forgot-password
+   * Demander la reinitialisation du mot de passe
+   */
+  async forgotPassword(req, res) {
+    try {
+      const { email } = req.body;
+      const result = await authService.forgotPassword(email);
+      res.status(200).json({
+        success: true,
+        message: result.message,
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+  /**
+   * POST /api/v1/auth/reset-password/:token
+   * Reinitialiser le mot de passe avec le token
+   */
+  async resetPassword(req, res) {
+    try {
+      const { token } = req.params;
+      const { password } = req.body;
+      const result = await authService.resetPassword(token, password);
+      res.status(200).json({
+        success: true,
+        message: result.message,
+      });
+    } catch (error) {
+      res.status(400).json({
         success: false,
         message: error.message,
       });

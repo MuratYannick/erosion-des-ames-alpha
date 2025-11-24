@@ -235,6 +235,182 @@ Authorization: Bearer <accessToken>
 
 ---
 
+## Verification d'Email
+
+### POST /send-verification-email
+
+Renvoyer un email de verification a l'utilisateur connecte.
+
+**Acces** : Prive (authentifie)
+
+**Headers**
+
+```
+Authorization: Bearer <accessToken>
+```
+
+**Body** : Aucun
+
+**Reponse succes (200 OK)**
+
+```json
+{
+  "success": true,
+  "message": "Email de verification envoye"
+}
+```
+
+**Erreurs possibles**
+
+| Code | Message | Description |
+|------|---------|-------------|
+| 400 | Votre email est deja verifie | L'email a deja ete verifie precedemment |
+| 401 | Token d'authentification requis | Aucun token fourni dans les headers |
+| 404 | Utilisateur non trouve | L'utilisateur associe au token n'existe plus |
+
+---
+
+### GET /verify-email/:token
+
+Verifier l'email de l'utilisateur via le token envoye par email.
+
+**Acces** : Public
+
+**Parametres URL**
+
+| Parametre | Type | Description |
+|-----------|------|-------------|
+| token | string | Token de verification recu par email (64 caracteres hexadecimaux) |
+
+**Exemple de requete**
+
+```
+GET /api/v1/auth/verify-email/a1b2c3d4e5f6...
+```
+
+**Reponse succes (200 OK)**
+
+```json
+{
+  "success": true,
+  "message": "Email verifie avec succes",
+  "data": {
+    "user": {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "username": "JeanDupont",
+      "email": "jean@example.com",
+      "role": "PLAYER",
+      "emailVerified": true,
+      "cguAccepted": true,
+      "createdAt": "2025-01-23T10:30:00.000Z"
+    }
+  }
+}
+```
+
+**Erreurs possibles**
+
+| Code | Message | Description |
+|------|---------|-------------|
+| 400 | Token de verification requis | Aucun token fourni dans l'URL |
+| 400 | Token de verification invalide | Le token n'existe pas ou a deja ete utilise |
+| 400 | Le token de verification a expire | Le token a expire (validite 24h) |
+
+---
+
+## Reinitialisation de Mot de Passe
+
+### POST /forgot-password
+
+Demander la reinitialisation du mot de passe. Un email sera envoye si le compte existe.
+
+**Acces** : Public
+
+**Body (JSON)**
+
+| Champ | Type | Requis | Description |
+|-------|------|--------|-------------|
+| email | string | Oui | Email du compte |
+
+**Exemple de requete**
+
+```json
+{
+  "email": "jean@example.com"
+}
+```
+
+**Reponse succes (200 OK)**
+
+```json
+{
+  "success": true,
+  "message": "Si un compte existe avec cet email, vous recevrez un lien de reinitialisation."
+}
+```
+
+> **Note securite** : Le message est identique que l'email existe ou non dans la base, afin de ne pas reveler l'existence des comptes.
+
+**Erreurs possibles**
+
+| Code | Message | Description |
+|------|---------|-------------|
+| 400 | Email requis | Le champ email n'a pas ete fourni |
+| 400 | Email invalide | Le format de l'email est incorrect |
+
+---
+
+### POST /reset-password/:token
+
+Reinitialiser le mot de passe avec le token recu par email.
+
+**Acces** : Public
+
+**Parametres URL**
+
+| Parametre | Type | Description |
+|-----------|------|-------------|
+| token | string | Token de reinitialisation recu par email (64 caracteres hexadecimaux) |
+
+**Body (JSON)**
+
+| Champ | Type | Requis | Description |
+|-------|------|--------|-------------|
+| password | string | Oui | Nouveau mot de passe (memes regles que l'inscription) |
+
+**Exemple de requete**
+
+```
+POST /api/v1/auth/reset-password/a1b2c3d4e5f6...
+```
+
+```json
+{
+  "password": "NewPassword1!"
+}
+```
+
+**Reponse succes (200 OK)**
+
+```json
+{
+  "success": true,
+  "message": "Mot de passe reinitialise avec succes"
+}
+```
+
+**Erreurs possibles**
+
+| Code | Message | Description |
+|------|---------|-------------|
+| 400 | Token de reinitialisation requis | Aucun token fourni dans l'URL |
+| 400 | Nouveau mot de passe requis | Le champ password n'a pas ete fourni |
+| 400 | Token de reinitialisation invalide | Le token n'existe pas ou a deja ete utilise |
+| 400 | Le token de reinitialisation a expire | Le token a expire (validite 1h) |
+| 400 | Validation errors | Le mot de passe ne respecte pas les regles |
+
+---
+
 ## Authentification
 
 ### Format du Header

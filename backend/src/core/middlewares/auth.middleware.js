@@ -40,6 +40,48 @@ const authenticate = async (req, res, next) => {
 };
 
 /**
+ * Middleware de vérification d'email
+ * Vérifie que l'utilisateur a confirmé son adresse email
+ * Doit être utilisé APRES le middleware authenticate
+ */
+const requireEmailVerified = async (req, res, next) => {
+  try {
+    // Vérifier que l'utilisateur est authentifié
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentification requise',
+      });
+    }
+
+    // Récupérer l'utilisateur depuis la base de données pour avoir le statut emailVerified à jour
+    const user = await User.findByPk(req.user.userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'Utilisateur non trouvé',
+      });
+    }
+
+    // Vérifier que l'email est vérifié
+    if (!user.emailVerified) {
+      return res.status(403).json({
+        success: false,
+        message: "Veuillez vérifier votre email avant d'accéder à cette ressource",
+      });
+    }
+
+    next();
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Erreur lors de la vérification de l'email",
+    });
+  }
+};
+
+/**
  * Middleware de vérification des rôles
  * @param  {...string} roles - Rôles autorisés
  */
@@ -85,5 +127,6 @@ const authorize = (...roles) => {
 
 module.exports = {
   authenticate,
+  requireEmailVerified,
   authorize,
 };

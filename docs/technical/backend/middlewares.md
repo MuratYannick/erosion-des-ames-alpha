@@ -7,9 +7,10 @@ Documentation detaillee des middlewares du backend Erosion des Ames.
 ## Vue d'ensemble
 
 Les middlewares sont des fonctions qui s'executent entre la requete et la reponse. Ils permettent de :
-- Verifier l'authentification
-- Controler les autorisations
-- Valider les donnees d'entree
+- Verifier l'authentification (`authenticate`)
+- Verifier la confirmation d'email (`requireEmailVerified`)
+- Controler les autorisations par role (`authorize`)
+- Valider les donnees d'entree (`validate`)
 - Logger les requetes
 - Gerer les erreurs
 
@@ -83,6 +84,81 @@ router.get('/protected/data', controller.getData);
 | 401 | Token manquant | Header Authorization absent ou mal formate |
 | 401 | Token invalide ou expire | Token JWT invalide ou expire |
 | 401 | Utilisateur non trouve | L'utilisateur du token n'existe plus |
+
+---
+
+### requireEmailVerified
+
+Verifie que l'utilisateur a confirme son adresse email. Doit etre utilise APRES le middleware `authenticate`.
+
+```javascript
+const requireEmailVerified = async (req, res, next) => {
+  try {
+    // Verifier que l'utilisateur est authentifie
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentification requise'
+      });
+    }
+
+    // Recuperer l'utilisateur depuis la base de donnees
+    const user = await User.findByPk(req.user.userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'Utilisateur non trouve'
+      });
+    }
+
+    // Verifier que l'email est verifie
+    if (!user.emailVerified) {
+      return res.status(403).json({
+        success: false,
+        message: "Veuillez verifier votre email avant d'acceder a cette ressource"
+      });
+    }
+
+    next();
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Erreur lors de la verification de l'email"
+    });
+  }
+};
+```
+
+#### Usage
+
+```javascript
+// Route necessitant un email verifie
+router.post('/create-post', authenticate, requireEmailVerified, controller.createPost);
+
+// Combinaison avec authorize
+router.post('/admin-action',
+  authenticate,
+  requireEmailVerified,
+  authorize('ADMIN'),
+  controller.adminAction
+);
+```
+
+#### Comportement
+
+1. Verifie que `req.user` existe (authenticate appele avant)
+2. Recupere l'utilisateur en base pour avoir le statut a jour
+3. Verifie que `emailVerified` est `true`
+4. Passe au middleware suivant ou retourne une erreur
+
+#### Erreurs possibles
+
+| Code | Message | Cause |
+|------|---------|-------|
+| 401 | Authentification requise | `req.user` absent (authenticate non appele) |
+| 403 | Veuillez verifier votre email | Email non verifie |
+| 404 | Utilisateur non trouve | L'utilisateur n'existe plus |
 
 ---
 
@@ -244,6 +320,31 @@ const refreshTokenValidation = [
 ];
 ```
 
+### forgotPasswordValidation
+
+Valide la demande de reinitialisation de mot de passe.
+
+```javascript
+const forgotPasswordValidation = [
+  body('email')
+    .trim()
+    .notEmpty().withMessage('Email requis')
+    .isEmail().withMessage('Email invalide')
+];
+```
+
+### resetPasswordValidation
+
+Valide le nouveau mot de passe lors de la reinitialisation.
+
+```javascript
+const resetPasswordValidation = [
+  body('password')
+    .notEmpty().withMessage('Mot de passe requis')
+    .custom(validatePasswordCustom)
+];
+```
+
 ---
 
 ## Validateurs personnalises
@@ -341,13 +442,16 @@ L'ordre d'execution des middlewares est important :
 
 ```javascript
 router.post('/endpoint',
-  validation,      // 1. Valide les donnees d'entree
-  validate,        // 2. Retourne les erreurs de validation
-  authenticate,    // 3. Verifie l'authentification
-  authorize('ADMIN'), // 4. Verifie les autorisations
-  controller.method   // 5. Execute le controller
+  validation,            // 1. Valide les donnees d'entree
+  validate,              // 2. Retourne les erreurs de validation
+  authenticate,          // 3. Verifie l'authentification
+  requireEmailVerified,  // 4. Verifie que l'email est confirme
+  authorize('ADMIN'),    // 5. Verifie les autorisations (role)
+  controller.method      // 6. Execute le controller
 );
 ```
+
+> **Note** : `requireEmailVerified` est optionnel selon les routes. Certaines fonctionnalites peuvent etre accessibles meme sans email verifie.
 
 ---
 

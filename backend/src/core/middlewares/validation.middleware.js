@@ -81,10 +81,38 @@ const loginValidation = [
 ];
 
 /**
- * Règles de validation pour le rafraîchissement du token
+ * Regles de validation pour le rafraichissement du token
  */
 const refreshTokenValidation = [
-  body('refreshToken').notEmpty().withMessage('Le token de rafraîchissement est requis'),
+  body('refreshToken').notEmpty().withMessage('Le token de rafraichissement est requis'),
+  handleValidationErrors,
+];
+
+/**
+ * Regles de validation pour la demande de reinitialisation de mot de passe
+ */
+const forgotPasswordValidation = [
+  body('email')
+    .trim()
+    .toLowerCase()
+    .notEmpty()
+    .withMessage("L'email est requis")
+    .isEmail()
+    .withMessage("Le format de l'email est invalide"),
+  handleValidationErrors,
+];
+
+/**
+ * Regles de validation pour la reinitialisation du mot de passe
+ */
+const resetPasswordValidation = [
+  body('password').custom((value) => {
+    const result = validatePassword(value);
+    if (!result.isValid) {
+      throw new Error(result.message);
+    }
+    return true;
+  }),
   handleValidationErrors,
 ];
 
@@ -93,4 +121,6 @@ module.exports = {
   registerValidation,
   loginValidation,
   refreshTokenValidation,
+  forgotPasswordValidation,
+  resetPasswordValidation,
 };

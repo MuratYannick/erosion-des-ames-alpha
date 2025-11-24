@@ -50,10 +50,12 @@ describe('Auth API', () => {
       await request(app).post('/api/v1/auth/register').send(validUser);
 
       // Second registration with same email
-      const res = await request(app).post('/api/v1/auth/register').send({
-        ...validUser,
-        username: 'DifferentUser',
-      });
+      const res = await request(app)
+        .post('/api/v1/auth/register')
+        .send({
+          ...validUser,
+          username: 'DifferentUser',
+        });
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBe(false);
@@ -65,10 +67,12 @@ describe('Auth API', () => {
       await request(app).post('/api/v1/auth/register').send(validUser);
 
       // Second registration with same username
-      const res = await request(app).post('/api/v1/auth/register').send({
-        ...validUser,
-        email: 'different@example.com',
-      });
+      const res = await request(app)
+        .post('/api/v1/auth/register')
+        .send({
+          ...validUser,
+          email: 'different@example.com',
+        });
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBe(false);

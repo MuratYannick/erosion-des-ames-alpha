@@ -45,6 +45,18 @@ const authService = {
   isAuthenticated() {
     return !!api.getToken();
   },
+
+  async verifyEmail(token) {
+    return api.get(`/auth/verify-email/${token}`);
+  },
+
+  async forgotPassword(email) {
+    return api.post('/auth/forgot-password', { email });
+  },
+
+  async resetPassword(token, password) {
+    return api.post(`/auth/reset-password/${token}`, { password });
+  },
 };
 
 export default authService;

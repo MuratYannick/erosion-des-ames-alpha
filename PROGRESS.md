@@ -6,6 +6,7 @@
 |-------|---------|-------------|--------|
 | 001 | setup/environment-configuration | 100% | Termine |
 | 002 | feature/authentication | 100% | Termine |
+| 003 | feature/email-verification | 100% | Termine |
 
 ---
 
@@ -99,11 +100,61 @@
 
 ---
 
+### 003: feature/email-verification
+
+**Objectif** : Mise en place de la verification d'email et du systeme de recuperation de mot de passe
+
+**Sous-taches effectuees** :
+
+#### Backend - Configuration Email (4/4)
+- Installation nodemailer
+- Configuration SMTP (.env)
+- Service d'envoi d'email (email.service.js)
+- Templates email (verification, reset password)
+
+#### Backend - Modele et Base de donnees (2/2)
+- Nouveaux champs User (verificationToken, verificationTokenExpires, resetPasswordToken, resetPasswordExpires)
+- Migration pour les nouveaux champs
+
+#### Backend - Routes Verification Email (3/3)
+- POST /api/v1/auth/send-verification-email
+- GET /api/v1/auth/verify-email/:token
+- Modification POST /register pour envoi automatique
+
+#### Backend - Routes Reset Password (2/2)
+- POST /api/v1/auth/forgot-password
+- POST /api/v1/auth/reset-password/:token
+
+#### Backend - Middleware (1/1)
+- Middleware requireEmailVerified
+
+#### Backend - Tests (3/3)
+- Tests routes verification email (23 tests)
+- Tests routes reset password
+- Tests d'integration (flow complet)
+- Total : 122 tests passent
+
+#### Frontend - Pages (4/4)
+- Page VerifyEmail (succes/erreur)
+- Page ForgotPassword
+- Page ResetPassword
+- Message sur Login si email verifie
+
+#### Frontend - Services (1/1)
+- Fonctions API verification/reset
+
+#### Documentation (2/2)
+- Documentation routes API
+- Mise a jour BACK_ARCHITECTURE.md
+
+**Details** : [project_progress/EMAIL_VERIFICATION.md](project_progress/EMAIL_VERIFICATION.md)
+
+---
+
 ## Prochaines etapes
 
 | Etape | Description | Statut |
 |-------|-------------|--------|
-| 003 | Verification email / Mot de passe oublie | En attente |
 | 004 | Module Forum | En attente |
 | 005 | Module Portal | En attente |
 | 006 | Module Game | En attente |
