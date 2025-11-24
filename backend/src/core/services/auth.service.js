@@ -214,6 +214,34 @@ class AuthService {
   }
 
   /**
+   * Change le mot de passe d'un utilisateur connecte
+   * @param {string} userId - ID de l'utilisateur
+   * @param {string} currentPassword - Mot de passe actuel
+   * @param {string} newPassword - Nouveau mot de passe
+   * @returns {Object} Message de confirmation
+   */
+  async changePassword(userId, currentPassword, newPassword) {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      throw new Error('Utilisateur non trouve');
+    }
+
+    // Verifier que l'ancien mot de passe est correct
+    const isValidPassword = await user.verifyPassword(currentPassword);
+    if (!isValidPassword) {
+      const error = new Error('Mot de passe actuel incorrect');
+      error.code = 'INVALID_PASSWORD';
+      throw error;
+    }
+
+    // Mettre a jour le mot de passe (sera hashe automatiquement par le hook beforeSave)
+    await user.update({ password: newPassword });
+
+    return { message: 'Mot de passe modifie avec succes' };
+  }
+
+  /**
    * Demande de reinitialisation de mot de passe
    * @param {string} email - Email de l'utilisateur
    * @returns {Object} Message de confirmation

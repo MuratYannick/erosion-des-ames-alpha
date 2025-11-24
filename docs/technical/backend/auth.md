@@ -129,6 +129,7 @@ Fichier : `backend/src/core/services/auth.service.js`
 | `sendVerificationEmail(userId)` | userId (UUID) | `{ message }` | Renvoie un email de verification |
 | `forgotPassword(email)` | email (string) | `{ message }` | Demande de reset password |
 | `resetPassword(token, password)` | token, newPassword | `{ message }` | Reinitialisation du mot de passe |
+| `changePassword(userId, currentPassword, newPassword)` | userId, currentPassword, newPassword | `{ message }` | Changement du mot de passe utilisateur connecte |
 
 ### Flux d'inscription
 
@@ -164,6 +165,13 @@ Fichier : `backend/src/core/services/auth.service.js`
 4. L'utilisateur clique sur le lien et soumet le nouveau mot de passe
 5. Verification du token et mise a jour du mot de passe
 
+### Flux de changement de mot de passe
+
+1. L'utilisateur connecte soumet son mot de passe actuel et le nouveau
+2. Verification de l'identite via le mot de passe actuel (bcrypt.compare)
+3. Validation du nouveau mot de passe (memes regles que l'inscription)
+4. Mise a jour du mot de passe (hash automatique via hook beforeUpdate)
+
 ---
 
 ## Controller d'authentification
@@ -183,6 +191,7 @@ Fichier : `backend/src/core/controllers/auth.controller.js`
 | GET | /verify-email/:token | `verifyEmail()` | Verifier email |
 | POST | /forgot-password | `forgotPassword()` | Demander reset password |
 | POST | /reset-password/:token | `resetPassword()` | Reinitialiser mot de passe |
+| PUT | /change-password | `changePassword()` | Changer mot de passe (authentifie) |
 
 ---
 
@@ -207,6 +216,7 @@ router.post('/reset-password/:token', resetPasswordValidation, authController.re
 router.post('/logout', authenticate, authController.logout);
 router.get('/me', authenticate, authController.getProfile);
 router.post('/send-verification-email', authenticate, authController.sendVerificationEmail);
+router.put('/change-password', authenticate, changePasswordValidation, authController.changePassword);
 ```
 
 ---

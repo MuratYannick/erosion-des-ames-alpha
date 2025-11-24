@@ -8,6 +8,7 @@ import Register from './core/pages/Register';
 import VerifyEmail from './core/pages/VerifyEmail';
 import ForgotPassword from './core/pages/ForgotPassword';
 import ResetPassword from './core/pages/ResetPassword';
+import Profile from './core/pages/Profile';
 
 // Components
 import ProtectedRoute from './core/components/ProtectedRoute';
@@ -30,6 +31,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }
           />

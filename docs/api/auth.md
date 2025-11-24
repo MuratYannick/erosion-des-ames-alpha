@@ -411,6 +411,57 @@ POST /api/v1/auth/reset-password/a1b2c3d4e5f6...
 
 ---
 
+## Changement de Mot de Passe
+
+### PUT /change-password
+
+Changer le mot de passe de l'utilisateur connecte.
+
+**Acces** : Prive (authentifie)
+
+**Headers**
+
+```
+Authorization: Bearer <accessToken>
+```
+
+**Body (JSON)**
+
+| Champ | Type | Requis | Description |
+|-------|------|--------|-------------|
+| currentPassword | string | Oui | Mot de passe actuel |
+| newPassword | string | Oui | Nouveau mot de passe (memes regles que l'inscription) |
+
+**Exemple de requete**
+
+```json
+{
+  "currentPassword": "AncienMotDePasse1!",
+  "newPassword": "NouveauMotDePasse1!"
+}
+```
+
+**Reponse succes (200 OK)**
+
+```json
+{
+  "success": true,
+  "message": "Mot de passe change avec succes"
+}
+```
+
+**Erreurs possibles**
+
+| Code | Message | Description |
+|------|---------|-------------|
+| 400 | Validation errors | Donnees invalides (champs manquants ou format incorrect) |
+| 401 | Token manquant | Aucun token fourni dans les headers |
+| 401 | Token invalide | Le token est invalide ou mal formate |
+| 401 | Token expire | Le token a expire |
+| 403 | Ancien mot de passe incorrect | Le mot de passe actuel ne correspond pas |
+
+---
+
 ## Authentification
 
 ### Format du Header

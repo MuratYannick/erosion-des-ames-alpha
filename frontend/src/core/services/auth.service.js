@@ -57,6 +57,10 @@ const authService = {
   async resetPassword(token, password) {
     return api.post(`/auth/reset-password/${token}`, { password });
   },
+
+  async changePassword(currentPassword, newPassword) {
+    return api.put('/auth/change-password', { currentPassword, newPassword });
+  },
 };
 
 export default authService;

@@ -116,6 +116,21 @@ const resetPasswordValidation = [
   handleValidationErrors,
 ];
 
+/**
+ * Regles de validation pour le changement de mot de passe
+ */
+const changePasswordValidation = [
+  body('currentPassword').notEmpty().withMessage('Le mot de passe actuel est requis'),
+  body('newPassword').custom((value) => {
+    const result = validatePassword(value);
+    if (!result.isValid) {
+      throw new Error(result.message);
+    }
+    return true;
+  }),
+  handleValidationErrors,
+];
+
 module.exports = {
   handleValidationErrors,
   registerValidation,
@@ -123,4 +138,5 @@ module.exports = {
   refreshTokenValidation,
   forgotPasswordValidation,
   resetPasswordValidation,
+  changePasswordValidation,
 };

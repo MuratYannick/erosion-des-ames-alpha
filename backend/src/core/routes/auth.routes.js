@@ -7,6 +7,7 @@ const {
   refreshTokenValidation,
   forgotPasswordValidation,
   resetPasswordValidation,
+  changePasswordValidation,
 } = require('../middlewares/validation.middleware');
 
 const router = express.Router();
@@ -59,6 +60,18 @@ router.post('/send-verification-email', authenticate, authController.sendVerific
  * @access  Public
  */
 router.get('/verify-email/:token', authController.verifyEmail);
+
+/**
+ * @route   PUT /api/v1/auth/change-password
+ * @desc    Changer le mot de passe de l'utilisateur connecte
+ * @access  Private
+ */
+router.put(
+  '/change-password',
+  authenticate,
+  changePasswordValidation,
+  authController.changePassword
+);
 
 /**
  * @route   POST /api/v1/auth/forgot-password

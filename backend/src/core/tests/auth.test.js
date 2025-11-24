@@ -261,4 +261,137 @@ describe('Auth API', () => {
       expect(res.body.success).toBe(false);
     });
   });
+
+  describe('PUT /api/v1/auth/change-password', () => {
+    let accessToken;
+    const newPassword = 'NewPassword1!';
+
+    beforeEach(async () => {
+      // Register and get token
+      const registerRes = await request(app).post('/api/v1/auth/register').send(validUser);
+      accessToken = registerRes.body.data.accessToken;
+    });
+
+    test('should change password with correct current password', async () => {
+      const res = await request(app)
+        .put('/api/v1/auth/change-password')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({
+          currentPassword: validUser.password,
+          newPassword: newPassword,
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+    });
+
+    test('should reject change-password without token', async () => {
+      const res = await request(app).put('/api/v1/auth/change-password').send({
+        currentPassword: validUser.password,
+        newPassword: newPassword,
+      });
+
+      expect(res.status).toBe(401);
+      expect(res.body.success).toBe(false);
+    });
+
+    test('should reject change-password with incorrect current password', async () => {
+      const res = await request(app)
+        .put('/api/v1/auth/change-password')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({
+          currentPassword: 'WrongPassword1!',
+          newPassword: newPassword,
+        });
+
+      expect(res.status).toBe(403);
+      expect(res.body.success).toBe(false);
+    });
+
+    test('should reject change-password with new password too short', async () => {
+      const res = await request(app)
+        .put('/api/v1/auth/change-password')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({
+          currentPassword: validUser.password,
+          newPassword: 'Short1!',
+        });
+
+      expect(res.status).toBe(400);
+      expect(res.body.success).toBe(false);
+      expect(res.body.errors).toBeDefined();
+      expect(res.body.errors[0].message).toContain('8 caractères');
+    });
+
+    test('should reject change-password without uppercase letter', async () => {
+      const res = await request(app)
+        .put('/api/v1/auth/change-password')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({
+          currentPassword: validUser.password,
+          newPassword: 'newpassword1!',
+        });
+
+      expect(res.status).toBe(400);
+      expect(res.body.success).toBe(false);
+      expect(res.body.errors).toBeDefined();
+      expect(res.body.errors[0].message).toContain('majuscule');
+    });
+
+    test('should reject change-password without special character', async () => {
+      const res = await request(app)
+        .put('/api/v1/auth/change-password')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({
+          currentPassword: validUser.password,
+          newPassword: 'NewPassword1',
+        });
+
+      expect(res.status).toBe(400);
+      expect(res.body.success).toBe(false);
+      expect(res.body.errors).toBeDefined();
+      expect(res.body.errors[0].message).toContain('caractère spécial');
+    });
+
+    test('should allow login with new password after change', async () => {
+      // First, change the password
+      await request(app)
+        .put('/api/v1/auth/change-password')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({
+          currentPassword: validUser.password,
+          newPassword: newPassword,
+        });
+
+      // Then, try to login with the new password
+      const loginRes = await request(app).post('/api/v1/auth/login').send({
+        email: validUser.email,
+        password: newPassword,
+      });
+
+      expect(loginRes.status).toBe(200);
+      expect(loginRes.body.success).toBe(true);
+      expect(loginRes.body.data.accessToken).toBeDefined();
+    });
+
+    test('should reject login with old password after change', async () => {
+      // First, change the password
+      await request(app)
+        .put('/api/v1/auth/change-password')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({
+          currentPassword: validUser.password,
+          newPassword: newPassword,
+        });
+
+      // Then, try to login with the old password
+      const loginRes = await request(app).post('/api/v1/auth/login').send({
+        email: validUser.email,
+        password: validUser.password,
+      });
+
+      expect(loginRes.status).toBe(401);
+      expect(loginRes.body.success).toBe(false);
+    });
+  });
 });

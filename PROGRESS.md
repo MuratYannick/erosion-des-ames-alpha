@@ -7,6 +7,7 @@
 | 001 | setup/environment-configuration | 100% | Termine |
 | 002 | feature/authentication | 100% | Termine |
 | 003 | feature/email-verification | 100% | Termine |
+| 004 | feature/user-profile | 100% | Termine |
 
 ---
 
@@ -151,10 +152,46 @@
 
 ---
 
+### 004: feature/user-profile
+
+**Objectif** : Mise en place du profil utilisateur et du changement de mot de passe
+
+**Sous-taches effectuees** :
+
+#### Backend - Route Change Password (4/4)
+- PUT /api/v1/auth/change-password
+- Validation (ancien mot de passe, nouveau mot de passe)
+- Service changePassword
+- Controller changePassword
+
+#### Backend - Tests (4/4)
+- Tests change-password succes/echec
+- Tests validation nouveau mot de passe
+- Tests integration (login avec nouveau/ancien password)
+- Total : 130 tests passent
+
+#### Frontend - Page Profil (4/4)
+- Page Profile.jsx
+- Affichage infos utilisateur
+- Formulaire changement mot de passe
+- Route /profile protegee
+
+#### Frontend - Navigation (2/2)
+- Lien vers profil dans la navigation
+- Protection de la route
+
+#### Documentation (2/2)
+- Documentation route change-password
+- Mise a jour BACK_ARCHITECTURE.md
+
+**Details** : [project_progress/004_USER_PROFILE.md](project_progress/004_USER_PROFILE.md)
+
+---
+
 ## Prochaines etapes
 
 | Etape | Description | Statut |
 |-------|-------------|--------|
-| 004 | Module Forum | En attente |
-| 005 | Module Portal | En attente |
-| 006 | Module Game | En attente |
+| 005 | Module Forum | En attente |
+| 006 | Module Portal | En attente |
+| 007 | Module Game | En attente |
