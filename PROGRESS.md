@@ -8,6 +8,7 @@
 | 002 | feature/authentication | 100% | Termine |
 | 003 | feature/email-verification | 100% | Termine |
 | 004 | feature/user-profile | 100% | Termine |
+| 005 | feature/portal | 100% | Termine |
 
 ---
 
@@ -188,10 +189,46 @@
 
 ---
 
+### 005: feature/portal
+
+**Objectif** : Mise en place du module Portal - page d'accueil publique et navigation principale
+
+**Sous-taches effectuees** :
+
+#### Frontend - Layout (4/4)
+- Composant Header (navigation, logo, menu utilisateur)
+- Composant Footer (copyright, liens)
+- Composant Layout (wrapper commun)
+- Menu responsive (mobile avec hamburger)
+
+#### Frontend - Pages Portal (3/3)
+- Page Home redesignee (hero, features, CTA, stats)
+- Page About (presentation, timeline, technologies)
+- Integration du Layout dans App.jsx
+
+#### Frontend - Navigation (3/3)
+- React Router configuration amelioree
+- Liens actifs (highlight page courante)
+- Menu utilisateur (connecte/deconnecte)
+
+#### Frontend - Style (4/4)
+- Theme coherent TailwindCSS (couleurs erosion, polices)
+- Composants reutilisables (Button, Card)
+- Responsive design (mobile-first)
+- Animations (fade-in, slide-up)
+
+#### Documentation (3/3)
+- FRONT_ARCHITECTURE.md
+- Documentation composants (components.md)
+- Documentation module portal (portal.md)
+
+**Details** : [project_progress/005_PORTAL.md](project_progress/005_PORTAL.md)
+
+---
+
 ## Prochaines etapes
 
 | Etape | Description | Statut |
 |-------|-------------|--------|
-| 005 | Module Forum | En attente |
-| 006 | Module Portal | En attente |
+| 006 | Module Forum | En attente |
 | 007 | Module Game | En attente |

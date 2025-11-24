@@ -16,7 +16,9 @@ docs/
 │   │   ├── models.md                # Modeles Sequelize
 │   │   └── middlewares.md           # Middlewares Express
 │   └── frontend/                    # Documentation frontend
-│       └── FRONT_ARCHITECTURE.md    # Index frontend (a venir)
+│       ├── FRONT_ARCHITECTURE.md    # Index frontend
+│       ├── components.md            # Composants UI et Layout
+│       └── portal.md                # Module Portal
 └── api/                             # Documentation API
     └── auth.md                      # API d'authentification
 ```
@@ -76,7 +78,34 @@ docs/
 
 | Document | Description |
 |----------|-------------|
-| [FRONT_ARCHITECTURE.md](./frontend/FRONT_ARCHITECTURE.md) | Index de l'architecture frontend (a venir) |
+| [FRONT_ARCHITECTURE.md](./frontend/FRONT_ARCHITECTURE.md) | Index de l'architecture frontend |
+| [components.md](./frontend/components.md) | Documentation des composants UI et Layout |
+| [portal.md](./frontend/portal.md) | Documentation du module Portal |
+
+### Contenu de la documentation frontend
+
+#### FRONT_ARCHITECTURE.md (Index)
+- Stack technique
+- Arborescence du projet
+- Modules (Core, Portal, Forum, Game)
+- Composants partages (UI, Layout)
+- Systeme de theme TailwindCSS
+- Routage
+- Services API
+- Conventions
+
+#### components.md
+- Composant Button (props, variants, tailles, exemples)
+- Composant Card (props, structure, exemples)
+- Composants Layout (Layout, Header, Footer)
+- Imports et bonnes pratiques
+
+#### portal.md
+- Vue d'ensemble du module
+- Page Home (sections, features, CTA)
+- Page About (timeline, technologies)
+- Design et responsive
+- Integration avec Core
 
 ---
 
@@ -151,8 +180,10 @@ docs/
 
 | Document | Module | Statut |
 |----------|--------|--------|
-| frontend/FRONT_ARCHITECTURE.md | Frontend | A faire |
-| frontend/components.md | Frontend | A faire |
+| frontend/FRONT_ARCHITECTURE.md | Frontend | Fait |
+| frontend/components.md | Frontend | Fait |
+| frontend/portal.md | Frontend | Fait |
+| frontend/core.md | Frontend | A faire |
 | frontend/state.md | Frontend | A faire |
 | api/forum.md | Forum | A faire |
 | api/game.md | Game | A faire |
