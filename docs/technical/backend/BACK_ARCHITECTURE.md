@@ -121,6 +121,12 @@ Base URL : `/api/v1/auth`
 | POST | /forgot-password | Demander reset password | Public |
 | POST | /reset-password/:token | Reset password avec token | Public |
 
+### Gestion du Mot de Passe
+
+| Methode | Route | Description | Acces |
+|---------|-------|-------------|-------|
+| PUT | /change-password | Changer mot de passe | Prive |
+
 > Documentation complete : [API Auth](../../api/auth.md)
 
 ---

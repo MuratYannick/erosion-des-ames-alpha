@@ -143,6 +143,36 @@ class AuthController {
   }
 
   /**
+   * PUT /api/v1/auth/change-password
+   * Changer le mot de passe de l'utilisateur connecte
+   */
+  async changePassword(req, res) {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      const result = await authService.changePassword(
+        req.user.userId,
+        currentPassword,
+        newPassword
+      );
+      res.status(200).json({
+        success: true,
+        message: result.message,
+      });
+    } catch (error) {
+      if (error.code === 'INVALID_PASSWORD') {
+        return res.status(403).json({
+          success: false,
+          message: error.message,
+        });
+      }
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+  /**
    * POST /api/v1/auth/forgot-password
    * Demander la reinitialisation du mot de passe
    */
