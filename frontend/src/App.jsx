@@ -5,6 +5,9 @@ import { AuthProvider } from './core/contexts/AuthContext';
 import Home from './core/pages/Home';
 import Login from './core/pages/Login';
 import Register from './core/pages/Register';
+import VerifyEmail from './core/pages/VerifyEmail';
+import ForgotPassword from './core/pages/ForgotPassword';
+import ResetPassword from './core/pages/ResetPassword';
 
 // Components
 import ProtectedRoute from './core/components/ProtectedRoute';
@@ -17,6 +20,9 @@ function App() {
           {/* Public routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify-email/:token" element={<VerifyEmail />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
 
           {/* Protected routes */}
           <Route

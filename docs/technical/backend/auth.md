@@ -24,6 +24,10 @@ Le modele User est le coeur du systeme d'authentification.
 | username | VARCHAR(50) | Nom d'utilisateur unique |
 | email | VARCHAR(255) | Email unique |
 | emailVerified | BOOLEAN | Email verifie (defaut: false) |
+| verificationToken | VARCHAR(255) | Token de verification email (nullable) |
+| verificationTokenExpires | DATETIME | Expiration du token (nullable) |
+| resetPasswordToken | VARCHAR(255) | Token de reset password (nullable) |
+| resetPasswordExpires | DATETIME | Expiration du token reset (nullable) |
 | password | VARCHAR(255) | Mot de passe hashe (bcrypt) |
 | role | ENUM | ADMIN, MODERATOR, GAME_MASTER, PLAYER |
 | cguAccepted | BOOLEAN | CGU acceptees |
@@ -35,6 +39,22 @@ Le modele User est le coeur du systeme d'authentification.
 | createdAt | DATETIME | Date de creation |
 | updatedAt | DATETIME | Date de mise a jour |
 | deletedAt | DATETIME | Date de suppression (soft delete) |
+
+### Methodes de classe
+
+| Methode | Description |
+|---------|-------------|
+| `findByEmail(email)` | Recherche par email |
+| `findByUsername(username)` | Recherche par nom d'utilisateur |
+| `findByVerificationToken(token)` | Recherche par token de verification |
+| `findByResetPasswordToken(token)` | Recherche par token de reset password |
+
+### Methodes d'instance
+
+| Methode | Description |
+|---------|-------------|
+| `verifyPassword(password)` | Compare le mot de passe avec le hash |
+| `toJSON()` | Retourne l'utilisateur sans les champs sensibles |
 
 ### Hooks bcrypt
 
@@ -105,14 +125,20 @@ Fichier : `backend/src/core/services/auth.service.js`
 | `login(email, password)` | email, password | `{ user, accessToken, refreshToken }` | Connexion utilisateur |
 | `refreshToken(token)` | refreshToken | `{ accessToken, refreshToken }` | Renouvellement des tokens |
 | `getProfile(userId)` | userId (UUID) | `{ user }` | Recuperation du profil |
+| `verifyEmail(token)` | token (string) | `{ user }` | Verification de l'email via token |
+| `sendVerificationEmail(userId)` | userId (UUID) | `{ message }` | Renvoie un email de verification |
+| `forgotPassword(email)` | email (string) | `{ message }` | Demande de reset password |
+| `resetPassword(token, password)` | token, newPassword | `{ message }` | Reinitialisation du mot de passe |
 
 ### Flux d'inscription
 
 1. Validation des donnees (username, email, password, cguAccepted)
 2. Verification unicite email et username
-3. Creation de l'utilisateur (password hashe automatiquement)
-4. Generation des tokens JWT
-5. Retour des informations utilisateur et tokens
+3. Generation du token de verification email
+4. Creation de l'utilisateur (password hashe automatiquement)
+5. Envoi de l'email de verification
+6. Generation des tokens JWT
+7. Retour des informations utilisateur et tokens
 
 ### Flux de connexion
 
@@ -121,6 +147,22 @@ Fichier : `backend/src/core/services/auth.service.js`
 3. Comparaison du mot de passe avec bcrypt
 4. Generation des tokens JWT
 5. Retour des informations utilisateur et tokens
+
+### Flux de verification d'email
+
+1. Recherche de l'utilisateur par token de verification
+2. Verification que le token n'a pas expire (24h)
+3. Mise a jour de `emailVerified` a `true`
+4. Suppression du token de verification
+5. Retour de l'utilisateur mis a jour
+
+### Flux de reinitialisation de mot de passe
+
+1. Recherche de l'utilisateur par email (forgot-password)
+2. Generation d'un token de reset (valide 1h)
+3. Envoi de l'email avec le lien de reset
+4. L'utilisateur clique sur le lien et soumet le nouveau mot de passe
+5. Verification du token et mise a jour du mot de passe
 
 ---
 
@@ -137,6 +179,10 @@ Fichier : `backend/src/core/controllers/auth.controller.js`
 | POST | /logout | `logout()` | Deconnexion |
 | POST | /refresh-token | `refreshToken()` | Renouvellement |
 | GET | /me | `getProfile()` | Profil utilisateur |
+| POST | /send-verification-email | `sendVerificationEmail()` | Renvoyer email verification |
+| GET | /verify-email/:token | `verifyEmail()` | Verifier email |
+| POST | /forgot-password | `forgotPassword()` | Demander reset password |
+| POST | /reset-password/:token | `resetPassword()` | Reinitialiser mot de passe |
 
 ---
 
@@ -150,14 +196,74 @@ Fichier : `backend/src/core/routes/auth.routes.js`
 const router = express.Router();
 
 // Routes publiques
-router.post('/register', registerValidation, validate, authController.register);
-router.post('/login', loginValidation, validate, authController.login);
-router.post('/refresh-token', refreshTokenValidation, validate, authController.refreshToken);
+router.post('/register', registerValidation, authController.register);
+router.post('/login', loginValidation, authController.login);
+router.post('/refresh-token', refreshTokenValidation, authController.refreshToken);
+router.get('/verify-email/:token', authController.verifyEmail);
+router.post('/forgot-password', forgotPasswordValidation, authController.forgotPassword);
+router.post('/reset-password/:token', resetPasswordValidation, authController.resetPassword);
 
 // Routes protegees
 router.post('/logout', authenticate, authController.logout);
 router.get('/me', authenticate, authController.getProfile);
+router.post('/send-verification-email', authenticate, authController.sendVerificationEmail);
 ```
+
+---
+
+## Service Email
+
+Fichier : `backend/src/core/services/email.service.js`
+
+Service d'envoi d'emails utilisant Nodemailer.
+
+### Configuration SMTP
+
+| Variable | Description | Valeur par defaut |
+|----------|-------------|-------------------|
+| SMTP_HOST | Serveur SMTP | (requis en production) |
+| SMTP_PORT | Port SMTP | 587 |
+| SMTP_USER | Utilisateur SMTP | (requis) |
+| SMTP_PASS | Mot de passe SMTP | (requis) |
+| SMTP_FROM | Adresse expediteur | noreply@erosion-des-ames.com |
+
+### Mode developpement
+
+En mode developpement sans configuration SMTP, les emails sont logges en console au lieu d'etre envoyes.
+
+### Methodes
+
+| Methode | Parametres | Description |
+|---------|------------|-------------|
+| `sendEmail({ to, subject, html, text })` | Options email | Envoie un email generique |
+| `sendVerificationEmail(user, token)` | User, token | Envoie l'email de verification |
+| `sendPasswordResetEmail(user, token)` | User, token | Envoie l'email de reset password |
+| `verifyConnection()` | - | Teste la connexion SMTP |
+
+### Templates email
+
+Fichiers : `backend/src/core/templates/`
+
+| Template | Fichier | Description |
+|----------|---------|-------------|
+| Verification email | `verifyEmail.js` | Email de confirmation d'inscription |
+| Reset password | `resetPassword.js` | Email de reinitialisation de mot de passe |
+
+Chaque template retourne un objet :
+```javascript
+{
+  subject: "Sujet de l'email",
+  html: "<html>Corps HTML</html>",
+  text: "Corps texte brut"
+}
+```
+
+### Durees d'expiration des tokens
+
+| Token | Duree | Constante |
+|-------|-------|-----------|
+| Verification email | 24 heures | VERIFICATION_TOKEN_EXPIRY |
+| Reset password | 1 heure | RESET_PASSWORD_TOKEN_EXPIRY |
 
 ---
 

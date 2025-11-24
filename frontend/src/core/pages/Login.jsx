@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 function Login() {
@@ -7,9 +7,24 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    // Afficher un message si l'utilisateur vient de verifier son email ou reinitialiser son mot de passe
+    if (searchParams.get('verified') === 'true') {
+      setSuccessMessage(
+        'Votre email a ete verifie avec succes. Vous pouvez maintenant vous connecter.'
+      );
+    } else if (searchParams.get('reset') === 'true') {
+      setSuccessMessage(
+        'Votre mot de passe a ete reinitialise. Vous pouvez maintenant vous connecter.'
+      );
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,6 +50,12 @@ function Login() {
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          {successMessage && (
+            <div className="bg-green-500/10 border border-green-500 text-green-500 px-4 py-3 rounded">
+              {successMessage}
+            </div>
+          )}
+
           {error && (
             <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded">
               {error}
@@ -70,6 +91,14 @@ function Login() {
                 className="mt-1 w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="••••••••"
               />
+              <div className="mt-1 text-right">
+                <Link
+                  to="/forgot-password"
+                  className="text-sm text-purple-400 hover:text-purple-300"
+                >
+                  Mot de passe oublie ?
+                </Link>
+              </div>
             </div>
           </div>
 

@@ -52,6 +52,26 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: false,
       },
+      verificationToken: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+        defaultValue: null,
+      },
+      verificationTokenExpires: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null,
+      },
+      resetPasswordToken: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+        defaultValue: null,
+      },
+      resetPasswordExpires: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null,
+      },
       password: {
         type: DataTypes.STRING(255),
         allowNull: false,
@@ -142,6 +162,8 @@ module.exports = (sequelize, DataTypes) => {
   User.prototype.toJSON = function () {
     const values = { ...this.get() };
     delete values.password;
+    delete values.verificationToken;
+    delete values.resetPasswordToken;
     return values;
   };
 
@@ -154,6 +176,14 @@ module.exports = (sequelize, DataTypes) => {
 
   User.findByUsername = function (username) {
     return this.findOne({ where: { username } });
+  };
+
+  User.findByVerificationToken = function (token) {
+    return this.findOne({ where: { verificationToken: token } });
+  };
+
+  User.findByResetPasswordToken = function (token) {
+    return this.findOne({ where: { resetPasswordToken: token } });
   };
 
   return User;
