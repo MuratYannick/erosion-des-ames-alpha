@@ -20,8 +20,8 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// API routes will be added here
-// app.use('/api/v1/core', require('./core/routes'));
+// API routes
+app.use('/api/v1', require('./core/routes'));
 // app.use('/api/v1/forum', require('./forum/routes'));
 // app.use('/api/v1/game', require('./game/routes'));
 // app.use('/api/v1/portal', require('./portal/routes'));
@@ -37,8 +37,11 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// Only start server if not in test environment
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
 
 module.exports = app;
