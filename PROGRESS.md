@@ -148,7 +148,7 @@
 - Documentation routes API
 - Mise a jour BACK_ARCHITECTURE.md
 
-**Details** : [project_progress/EMAIL_VERIFICATION.md](project_progress/EMAIL_VERIFICATION.md)
+**Details** : [project_progress/003_EMAIL_VERIFICATION.md](project_progress/003_EMAIL_VERIFICATION.md)
 
 ---
 
