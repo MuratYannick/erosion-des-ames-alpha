@@ -16,7 +16,13 @@
       "Bash(npm run lint:*)",
       "Bash(npm run lint:fix:*)",
       "Bash(npm run db:test:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nSetup complete development environment\n\nBackend:\n- Initialize Node.js with Express.js\n- Configure Sequelize ORM with MySQL\n- Create modular structure (core, forum, game, portal)\n- Setup environment variables (.env)\n- Configure ESLint + Prettier\n\nFrontend:\n- Initialize Vite + React\n- Configure React Router\n- Install TailwindCSS v3\n- Create modular structure (core, forum, game, portal)\n- Configure ESLint + Prettier\n\nGlobal:\n- Add .gitignore\n- Configure monorepo scripts with concurrently\n- Document commands in CLAUDE.md\n- Validate database connection\n- Create project progress tracking\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nSetup complete development environment\n\nBackend:\n- Initialize Node.js with Express.js\n- Configure Sequelize ORM with MySQL\n- Create modular structure (core, forum, game, portal)\n- Setup environment variables (.env)\n- Configure ESLint + Prettier\n\nFrontend:\n- Initialize Vite + React\n- Configure React Router\n- Install TailwindCSS v3\n- Create modular structure (core, forum, game, portal)\n- Configure ESLint + Prettier\n\nGlobal:\n- Add .gitignore\n- Configure monorepo scripts with concurrently\n- Document commands in CLAUDE.md\n- Validate database connection\n- Create project progress tracking\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(npm:*)",
+      "Bash(npx sequelize-cli:*)",
+      "Bash(timeout 5 npm:*)",
+      "Bash(node -e \"require(''./src/core/models'')\")",
+      "Bash(node -e \"require(''./src/core/routes'')\")",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

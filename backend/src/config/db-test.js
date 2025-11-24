@@ -24,8 +24,10 @@ async function testConnection() {
     console.error('❌ Impossible de se connecter à la base de données:');
     console.error(`   ${error.message}`);
     console.log('\n💡 Vérifiez que:');
-    console.log('   1. MySQL est installé et en cours d\'exécution');
-    console.log('   2. La base de données existe (créez-la avec: CREATE DATABASE erosion_des_ames_dev;)');
+    console.log("   1. MySQL est installé et en cours d'exécution");
+    console.log(
+      '   2. La base de données existe (créez-la avec: CREATE DATABASE erosion_des_ames_dev;)'
+    );
     console.log('   3. Les identifiants dans .env sont corrects');
     process.exit(1);
   }
